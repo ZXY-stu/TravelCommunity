@@ -1,7 +1,10 @@
 package com.bignerdranch.travelcommunity.viewmodels
 
+import android.database.Observable
 import androidx.databinding.Bindable
+import androidx.databinding.ObservableField
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
 import com.bignerdranch.travelcommunity.BR
@@ -17,6 +20,9 @@ import java.lang.Exception
 class UserLoginViewModel internal constructor(val userRepository: UserRepository) :BaseViewModel(){
 
     private var _loginInfo: LoginInfo = LoginInfo()
+
+    var nickname = ObservableField<String>()
+
 
 
     private fun checkError(account:String, password:String):Boolean{

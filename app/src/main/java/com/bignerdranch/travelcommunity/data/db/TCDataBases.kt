@@ -39,15 +39,15 @@ abstract  class TCDataBases{
         @Volatile
         private var instance: TCDataBases? = null
 
-        fun getInstance(context: Context): TCDataBases? {
+        fun getInstance(context: Context): TCDataBases {
             LogUtil.e("The DataBase is not implements!!!")
-            return instance ?: synchronized(this) {
-                instance ?: buildDatabase(context).also { instance = it }
+            return instance?: synchronized(this){
+                instance?: buildDatabase(context).also { instance = it }
             }
         }
 
         //用来预填充数据库数据进行相关测试
-        private fun buildDatabase(context: Context): TCDataBases? {
+        private fun buildDatabase(context: Context): TCDataBases{
             /*  return Room.databaseBuilder(context, TCDataBases::class.java, DATABASE_NAME)
                 .addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
@@ -57,7 +57,7 @@ abstract  class TCDataBases{
                     }
                 })
                 .build()*/
-            return null
+            return null!!
         }
     }
 }

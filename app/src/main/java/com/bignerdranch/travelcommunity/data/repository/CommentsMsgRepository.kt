@@ -1,10 +1,13 @@
 package com.bignerdranch.travelcommunity.data.repository
 
-import androidx.lifecycle.LiveData
 import com.bignerdranch.travelcommunity.data.db.daos.CommentsMsgDao
 import com.bignerdranch.travelcommunity.data.db.entity.CommentsMsg
+import com.bignerdranch.travelcommunity.data.network.Network
 
-class CommentsMsgRepository private constructor(private  val commentsMsgDao: CommentsMsgDao){
+class CommentsMsgRepository private constructor(
+    private val commentsMsgDao: CommentsMsgDao,
+    private val network: Network
+){
     fun getCommentsMsgFromUserId(userId:Int) = commentsMsgDao.getCommentsMsgFromUserId(userId)
     fun getCommentsMsgFromMsgId(msgId:Int) = commentsMsgDao.getCommentsMsgFromMsgId(msgId)
     fun getCommentsMsgFromDynamicId(dynamicId:Int) = commentsMsgDao.getCommentsMsgFromDynamicId(dynamicId)
@@ -23,9 +26,9 @@ class CommentsMsgRepository private constructor(private  val commentsMsgDao: Com
     companion object {
         // 单例
         @Volatile  private var  instance:CommentsMsgRepository? = null
-        fun getInstance(commentsMsgDao: CommentsMsgDao):CommentsMsgRepository{
+        fun getInstance(commentsMsgDao: CommentsMsgDao,network: Network):CommentsMsgRepository{
             return instance?: synchronized(this){
-                instance?:CommentsMsgRepository(commentsMsgDao).also { instance = it }
+                instance?:CommentsMsgRepository(commentsMsgDao,network).also { instance = it }
             }
         }
     }

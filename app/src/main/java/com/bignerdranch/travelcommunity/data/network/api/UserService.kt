@@ -1,5 +1,6 @@
 package com.bignerdranch.travelcommunity.data.network.api
 
+import com.bignerdranch.travelcommunity.data.db.entity.User
 import com.bignerdranch.travelcommunity.data.network.model.Model
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -9,8 +10,8 @@ import retrofit2.http.*
 interface UserService {
   //用户登录
   @GET("api/user")
-  fun login(@QueryMap loginInfo:Map<String,String>):Call<Model.UserInfo>
-
+  fun login(@Query("account")account:String,@Query("password") password:String):Call<User>
+   // http://lyndon.fun:8888/api/user?account=lyn&password=1304418038
   //注册用户
   @POST("api/user")
   fun register(@Body userRegister: Model.UserRegister):Call<Model.UserLogin>
