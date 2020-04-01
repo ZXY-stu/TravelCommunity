@@ -1,6 +1,5 @@
 package com.bignerdranch.travelcommunity.data.network.api
 
-import com.bignerdranch.travelcommunity.data.db.entity.User
 import com.bignerdranch.travelcommunity.data.network.model.Model
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -19,7 +18,7 @@ interface UserService {
   @DELETE("api/user/{account}")
   fun logout(@Path("account") account:String):Call<Model.Info>
 
- //更新用户基本信息
+ //更新用户基本信息，包括头像，兴趣，爱好 职业等等
   @Multipart
   @PUT("api/user/{account}")
   fun updateUser(@Path("account") account:String,@PartMap content: Map<String,RequestBody>):Call<Model.Info>
