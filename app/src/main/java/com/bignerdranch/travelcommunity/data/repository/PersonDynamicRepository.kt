@@ -7,15 +7,15 @@ import com.bignerdranch.travelcommunity.data.network.Network
 class PersonDynamicRepository private constructor(private val personDynamicDao: PersonDynamicDao,private  val network: Network){
 
     fun getPersonDynamics() = personDynamicDao.getPersonDynamics()
-    fun getUserId(personDynamicId:Int) = personDynamicDao.getUserId(personDynamicId)
-    fun getDynamicId(userId:Int) = personDynamicDao.getDynamicId(userId)
+    fun getUserId(personDynamicId:String) = personDynamicDao.getUserId(personDynamicId)
+    fun getDynamicId(userId:String) = personDynamicDao.getDynamicId(userId)
     suspend fun insertPersonDynamic(personDynamic: PersonDynamic) {
         personDynamicDao.insertPersonDynamic(personDynamic)
     }
     suspend fun insertAll(personDynamics:List<PersonDynamic>){
          personDynamicDao.insertAll(personDynamics)
     }
-    suspend fun deletePersonDynamic(dynamicId:Int){
+    suspend fun deletePersonDynamic(dynamicId:String){
         personDynamicDao.deletePersonDynamic(dynamicId)
     }
 

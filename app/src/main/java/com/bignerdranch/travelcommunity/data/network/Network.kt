@@ -22,7 +22,7 @@ class Network private constructor(){
          return loginService.login(account,password).await()
      }
 
-    suspend fun toRegister(register: Model.UserRegister):Model.UserLogin = loginService.register(register).await()
+    suspend fun toRegister(register: User) = loginService.register(register).await()
 
     suspend fun toLogout(account:String):Model.BackInfo = loginService.logout(account).await()
 

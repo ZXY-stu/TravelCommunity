@@ -1,46 +1,72 @@
 package com.bignerdranch.travelcommunity.viewmodels
 
 import android.database.Observable
+import android.widget.Toast
 import androidx.databinding.Bindable
 import androidx.databinding.ObservableField
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.map
+import androidx.lifecycle.*
 import com.bignerdranch.travelcommunity.BR
 import com.bignerdranch.travelcommunity.data.db.entity.User
 import com.bignerdranch.travelcommunity.data.model.LoginInfo
 import com.bignerdranch.travelcommunity.data.repository.UserRepository
+import com.bignerdranch.travelcommunity.ui.CallBackc
 import com.bignerdranch.travelcommunity.util.LogUtil
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import java.lang.Exception
 
+//处理数据层 和 UI层的交互
 class UserLoginViewModel internal constructor(val userRepository: UserRepository) :BaseViewModel(){
 
-    private var _loginInfo: LoginInfo = LoginInfo()
+    var user = MutableLiveData<User>()
+     var  use: User? = null
 
-    var nickname = ObservableField<String>()
+    var isLogin = MutableLiveData<Boolean>()
 
 
+   fun login(account: String, password: String) {
+       launch {
+           userRepository.loginToNetwork(account, password)
+       }
+   }
 
-    private fun checkError(account:String, password:String):Boolean{
-        return false
+    fun logout(account: String) {
+        launch {
+            userRepository.logoutFromNetwork(account)
+        }
+    }
+    fun register(user: User) {
+        launch {
+            userRepository.registerToNetwork(user)
+        }
     }
 
-    private fun checkLogin():Boolean?{
-        return userRepository.getUser().map { it.phoneNumber.isEmpty() }.value
+    fun  insertUser(user: User) {
+        launch {
+            userRepository.insertUserToRoom(user)
+        }
     }
-
-    fun login():String{
-          return ""
+     fun  deleteLocalUser(user: User){
+         launch {
+             userRepository.deleteUserFromRoom(user)
+         }
      }
 
-    private fun toLogin(loginInfo: LoginInfo) = runBlocking{
-        //与服务器通信
-
-    }
 
 
-}
+    private fun launch(block: suspend () -> Unit) = viewModelScope.launch {
+             try {
+
+                     block()
+
+             } catch (t: Throwable) {
+                 t.printStackTrace()
+             }
+         }
+     }
+
+
+
+

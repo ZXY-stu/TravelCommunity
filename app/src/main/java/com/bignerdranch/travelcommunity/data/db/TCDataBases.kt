@@ -18,20 +18,20 @@ import com.bignerdranch.travelcommunity.util.LogUtil
 import com.bignerdranch.travelcommunity.workers.SeedDatabaseWorker
 
 
-/*
+
 @Database(
     entities = [User::class, PersonDynamic::class, CommentsMsg::class],
     version = 1,
     exportSchema = false
-)*/
-//@TypeConverters(Converter::class)
+)
+@TypeConverters(Converter::class)
 
 //暂时不使用ROOM数据库
 //接口都未实现
-abstract  class TCDataBases{
+abstract  class TCDataBases:RoomDatabase(){
 
-    abstract  fun commentsMsgDao(): CommentsMsgDao
-    abstract  fun personDynamicDao(): PersonDynamicDao
+   // abstract  fun commentsMsgDao(): CommentsMsgDao
+   // abstract  fun personDynamicDao(): PersonDynamicDao
     abstract  fun userDao():UserDao
 
     companion object {
@@ -48,16 +48,15 @@ abstract  class TCDataBases{
 
         //用来预填充数据库数据进行相关测试
         private fun buildDatabase(context: Context): TCDataBases{
-            /*  return Room.databaseBuilder(context, TCDataBases::class.java, DATABASE_NAME)
-                .addCallback(object : RoomDatabase.Callback() {
+              return Room.databaseBuilder(context, TCDataBases::class.java, DATABASE_NAME).build()
+             /*   .addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
                         super.onCreate(db)
                         val request = OneTimeWorkRequestBuilder<SeedDatabaseWorker>().build()
-                         WorkManager.getInstance(context).enqueue(request)
+                      //   WorkManager.getInstance(context).enqueue(request)
                     }
-                })
-                .build()*/
-            return null!!
+                })*/
+                //.build()
         }
     }
 }

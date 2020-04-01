@@ -14,7 +14,7 @@ interface UserService {
    // http://lyndon.fun:8888/api/user?account=lyn&password=1304418038
   //注册用户
   @POST("api/user")
-  fun register(@Body userRegister: Model.UserRegister):Call<Model.UserLogin>
+  fun register(@Body user: User):Call<User>
 
   //用户注销
   @DELETE("api/user/{account}")

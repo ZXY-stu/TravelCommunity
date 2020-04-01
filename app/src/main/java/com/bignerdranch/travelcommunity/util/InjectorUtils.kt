@@ -10,26 +10,26 @@ import com.bignerdranch.travelcommunity.viewmodels.UserLoginViewModel
 import com.bignerdranch.travelcommunity.viewmodels.UserLoginViewModelFactory
 
 object InjectorUtils{
-
+/*
     private fun getCommentsMsgRepository(context: Context):CommentsMsgRepository?{
          return CommentsMsgRepository.getInstance(TCDataBases.getInstance(context.applicationContext)
             .commentsMsgDao(),Network.getInstance())
          }
-
+*/
 
    private fun getUserRepository(context: Context): UserRepository{
        return UserRepository.getInstance(TCDataBases.getInstance(context.applicationContext)
            .userDao(), Network.getInstance())
     }
-
+/*
     private fun getPersonDynamicRepository(context: Context): PersonDynamicRepository?{
         return  PersonDynamicRepository.getInstance(TCDataBases.getInstance(context.applicationContext)
             .personDynamicDao(), Network.getInstance())
 
-    }
+    }*/
 
-    fun  getUserLoginViewModel(context: Context):UserLoginViewModel{
-        return  UserLoginViewModelFactory(getUserRepository(context)).create(UserLoginViewModel::class.java)
+    fun  userLoginViewModelFactory(context: Context):UserLoginViewModelFactory{
+        return  UserLoginViewModelFactory(getUserRepository(context))
     }
 
 

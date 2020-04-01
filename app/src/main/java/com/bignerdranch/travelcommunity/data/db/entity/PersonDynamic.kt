@@ -17,8 +17,8 @@ import kotlin.collections.ArrayList
         ],indices = [Index(value = (["user_id"]),unique = true)]
 )
 data class PersonDynamic(
-    @PrimaryKey(autoGenerate = true) val id:Int,  //主键
-    @ColumnInfo(name = "user_id") val userId:Int, //外部键
+    @PrimaryKey val id:String,  //主键
+    @ColumnInfo(name = "user_id") val userId:String, //外部键
     val textContent: String,  //文本内容
     val videoUrl:String, // 视频Url
     val imageUrls:ArrayList<String>,  //图片集合url地址

@@ -13,10 +13,10 @@ interface PersonDynamicDao {
     fun getPersonDynamics():LiveData<List<PersonDynamic>>
 
     @Query("SELECT user_id  from person_dynamic where person_dynamic.id = :personDynamicId")
-    fun getUserId(personDynamicId:Int):LiveData<Int>
+    fun getUserId(personDynamicId:String):LiveData<String>
 
     @Query("SELECT id  from person_dynamic where person_dynamic.user_id = :userId")
-    fun getDynamicId(userId:Int):LiveData<Int>
+    fun getDynamicId(userId:String):LiveData<String>
 
     //for test
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -26,5 +26,5 @@ interface PersonDynamicDao {
     suspend fun insertAll(personDynamics:List<PersonDynamic>)
 
     @Delete
-    suspend fun deletePersonDynamic(dynamicId:Int)
+    suspend fun deletePersonDynamic(dynamicId:String)
 }

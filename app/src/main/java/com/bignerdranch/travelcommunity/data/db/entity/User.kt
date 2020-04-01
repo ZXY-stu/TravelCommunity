@@ -14,8 +14,8 @@ import java.math.BigInteger
 
 /*   nick_name userName identifyNumber 都不能重复  以及*/
 data class User(
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name= "id") val loginId:Int,
+    @PrimaryKey
+    @ColumnInfo(name= "id") val loginId:String,
     @ColumnInfo(name = "nick_name") val nickName:String,   //昵称
     val age:Int,          //年龄
     val userName:String, //用户名

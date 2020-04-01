@@ -10,29 +10,18 @@ import java.math.BigInteger
 @Dao
 interface UserDao {
     @Query("SELECT * from user")
-    fun getUser():LiveData<User>
+    fun getUser():User
 
-    @Query("SELECT * from user where user.id = :userId")
-    fun getUser(userId:Int):LiveData<User>
-
-    @Query("SELECT nick_name from user Where user.id = :userId")
-    fun getNickName(userId:Int):LiveData<String>
-
-    @Query("select id from user where user.nick_name = :nickName")
-    fun getUserId(nickName:String):LiveData<Int>
-
-    @Query("select * from user where user.nick_name = :nickName")
-    fun getUser(nickName: String):LiveData<User>
-
+    @Query("SELECT * from user where user.id = :loginId")
+    fun getUser(loginId:String):LiveData<User>
 
     //for test
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertAllUser(users:List<User>)
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun  insertUser(user:User)
 
     @Delete
-    suspend fun deleteUser(userId: Int)
+    suspend fun deleteUser(user: User)
+
+
 }
 

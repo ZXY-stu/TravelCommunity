@@ -25,9 +25,9 @@ import java.math.BigInteger
 
 /*评论区数据*/
 data class CommentsMsg(
-    @PrimaryKey(autoGenerate = true) val id:Int,
-    @ColumnInfo(name = "dynamic_id")   val dynamicId:Int,
-    @ColumnInfo(name = "user_id")      val userId:Int,
+    @PrimaryKey val id:String,
+    @ColumnInfo(name = "dynamic_id")   val dynamicId:String,
+    @ColumnInfo(name = "user_id")      val userId:String,
     val sendUserId: Int,   //发送消息的人
     val receiverUserId: Int,  //回复消息的人
     val sender:String,   //发送人的昵称
