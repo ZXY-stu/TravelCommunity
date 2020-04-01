@@ -5,6 +5,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 
+// 更新
 interface UserService {
   //用户登录
   @GET("api/user")
@@ -16,10 +17,10 @@ interface UserService {
 
   //用户注销
   @DELETE("api/user/{account}")
-  fun logout(@Path("account") account:String):Call<Model.Info>
+  fun logout(@Path("account") account:String):Call<Model.BackInfo>
 
  //更新用户基本信息，包括头像，兴趣，爱好 职业等等
   @Multipart
   @PUT("api/user/{account}")
-  fun updateUser(@Path("account") account:String,@PartMap content: Map<String,RequestBody>):Call<Model.Info>
+  fun updateUser(@Path("account") account:String,@PartMap content: Map<String,RequestBody>):Call<Model.BackInfo>
 }
