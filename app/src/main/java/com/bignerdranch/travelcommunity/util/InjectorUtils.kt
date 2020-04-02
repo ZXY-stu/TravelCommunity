@@ -26,12 +26,12 @@ object InjectorUtils{
        return UserRepository.getInstance(TCDataBases.getInstance(context.applicationContext)
            .userDao(), Network.getInstance())
     }
-/*
+
     private fun getPersonDynamicRepository(context: Context): PersonDynamicRepository?{
         return  PersonDynamicRepository.getInstance(TCDataBases.getInstance(context.applicationContext)
             .personDynamicDao(), Network.getInstance())
 
-    }*/
+    }
 
     fun  userLoginViewModelFactory(context: Context):UserLoginViewModelFactory{
         return  UserLoginViewModelFactory(getUserRepository(context))

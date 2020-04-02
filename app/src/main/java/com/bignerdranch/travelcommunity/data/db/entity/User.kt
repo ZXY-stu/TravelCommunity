@@ -13,16 +13,16 @@ import java.math.BigInteger
 /*用户信息表*/
 @Entity(
     tableName = "user",
-    indices = [Index(value=["nick_name","userName","identifyNumber"],unique = true)]
+    indices = [Index(value=["nick_name","account","identifyNumber","phoneNumber"],unique = true)]
 )
 
 /*   nick_name userName identifyNumber 都不能重复  以及*/
 data class User(
     @PrimaryKey
-    @ColumnInfo(name= "id") val loginId:String,
+    @ColumnInfo(name= "id") val userId:Int,
     @ColumnInfo(name = "nick_name") val nickName:String,   //昵称
+    val account:String, //用户账号
     val age:Int,          //年龄
-    val userName:String, //用户名
     val birthday:String,  //出生日期
     val headPortraitUrl:String,  //头像图片地址
     val phoneNumber:String, //手机号

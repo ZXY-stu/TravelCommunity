@@ -1,6 +1,7 @@
 package com.bignerdranch.travelcommunity.data.db.entity
 
 import androidx.room.*
+import java.util.*
 
 /**
  * @author zhongxinyu
@@ -23,18 +24,17 @@ import androidx.room.*
        childColumns =  ["user_id"],
        onUpdate = ForeignKey.CASCADE ,
        onDelete = ForeignKey.CASCADE)],
-      indices = [(Index(value = ["dynamic_id"], unique = true)),(Index(value = ["user_id"], unique = true))]
+      indices = [(Index(value = ["dynamic_id","user_id","fromUser","toUser"]))]
 )
 /*创建了主键为id，外键为dynamic_id和user_id*/
 
 /*评论区数据*/
 data class CommentsMsg(
     @PrimaryKey val id:String,
-    @ColumnInfo(name = "dynamic_id")   val dynamicId:String,
-    @ColumnInfo(name = "user_id")      val userId:String,
-    val sendUserId: Int,   //发送消息的人
-    val receiverUserId: Int,  //回复消息的人
-    val sender:String,   //发送人的昵称
-    val receiver:String,  //回复人的昵称
-    val Msg:String   //消息内容
+    @ColumnInfo(name = "dynamic_id")   val dynamicId:Int,
+    @ColumnInfo(name = "user_id")      val userId:Int,
+    val fromUser:String,   //发送人
+    val toUser:String,  //回复人
+    val Msg:String , //消息内容
+    val times: Date  //评论时间
 )

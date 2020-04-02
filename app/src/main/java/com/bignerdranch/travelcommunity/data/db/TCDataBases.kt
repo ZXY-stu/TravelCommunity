@@ -2,12 +2,13 @@ package com.bignerdranch.travelcommunity.data.db
 
 import android.content.Context
 import androidx.room.*
+import com.bignerdranch.travelcommunity.data.db.daos.CommentsMsgDao
+import com.bignerdranch.travelcommunity.data.db.daos.PersonDynamicDao
 import com.bignerdranch.travelcommunity.data.db.daos.UserDao
 import com.bignerdranch.travelcommunity.data.db.entity.CommentsMsg
 import com.bignerdranch.travelcommunity.data.db.entity.PersonDynamic
 import com.bignerdranch.travelcommunity.data.db.entity.User
 import com.bignerdranch.travelcommunity.util.DATABASE_NAME
-import com.bignerdranch.travelcommunity.util.LogUtil
 
 
 /**
@@ -22,14 +23,12 @@ import com.bignerdranch.travelcommunity.util.LogUtil
     version = 1,
     exportSchema = false
 )
-@TypeConverters(Converter::class)
+@TypeConverters(Converters::class)
 
-//暂时不使用ROOM数据库
-//接口都未实现
 abstract  class TCDataBases:RoomDatabase(){
 
-   // abstract  fun commentsMsgDao(): CommentsMsgDao
-   // abstract  fun personDynamicDao(): PersonDynamicDao
+    abstract  fun commentsMsgDao(): CommentsMsgDao
+    abstract  fun personDynamicDao(): PersonDynamicDao
     abstract  fun userDao():UserDao
 
     companion object {
@@ -38,7 +37,6 @@ abstract  class TCDataBases:RoomDatabase(){
         private var instance: TCDataBases? = null
 
         fun getInstance(context: Context): TCDataBases {
-            LogUtil.e("The DataBase is not implements!!!")
             return instance?: synchronized(this){
                 instance?: buildDatabase(context).also { instance = it }
             }

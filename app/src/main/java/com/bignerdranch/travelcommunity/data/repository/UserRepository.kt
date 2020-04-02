@@ -15,8 +15,8 @@ import java.net.PasswordAuthentication
 
 class UserRepository private  constructor(private val userDao: UserDao,private val network: Network){
 
-       suspend  fun getUserRoom() = withContext(Dispatchers.IO){ userDao.getUser()}
-       suspend  fun getUserFromRoom(userId:String) = withContext(Dispatchers.IO){ userDao.getUser(userId)}
+       suspend  fun getUserFromRoom() = withContext(Dispatchers.IO){ userDao.getUser()}
+     //  suspend  fun getUserFromRoom(userId:Int) = withContext(Dispatchers.IO){ userDao.getUser(userId)}
        suspend fun insertUserToRoom(user:User) = withContext(Dispatchers.IO){ userDao.insertUser(user) }
        suspend fun deleteUserFromRoom(user: User) = withContext(Dispatchers.IO){userDao.deleteUser(user)}
 

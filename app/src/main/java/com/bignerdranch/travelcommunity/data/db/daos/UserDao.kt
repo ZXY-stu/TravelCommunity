@@ -18,7 +18,7 @@ interface UserDao {
     fun getUser():User
 
     @Query("SELECT * from user where user.id = :loginId")
-    fun getUser(loginId:String):LiveData<User>
+    fun getUser(loginId:Int):LiveData<User>
 
     //for test
     @Insert(onConflict = OnConflictStrategy.REPLACE)
