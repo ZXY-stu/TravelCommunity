@@ -1,21 +1,9 @@
 package com.bignerdranch.travelcommunity.viewmodels
 
-import android.database.Observable
-import android.widget.Toast
-import androidx.databinding.Bindable
-import androidx.databinding.ObservableField
 import androidx.lifecycle.*
-import com.bignerdranch.travelcommunity.BR
 import com.bignerdranch.travelcommunity.data.db.entity.User
-import com.bignerdranch.travelcommunity.data.model.LoginInfo
 import com.bignerdranch.travelcommunity.data.repository.UserRepository
-import com.bignerdranch.travelcommunity.ui.CallBackc
-import com.bignerdranch.travelcommunity.util.LogUtil
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
-import java.lang.Exception
 
 //处理数据层 和 UI层的交互
 class UserLoginViewModel internal constructor(val userRepository: UserRepository) :BaseViewModel(){
