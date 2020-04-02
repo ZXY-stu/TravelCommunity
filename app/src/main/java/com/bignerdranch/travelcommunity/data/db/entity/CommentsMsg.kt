@@ -33,8 +33,9 @@ data class CommentsMsg(
     @PrimaryKey val id:String,
     @ColumnInfo(name = "dynamic_id")   val dynamicId:Int,
     @ColumnInfo(name = "user_id")      val userId:Int,
-    val fromUser:String,   //发送人
-    val toUser:String,  //回复人
+    val userAccount:String,//评论人的账户
+    val UserNickName:String,   //评论人的昵称
+    val friendNickName:String,  //被评论人的昵称。
     val Msg:String , //消息内容
     val times: Date  //评论时间
 )

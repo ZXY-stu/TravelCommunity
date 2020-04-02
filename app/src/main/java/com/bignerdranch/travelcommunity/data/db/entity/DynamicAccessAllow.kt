@@ -19,5 +19,5 @@ import androidx.room.PrimaryKey
 data class DynamicAccessAllow(
     @PrimaryKey(autoGenerate = true) val id:Int,
     val account:String,
-    val FriendAccount:String
+    val friendAccount:String
 )

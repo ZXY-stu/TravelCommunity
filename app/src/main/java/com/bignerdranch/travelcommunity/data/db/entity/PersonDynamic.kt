@@ -23,7 +23,9 @@ import kotlin.collections.ArrayList
 )
 data class PersonDynamic(
     @PrimaryKey val id:Int,  //主键
-    @ColumnInfo(name = "user_id") val loginId:Int, //外部键
+    @ColumnInfo(name = "user_id") val userId:Int, //外部键
+    val account:String,//用户账号
+    val userNickName:String,//用户昵称
     val textContent: String,  //文本内容
     val videoUrl:String, // 视频Url
     val imageUrls:String,  //图片集合url地址 Josn格式
