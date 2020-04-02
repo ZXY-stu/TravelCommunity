@@ -13,6 +13,12 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
+/**
+ * @author zhongxinyu
+ * @date 2020/4/2
+ * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
+ **/
+
 class Network private constructor(){
 
      private val loginService =  ServiceCreator.create(UserService::class.java)

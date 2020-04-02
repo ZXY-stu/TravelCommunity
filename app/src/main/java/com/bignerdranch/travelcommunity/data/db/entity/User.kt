@@ -4,9 +4,13 @@ import androidx.room.*
 import androidx.room.util.TableInfo
 import java.math.BigInteger
 
+/**
+ * @author zhongxinyu
+ * @date 2020/4/2
+ * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
+ **/
 
 /*用户信息表*/
-
 @Entity(
     tableName = "user",
     indices = [Index(value=["nick_name","userName","identifyNumber"],unique = true)]

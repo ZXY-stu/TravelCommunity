@@ -8,6 +8,11 @@ import com.bignerdranch.travelcommunity.data.repository.PersonDynamicRepository
 import com.bignerdranch.travelcommunity.data.repository.UserRepository
 import com.bignerdranch.travelcommunity.viewmodels.UserLoginViewModel
 import com.bignerdranch.travelcommunity.viewmodels.UserLoginViewModelFactory
+/**
+ * @author zhongxinyu
+ * @date 2020/4/2
+ * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
+ **/
 
 object InjectorUtils{
 /*

@@ -4,6 +4,12 @@ import androidx.lifecycle.*
 import com.bignerdranch.travelcommunity.data.db.entity.User
 import com.bignerdranch.travelcommunity.data.repository.UserRepository
 import kotlinx.coroutines.launch
+/**
+ * @author zhongxinyu
+ * @date 2020/4/2
+ * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
+ **/
+
 
 //处理数据层 和 UI层的交互
 class UserLoginViewModel internal constructor(val userRepository: UserRepository) :BaseViewModel(){

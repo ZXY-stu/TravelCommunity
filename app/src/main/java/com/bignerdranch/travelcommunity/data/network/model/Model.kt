@@ -1,4 +1,9 @@
 package com.bignerdranch.travelcommunity.data.network.model
+/**
+ * @author zhongxinyu
+ * @date 2020/4/2
+ * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
+ **/
 
 object Model {
     data class UserLogin(val account:String, val password:String, val backInfo:String)

@@ -6,6 +6,12 @@ import com.bignerdranch.travelcommunity.data.db.entity.PersonDynamic
 import com.bignerdranch.travelcommunity.data.db.entity.User
 import java.math.BigInteger
 
+/**
+ * @author zhongxinyu
+ * @date 2020/4/2
+ * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
+ **/
+
 /*PersonDynamic表操作接口函数*/
 @Dao
 interface PersonDynamicDao {

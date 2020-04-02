@@ -1,8 +1,12 @@
 package com.bignerdranch.travelcommunity.data.db.entity
 
 import androidx.room.*
-import java.math.BigInteger
 
+/**
+ * @author zhongxinyu
+ * @date 2020/4/2
+ * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
+ **/
 
 @Entity(
     tableName = "comment_msg",

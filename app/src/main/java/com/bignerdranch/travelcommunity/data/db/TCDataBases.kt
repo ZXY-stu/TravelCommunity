@@ -1,22 +1,20 @@
 package com.bignerdranch.travelcommunity.data.db
 
 import android.content.Context
-import android.util.Log
 import androidx.room.*
-import androidx.sqlite.db.SupportSQLiteDatabase
-import androidx.sqlite.db.SupportSQLiteOpenHelper
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import com.bignerdranch.travelcommunity.data.db.daos.CommentsMsgDao
-import com.bignerdranch.travelcommunity.data.db.daos.PersonDynamicDao
 import com.bignerdranch.travelcommunity.data.db.daos.UserDao
 import com.bignerdranch.travelcommunity.data.db.entity.CommentsMsg
 import com.bignerdranch.travelcommunity.data.db.entity.PersonDynamic
 import com.bignerdranch.travelcommunity.data.db.entity.User
 import com.bignerdranch.travelcommunity.util.DATABASE_NAME
 import com.bignerdranch.travelcommunity.util.LogUtil
-import com.bignerdranch.travelcommunity.workers.SeedDatabaseWorker
 
+
+/**
+ * @author zhongxinyu
+ * @date 2020/4/2
+ * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
+ **/
 
 
 @Database(

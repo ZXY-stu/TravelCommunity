@@ -5,6 +5,11 @@ import com.bignerdranch.travelcommunity.data.network.model.Model
 import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
+/**
+ * @author zhongxinyu
+ * @date 2020/4/2
+ * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
+ **/
 
 // 更新
 interface UserService {

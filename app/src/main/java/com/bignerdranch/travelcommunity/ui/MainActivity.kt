@@ -19,6 +19,11 @@ import com.bignerdranch.travelcommunity.viewmodels.UserLoginViewModel
 import com.bignerdranch.travelcommunity.viewmodels.UserLoginViewModelFactory
 import kotlinx.coroutines.*
 import kotlin.coroutines.suspendCoroutine
+/**
+ * @author zhongxinyu
+ * @date 2020/4/2
+ * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
+ **/
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

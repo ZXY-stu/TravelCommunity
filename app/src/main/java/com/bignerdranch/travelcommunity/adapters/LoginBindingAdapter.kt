@@ -8,6 +8,11 @@ import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.util.LogUtil
+/**
+ * @author zhongxinyu
+ * @date 2020/4/2
+ * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
+ **/
 
 object LoginBindingAdapter{
     @BindingAdapter("saveLoginInfo")

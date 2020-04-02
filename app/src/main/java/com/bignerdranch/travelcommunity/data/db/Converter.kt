@@ -5,6 +5,12 @@ import java.text.SimpleDateFormat
 import java.time.format.DateTimeFormatter
 import java.util.*
 
+/**
+ * @author zhongxinyu
+ * @date 2020/4/2
+ * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
+ **/
+
 object Converter{
     @TypeConverter
     fun fromListToString(lists:List<String>):String{

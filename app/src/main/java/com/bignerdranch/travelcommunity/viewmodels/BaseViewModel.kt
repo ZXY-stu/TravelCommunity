@@ -3,6 +3,11 @@ package com.bignerdranch.travelcommunity.viewmodels
 import androidx.databinding.Observable
 import androidx.databinding.PropertyChangeRegistry
 import androidx.lifecycle.ViewModel
+/**
+ * @author zhongxinyu
+ * @date 2020/4/2
+ * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
+ **/
 
 //可实现双向绑定的ViewModel
 open class BaseViewModel:ViewModel(),Observable{

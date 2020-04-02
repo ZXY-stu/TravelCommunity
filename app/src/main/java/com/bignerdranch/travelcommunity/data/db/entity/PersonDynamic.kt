@@ -4,9 +4,14 @@ import androidx.room.*
 import java.util.*
 import kotlin.collections.ArrayList
 
+
+/**
+ * @author zhongxinyu
+ * @date 2020/4/2
+ * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
+ **/
+
 /*这是一个朋友圈动态数据表*/
-
-
 @Entity(tableName = "person_dynamic",
         foreignKeys = [ForeignKey(
             entity = User::class,

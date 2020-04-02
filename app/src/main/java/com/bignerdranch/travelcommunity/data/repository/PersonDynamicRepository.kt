@@ -4,6 +4,12 @@ import com.bignerdranch.travelcommunity.data.db.daos.PersonDynamicDao
 import com.bignerdranch.travelcommunity.data.db.entity.PersonDynamic
 import com.bignerdranch.travelcommunity.data.network.Network
 
+/**
+ * @author zhongxinyu
+ * @date 2020/4/2
+ * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
+ **/
+
 class PersonDynamicRepository private constructor(private val personDynamicDao: PersonDynamicDao,private  val network: Network){
 
     fun getPersonDynamics() = personDynamicDao.getPersonDynamics()

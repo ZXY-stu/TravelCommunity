@@ -7,6 +7,11 @@ import com.bignerdranch.travelcommunity.util.LogUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.net.PasswordAuthentication
+/**
+ * @author zhongxinyu
+ * @date 2020/4/2
+ * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
+ **/
 
 class UserRepository private  constructor(private val userDao: UserDao,private val network: Network){
 

@@ -4,6 +4,12 @@ import com.bignerdranch.travelcommunity.data.db.daos.CommentsMsgDao
 import com.bignerdranch.travelcommunity.data.db.entity.CommentsMsg
 import com.bignerdranch.travelcommunity.data.network.Network
 
+/**
+ * @author zhongxinyu
+ * @date 2020/4/2
+ * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
+ **/
+
 class CommentsMsgRepository private constructor(
     private val commentsMsgDao: CommentsMsgDao,
     private val network: Network
