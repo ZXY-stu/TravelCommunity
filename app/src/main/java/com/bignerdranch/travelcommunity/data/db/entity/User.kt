@@ -16,7 +16,7 @@ import java.math.BigInteger
     indices = [Index(value=["nick_name","account","identifyNumber","phoneNumber"],unique = true)]
 )
 
-/*   nick_name userName identifyNumber 都不能重复  以及*/
+/*   nick_name account identifyNumber phoneNumber都不能重复 */
 data class User(
     @PrimaryKey
     @ColumnInfo(name= "id") val userId:Int,
