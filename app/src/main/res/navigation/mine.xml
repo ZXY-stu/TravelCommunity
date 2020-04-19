@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mine"
+    app:startDestination="@id/userFragment14">
+
+    <fragment
+        android:id="@+id/userFragment14"
+        android:name="com.bignerdranch.travelcommunity.ui.user.UserFragment"
+        android:label="UserFragment"
+        tools:layout="@layout/fragment_mine"
+    />
+
+
+    <include app:graph="@navigation/login_and_register" />
+
+
+</navigation>

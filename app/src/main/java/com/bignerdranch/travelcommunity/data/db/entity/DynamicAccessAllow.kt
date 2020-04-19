@@ -3,6 +3,8 @@ package com.bignerdranch.travelcommunity.data.db.entity
 import androidx.room.Entity
 import androidx.room.Fts4
 import androidx.room.PrimaryKey
+import org.json.JSONArray
+import java.util.ArrayList
 
 /**
  * @author zhongxinyu

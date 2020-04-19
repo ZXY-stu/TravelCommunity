@@ -3,4 +3,24 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="tab_select_color">#ffffff</color>
+    <color name="tab_unSelect_color">#616060</color>
+    <color name="article_read_color">#969696</color>
+    <color name="article_unread_color">#c8c8c8</color>
+    <color name="bg_tab">#37383A</color>
+    <color name="bg_dark">#3f3f3f</color>
+    <color name="title_color">#c8c8c8</color>
+    <color name="text_color">#969696</color>
+    <color name="divider">#2f2f2f</color>
+    <color name="category_select_color">#616161</color>
+    <color name="red">#ff0000</color>
+    <color name="green">#00ff00</color>
+    <color name="tab_line">#FAEDB200</color>
+    <color name="blue">#0000ff</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+    <color name="gray">#c8c8c8</color>
+    <color name="yellow">#FAEDB200</color>
 </resources>
+
+

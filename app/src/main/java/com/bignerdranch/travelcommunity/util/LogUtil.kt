@@ -12,7 +12,7 @@ object LogUtil {
     val TAG = "MainActivity"
 
     fun w(msg:String){
-        Log.w(TAG,msg)
+      //  Log.w(TAG,msg)
     }
 
     fun d(msg:String){

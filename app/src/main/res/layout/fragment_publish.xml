@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+     <variable
+         name="dynamicViewModel"
+         type="com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel" />
+
+        <variable
+            name="userViewModel"
+            type="com.bignerdranch.travelcommunity.ui.user.UserViewModel" />
+    </data>
+
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context=".ui.dynamic.PublishFragment">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+
+    <include layout="@layout/my_toolbar"
+        android:id="@+id/publish_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/userPage_layout_margin"
+        android:orientation="horizontal"
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="350dp"
+            android:layout_height="160dp"
+            android:layout_weight="1"
+            >
+
+
+            <EditText
+                android:id="@+id/edit_textContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="39dp"
+                android:hint="@string/publish_note"
+                android:textAppearance="@style/UserDescriptionText"
+                app:layout_constraintBottom_toTopOf="@+id/but1"
+                android:scrollbars="vertical"
+                style="@style/publish_editText_style"
+                android:lines="3"
+                android:text="@={dynamicViewModel.textContent}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/but1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/topic"
+                app:layout_constraintBottom_toBottomOf="@+id/but2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/but2"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <Button
+                android:id="@+id/but2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="40dp"
+                android:text="@string/atFriend"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/edit_textContent"
+                app:layout_constraintVertical_bias="0.526" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:layout_weight="2"
+            >
+
+            <ImageView
+                android:id="@+id/cover_img"
+                imageFromUrl=""
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/abc"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/nothing"
+                android:layout_width="match_parent"
+                android:layout_height="20dp"
+                android:background="@color/black"
+                android:alpha="0.5"
+                app:layout_constraintBottom_toBottomOf="@+id/cover_img"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/cover_img"
+                app:layout_constraintVertical_bias="0.759"
+                android:orientation="horizontal" />
+
+            <TextView
+                android:id="@+id/choose_cover"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="选封面"
+                android:textAppearance="@style/UserDescriptionText"
+                android:textColor="@drawable/click_color"
+                app:layout_constraintBottom_toBottomOf="@+id/cover_img"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/cover_img"
+                app:layout_constraintVertical_bias="0.759"
+              >
+
+            </TextView>
+
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/set_permission"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/userPage_layout_margin"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/userPage_textMargin"
+                android:src="@drawable/lock"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/userPage_textMargin"
+                android:textAppearance="@style/UserDescriptionText"
+                android:text="谁可以看"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/userPage_textMargin"
+                android:textAppearance="@style/UserDescriptionText"
+                android:text="公开"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/userPage_textMargin"
+                android:src="@drawable/go"
+                />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/set_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/userPage_layout_margin"
+            >
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/userPage_textMargin"
+                android:src="@drawable/location"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="@dimen/userPage_textMargin"
+                android:textAppearance="@style/UserDescriptionText"
+                android:text="所在位置"
+                />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/userPage_textMargin"
+                android:src="@drawable/go"
+                />
+        </LinearLayout>
+
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

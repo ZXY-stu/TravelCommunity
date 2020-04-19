@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -6,6 +6,111 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+
+    <style name="UserTabLayoutStyle" parent="Base.Widget.Design.TabLayout">
+        <item name="tabBackground">@drawable/background</item>
+        <item name="tabIndicatorColor">@color/tab_line</item>
+        <item name="alpha">0.1</item>
+        <item name="tabIndicatorHeight">1dp</item>
+        <item name="tabSelectedTextColor">@color/white</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/tab_unSelect_color</item>
+    </style>
+
+<style name="UserNavigationStyle" parent="Widget.MaterialComponents.BottomNavigationView">
+    <item name="enforceTextAppearance">true</item>
+    <item name="enforceMaterialTheme">true</item>
+    <item name="android:background">@color/black</item>
+    <item name="itemBackground">@color/black</item>
+    <item name="itemHorizontalTranslationEnabled">false</item>
+    <item name="itemIconTint">@color/red</item>
+    <item name="itemTextAppearanceInactive">?attr/textAppearanceCaption</item>
+    <item name="itemTextAppearanceActive">@color/white</item>
+    <item name="itemTextColor">@color/tab_unSelect_color</item>
+    <item name="itemRippleColor">@color/red</item>
+
+</style>
+
+
+    <style name="AppTheme.TransparentStatusBar.light" parent="Theme.MaterialComponents.Light">
+        <item name="windowActionBar">false</item>								//取消系统默认的actionBar
+        <item name="windowNoTitle">true</item>									//取消actionBar的标题
+        <item name="android:windowTranslucentStatus">false</item>				//允许页面可以拉伸到顶部状态栏并且定义顶部状态栏透明，安卓4.4才有
+        <item name="android:windowTranslucentNavigation">true</item>			//设置虚拟键透明
+        <item name="android:statusBarColor">@android:color/transparent</item>	//设置状态栏的颜色为透明
+    </style>
+
+    <style name="AppTheme.TransparentStatusBar.dark" parent="Theme.AppCompat.NoActionBar">
+        <item name="windowActionBar">false</item>								//取消系统默认的actionBar
+        <item name="windowNoTitle">true</item>									//取消actionBar的标题
+        <item name="android:windowTranslucentStatus">false</item>				//允许页面可以拉伸到顶部状态栏并且定义顶部状态栏透明，安卓4.4才有
+        <item name="android:windowTranslucentNavigation">true</item>			//设置虚拟键透明
+        <item name="android:statusBarColor">@android:color/transparent</item>	//设置状态栏的颜色为透明
+    </style>
+
+    <style name="UserAppbarLayout" parent="Widget.Design.AppBarLayout">
+
+        <item name="android:background">?attr/colorPrimary</item>
+
+    </style>
+
+    <style name="UserDescriptionText" parent="TextAppearance.AppCompat.Body1">
+
+        <item name="android:textColor"> @color/white </item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <style name="UserCommentsText"  parent="TextAppearance.MaterialComponents.Body2">
+
+        <item name="android:textColor"> @color/gray</item>
+        <item name="android:textSize">@dimen/commentsText</item>
+
+    </style>
+
+    <style name="HomeTabText"  parent="TextAppearance.MaterialComponents.Body2">
+
+        <item name="android:textColor"> @color/white</item>
+        <item name="android:textSize">@dimen/TabText</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <dimen name="commentsText">15dp</dimen>
+    <dimen name="TabText">20dp</dimen>
+
+
+    <style name="publish_editText_style" parent="Theme.AppCompat.Light">
+        <!--未被选中时下划线的颜色-->
+        <item name="colorControlNormal">@color/gray</item>
+        <!--文本的颜色-->
+        <item name="android:textColorHint">@color/gray</item>
+        <item name="android:background">@null</item>
+        <item name="android:textColor">@color/white</item>
+        <!--被选中时下划线的颜色-->
+       <item name="android:textCursorDrawable">@drawable/cursor_color</item>
+    </style>
+
+    <style name="login_and_register_editText_style" parent="Theme.AppCompat.DayNight">
+        <!--未被选中时下划线的颜色-->
+
+
+        <!--文本的颜色-->
+        <item name="android:textColorHint">@color/gray</item>
+
+       <item name="android:lines">1</item>
+
+        <item name="colorControlNormal">@android:color/darker_gray</item>
+
+        <item name="colorControlActivated">@android:color/holo_orange_dark</item>
+
+
+        <!--被选中时下划线的颜色-->
+        <item name="android:textCursorDrawable">@drawable/cursor_color</item>
     </style>
 
 </resources>

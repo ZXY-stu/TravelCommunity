@@ -1,8 +1,11 @@
 package com.bignerdranch.travelcommunity.data.db.entity
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Fts4
 import androidx.room.PrimaryKey
+import org.json.JSONArray
+import java.util.ArrayList
 
 /**
  * @author zhongxinyu
@@ -11,10 +14,10 @@ import androidx.room.PrimaryKey
  **/
 
 /*点赞列表*/
-@Fts4
+
 @Entity(tableName = "like")
 data  class Like(
-    @PrimaryKey(autoGenerate = true) val id:Int,
-    val dynamicId:Int,
-    val account:String
+    @PrimaryKey val id:Int,
+    val dynamicId:Int,  //动态
+    val userId:Int  //点赞用户
 )

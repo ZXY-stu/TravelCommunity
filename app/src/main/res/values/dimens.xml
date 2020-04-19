@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="toolbar_elevation">5dp</dimen>
+    <dimen name="user_background_height">240dp</dimen>
+    <dimen name="split_line">10dp</dimen>
+    <dimen name="userPage_textMargin">5dp</dimen>
+    <dimen name="userPage_textgroup_Margin">10dp</dimen>
+    <dimen name="userPage_layout_margin">15dp</dimen>
+    <dimen name="toolbarHeight">40dp</dimen>
+    <dimen name="titleMargin">30dp</dimen>
+    <dimen name="suitForTitle">30dp</dimen>
+</resources>

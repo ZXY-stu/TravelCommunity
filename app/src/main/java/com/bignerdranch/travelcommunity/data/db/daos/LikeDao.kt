@@ -1,0 +1,27 @@
+package com.bignerdranch.travelcommunity.data.db.daos
+
+import androidx.lifecycle.LiveData
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.bignerdranch.travelcommunity.data.db.entity.Like
+
+/**
+ * @author zhongxinyu
+ * @date 2020/4/3
+ * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
+ **/
+@Dao
+interface LikeDao {
+
+    // 查询类的函数不能加suspend
+    @Query(value = "select * from `like`")
+     fun queryLike():LiveData<List<Like>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertLike(like: Like)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertLikes(likes:List<Like>)
+}

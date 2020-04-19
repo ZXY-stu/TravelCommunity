@@ -1,3 +1,45 @@
 <resources>
     <string name="app_name">TravelCommunity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="MyFocus">关注</string>
+    <string name="Recommand">推荐</string>
+    <string name="login">登陆</string>
+    <string name="logout">注销</string>
+    <string name="cd_home">首页</string>
+    <string name="title_home">首页</string>
+    <string name="cd_shop">商城</string>
+    <string name="cd_list">发布</string>
+    <string name="title_list">发布</string>
+    <string name="title_shop">商城</string>
+    <string name="cd_mine">我的</string>
+    <string name="title_mine">我的</string>
+    <string name="title_message">消息</string>
+    <string name="cd_message">消息</string>
+    <string name="share">分享</string>
+    <string name="back">返回</string>
+    <string name="more">更多</string>
+    <string name="menu">菜单</string>
+    <string name="defaultName">小王</string>
+    <string name="account">账号:</string>
+    <string name="age">岁</string>
+    <string name="fans">粉丝</string>
+    <string name="focus">关注</string>
+    <string name="likes">获赞</string>
+    <string name="contact">私信</string>
+    <string name="comments">评论...</string>
+    <string name="recommand">推荐</string>
+    <string name="our_code">我的二维码</string>
+    <string name="userinfo">基本信息</string>
+    <string name="our_wallet">我的钱包</string>
+    <string name="setting">设置</string>
+    <string name="sex">性别</string>
+    <string name="getCode">点击获取验证码</string>
+    <string name="register">注册</string>
+    <string name="forget">找回密码</string>
+    <string name="atFriend">\@ 好友</string>
+    <string name="topic"># 话题</string>
+    <string name="publish_note">发现了啥新鲜事？说出来让大家也来一起听听...</string>
+    <string name="publish">发布</string>
 </resources>

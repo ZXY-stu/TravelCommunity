@@ -1,18 +1,17 @@
 package com.bignerdranch.travelcommunity.data.network
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.bignerdranch.travelcommunity.data.db.entity.PersonDynamic
 import com.bignerdranch.travelcommunity.data.db.entity.User
-import com.bignerdranch.travelcommunity.data.network.api.CommentsService
-import com.bignerdranch.travelcommunity.data.network.api.LikeService
 import com.bignerdranch.travelcommunity.data.network.api.PersonDynamicService
 import com.bignerdranch.travelcommunity.data.network.api.UserService
-import com.bignerdranch.travelcommunity.data.network.model.Model
+import com.bignerdranch.travelcommunity.data.network.model.ApiResponse
 import com.bignerdranch.travelcommunity.util.LogUtil
 import okhttp3.RequestBody
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.http.QueryMap
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -25,64 +24,50 @@ import kotlin.coroutines.suspendCoroutine
 
 class Network private constructor(){
 
+
      //initial Services
      private val userService =  ServiceCreator.create(UserService::class.java)
-     private val commentsService = ServiceCreator.create(CommentsService::class.java)
-     private val likeService = ServiceCreator.create(LikeService::class.java)
      private val personDynamicService = ServiceCreator.create(PersonDynamicService::class.java)
 
       //userService
-     suspend fun toLogin(account:String,password:String) = userService.login(account,password).await()
-     suspend fun toRegister(register: User) = userService.register(register).await()
-     suspend fun toLogout(account:String) = userService.logout(account).await()
-     suspend fun toQueryFriend(userInfo:String) = userService.queryUser(userInfo).await()
-     suspend fun toGetFriends(account: String) = userService.getFriends(account).await()
-     suspend fun toDeleteFriend(friendAccount:String) = userService.deleteFriend(friendAccount).await()
-     suspend fun  toAddUserWithBack(friendAccount:String, addWithBackArgs:Map<String,String>) = userService.addUserWithBack(friendAccount,addWithBackArgs).await()
-     suspend fun toUpdateInfo(account: String,content:Map<String, RequestBody>) =  userService.updateUser(account,content).await()
+     fun toLogin(account:String,password:String):LiveData<ApiResponse<User>>
+      {
+          LogUtil.e("toNet")
+          return  userService.login(account,password)
+      }
+     suspend fun toRegister(register: User) = userService.register(register)
+     suspend fun toRegister(account: String,password: String) = userService.register(account, password)
+     suspend fun toLogout(account:String) = userService.logout(account)
+     suspend fun toQueryFriend(userInfo:String) = userService.queryUser(userInfo)
+     suspend fun toGetFriends(account: String) = userService.getFriends(account)
+     suspend fun toDeleteFriend(friendAccount:String) = userService.deleteFriend(friendAccount)
+     suspend fun  toAddUserWithBack(friendAccount:String, addWithBackArgs:Map<String,String>) = userService.addUserWithBack(friendAccount,addWithBackArgs)
+     suspend fun toUpdateUser(account: String,content:Map<String, RequestBody>) =  userService.updateUser(account,content)
 
     //PersonDynamicService
+    suspend fun toUploadDynamic(permissionArgs:Map<String,String>,contentsArgs:Map<String,RequestBody>) = personDynamicService.uploadDynamic(permissionArgs,contentsArgs)
+    suspend fun toDeleteDynamic(dynamicId:Int) = personDynamicService.deleteDynamic(dynamicId)
 
-    suspend fun toAddDynamic(permissionArgs:Map<String,String>,contentsArgs:Map<String,RequestBody>) = personDynamicService.uploadDynamic(permissionArgs,contentsArgs).await()
-    suspend fun toDeleteDynamic(dynamicId:Int) = personDynamicService.deleteDynamic(dynamicId).await()
-    suspend fun toQueryDynamics(queryDynamicArgs:Map<String,String>) = personDynamicService.queryDynamics(queryDynamicArgs).await()
 
-   //LikeService
-    suspend fun toAddLike(likeArgs:Map<String,String>) = likeService.addLike(likeArgs).await()
-    suspend fun toCancelLike(dynamicId: Int) = likeService.cancelLike(dynamicId).await()
-    suspend fun toQueryLike(queryLikeArgs:Map<String,String>) = likeService.queryLike(queryLikeArgs).await()
 
-   //CommentsService
 
-    suspend fun toComments(message:String,commentsArgs:Map<String,String>) = commentsService.comments(message,commentsArgs).await()
-    suspend fun toDeleteComments(dynamicId:Int) = commentsService.deleteComments(dynamicId).await()
-    suspend fun toQueryComments(queryCommentsArgs:Map<String,String>) = commentsService.queryComments(queryCommentsArgs).await()
+    suspend fun toAddLike(likeArgs:Map<String,String>) = personDynamicService.addLike(likeArgs)
+    suspend fun toCancelLike(likeId: Int) = personDynamicService.cancelLike(likeId)
+    suspend fun toQueryLike(queryLikeArgs:Map<String,String>) = personDynamicService.queryLike(queryLikeArgs)
+    suspend fun toComments(message:String,commentsArgs:Map<String,String>) = personDynamicService.comments(message,commentsArgs)
+    suspend fun toDeleteComments(id:Int) = personDynamicService.deleteComments(id)
+    suspend fun toQueryComments(queryCommentsArgs:Map<String,String>) = personDynamicService.queryComments(queryCommentsArgs)
 
-    private suspend fun <T> Call<T>.await(): T {
-        return suspendCoroutine { continuation ->
-            enqueue(object : Callback<T> {
-                override fun onFailure(call: Call<T>, t: Throwable) {
-                    //如果出错，抛出错误
-                    LogUtil.w("在错误")
-                    continuation.resumeWithException(t)
-                }
 
-                override fun onResponse(call: Call<T>, response: Response<T>) {
-                    val body = response.body()
-                    if (body != null) {
-                        continuation.resume(body)
-                        LogUtil.w("正确")
-                    }
-                    else continuation.resumeWithException(RuntimeException("response body is null"))
-                }
-            })
-        }
-    }
+    suspend fun toQueryDynamics(queryDynamicArgs:Map<String,String>) = personDynamicService.queryDynamics(queryDynamicArgs)
+
+
 
     companion object{
       @Volatile  private var network:Network? = null
-
       fun getInstance():Network{
+
+
           return network?: synchronized(this){
                network?: Network()
           }
