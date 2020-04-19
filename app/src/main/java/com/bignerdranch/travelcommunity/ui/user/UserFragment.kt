@@ -85,7 +85,7 @@ class UserFragment() : BaseFragment<FragmentMineBinding>() {
            subscribeLogin(it)
         }
 
-        _viewModel.openUserMenu.observe(viewLifecycleOwner){
+        _viewModel.toOpenUserMenu.observe(viewLifecycleOwner){
              binding.userPageMenu.openDrawer(GravityCompat.END)
         }
 
@@ -144,7 +144,7 @@ class UserFragment() : BaseFragment<FragmentMineBinding>() {
                   R.id.setting -> ToastUtil.test("去设置")
                   R.id.logout -> {
                       ToastUtil.test("用户注销")
-                      _viewModel.logout()
+                      _viewModel.toLogout()
                       startActivity(Intent(requireContext(),HomePageActivity::class.java))
                   }
                   else -> throw IllegalStateException()

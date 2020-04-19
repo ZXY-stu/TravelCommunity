@@ -29,54 +29,34 @@ class PersonDynamicViewModel internal constructor(
     private val personDynamicRepository: PersonDynamicRepository) :
     BaseViewModel<PersonDynamicRepository>(personDynamicRepository) {
 
-    val personDynamics = MutableLiveData<List<PersonDynamic>>()
-
-    val queryDynamicArgs = MutableLiveData<QueryDynamicArgs>()
-    val textContent = MutableLiveData<String>()
-    val permissionArgs = HashMap<String, String>()
-    val contentsArgs = HashMap<String, RequestBody>()
-    val toUpLoad = MutableLiveData<Boolean>()
-    val toCommentsPage = MutableLiveData<Boolean>()
-    val toComments = MutableLiveData<Boolean>()
-    val commentsMsg = MutableLiveData<String>()
-    val commentsArgs = HashMap<String, String>()
-    val toLike = MutableLiveData<Boolean>()
-    val likeArgs = HashMap<String,String>()
-    val toQueryDynamic = MutableLiveData<Boolean>()
-    val toQueryComments = MutableLiveData<Boolean>()
-    val toQueryLikes = MutableLiveData<Boolean>()
-
-
-
-    val waitCommentsResponse = executeRequest(toComments) {
+    val waitCommentsResponse = executeRequest(toAddComments) {
             personDynamicRepository.toSendComments(commentsMsg.value.toString(), commentsArgs)
     }
 
     val commentsResponsResult = waitResponseResult(waitCommentsResponse) {
         personDynamicRepository.toInsertComments(it)
-
     }
 
-    val waitDynamicResponse =  executeRequest(toUpLoad){
-        personDynamicRepository.toUploadDynamic(permissionArgs, contentsArgs)
+    val waitDynamicResponse =  executeRequest(toAddDynamic){
+        personDynamicRepository.toAddDynamic(permissionArgs, contentsArgs)
     }
 
     val dynamicResponseResult = waitResponseResult(waitDynamicResponse){
         personDynamicRepository.toInsertDynamicToLocal(it)
     }
 
-    val waitLikeResponse = executeRequest(toLike){
+    val waitLikeResponse = executeRequest(toAddLike){
          personDynamicRepository.toAddLike(likeArgs)
     }
 
     val likeResponseResult = waitResponseResult(waitLikeResponse){
-        personDynamicRepository
+        personDynamicRepository.toInsertLike(it)
     }
 
 
-
-
-
+   /* val  waitAddFriendResponse = executeRequest(toAddFriend){
+        personDynamicRepository
+    }*/
 
     fun <T,R> executeRequest(liveData: LiveData<T>,block: suspend () -> LiveData<ApiResponse<R>>):LiveData<ApiResponse<R>>{
         return Transformations.switchMap(liveData){
@@ -85,7 +65,6 @@ class PersonDynamicViewModel internal constructor(
             }
         }
     }
-
 
     fun <T> waitResponseResult(liveData:LiveData<ApiResponse<T>>,block: suspend (T) -> Unit):LiveData<Int>{
             return Transformations.map(liveData){
@@ -105,12 +84,6 @@ class PersonDynamicViewModel internal constructor(
             }
     }
 
-
-
-
-
-
-
     val dynamicBody = PersonDynamicBody()
     val pers = ArrayList<PersonDynamic>()
     val images = listOf(
@@ -120,28 +93,13 @@ class PersonDynamicViewModel internal constructor(
     )
     var i:Int = 0
 
-
     init{
-
         queryDynamicArgs.postValue(QueryDynamicArgs())
-
-
-
     }
-
-
-
 
     fun videoRefresh(){
-
         toQueryDynamic()
     }
-
-    fun upLoad(){
-        toUpLoad.value = true
-    }
-
-
 
     fun setQueryDynamicArgs(userAccount:String,friendAccount: String,pageNumber:Int){
         launch {
@@ -152,38 +110,6 @@ class PersonDynamicViewModel internal constructor(
         }
     }
 
-    fun initUserVideo(){
-
-    }
-
-    suspend fun insertDynamic(personDynamic: PersonDynamic) = personDynamicRepository.toInsertDynamicToLocal(personDynamic)
-
-    suspend fun  insertAll(personDynamics: List<PersonDynamic>)  = personDynamicRepository.toInsertAll(personDynamics)
-
-
-    fun initHomePageVideo(){
-        init{
-            toQueryDynamic()
-            toQueryComments()
-        }
-    }
-
-    fun toQueryComments(){
-
-    }
-
-
-    fun toCommentsPage(){
-        toCommentsPage.value = true
-    }
-
-    fun toLike(){
-        toLike.value = true
-    }
-
-    fun toComments(){
-        toComments.value = true
-    }
 
 
    fun toQueryDynamic(){

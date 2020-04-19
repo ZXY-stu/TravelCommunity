@@ -23,7 +23,7 @@ interface PersonDynamicService {
 
     //动态上传
     @POST("api/user/dynamic")
-    fun uploadDynamic(
+    fun toAddDynamic(
         @QueryMap permissionArgs: Map<String, String>
         , @PartMap contentsArgs: Map<String, RequestBody>
     ):LiveData<ApiResponse<PersonDynamic>>

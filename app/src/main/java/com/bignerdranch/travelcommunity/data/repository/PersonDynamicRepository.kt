@@ -26,25 +26,37 @@ class PersonDynamicRepository private constructor(
 ):BaseRepository(personDynamicDao,commentsMsgDao, likeDao,userDao){
 
 
+/*
+* val toAddLike = get()
+    val toAddComments = get()
+    val toAddFriend = get()
+    val toAddDynamic = get()
 
+    val toDeleteFriend = get()
+    val toDeleteComment = get()
+    val toDeleteDynamic = get()
+    val toDeleteLike = get()
+
+    val toQueryLikes = get()
+    val toQueryDynamic = get()
+    val toQueryComments = get()
+* */
 
     /*=================================================================================================*/
     /*动态板块*/
     suspend fun toQueryPersonDynamics(queryDynamicArgs:Map<String,String>)
    = withContext(Dispatchers.IO){
-    //  var personDynamics = if(NetWorkStateReceiver.haveNetwork)
-
           _network.toQueryDynamics(queryDynamicArgs)
-        //  else  personDynamicDao.getPersonDynamics()
+    }
 
-     /*   if(NetWorkStateReceiver.haveNetwork && personDynamics.isNotEmpty())
-        personDynamicDao.insertAll(personDynamics)
-*/
-      // personDynamics
+    suspend fun toAddDynamic(permissionArgs:Map<String,String>,contentsArgs:Map<String,RequestBody>) =  withContext(Dispatchers.IO){
+        _network.toAddDynamic(permissionArgs,contentsArgs)
     }
-    suspend fun toUploadDynamic(permissionArgs:Map<String,String>,contentsArgs:Map<String,RequestBody>) =  withContext(Dispatchers.IO){
-        _network.toUploadDynamic(permissionArgs,contentsArgs)
-    }
+
+
+
+
+
     suspend fun  toInsertDynamicToLocal(personDynamic: PersonDynamic) = withContext(Dispatchers.IO){
          personDynamicDao.insertPersonDynamic(personDynamic)
     }
@@ -85,7 +97,21 @@ class PersonDynamicRepository private constructor(
         }
         likes*/
     }
+/*
+* val toAddLike = get()
+    val toAddComments = get()
+    val toAddFriend = get()
+    val toAddDynamic = get()
 
+    val toDeleteFriend = get()
+    val toDeleteComment = get()
+    val toDeleteDynamic = get()
+    val toDeleteLike = get()
+
+    val toQueryLikes = get()
+    val toQueryDynamic = get()
+    val toQueryComments = get()
+* */
     suspend fun toInsertLike(like: Like) = withContext(Dispatchers.IO){
         likeDao.insertLike(like)
     }
@@ -98,7 +124,7 @@ class PersonDynamicRepository private constructor(
         _network.toAddLike(likeArgs)
     }
 
-    suspend fun toCancelLike(likeId:Int) = withContext(Dispatchers.IO){
+    suspend fun toDeleteLike(likeId:Int) = withContext(Dispatchers.IO){
         _network.toCancelLike(likeId)
     }
 

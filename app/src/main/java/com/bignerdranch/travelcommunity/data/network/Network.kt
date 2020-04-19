@@ -45,7 +45,7 @@ class Network private constructor(){
      suspend fun toUpdateUser(account: String,content:Map<String, RequestBody>) =  userService.updateUser(account,content)
 
     //PersonDynamicService
-    suspend fun toUploadDynamic(permissionArgs:Map<String,String>,contentsArgs:Map<String,RequestBody>) = personDynamicService.uploadDynamic(permissionArgs,contentsArgs)
+    suspend fun toAddDynamic(permissionArgs:Map<String,String>,contentsArgs:Map<String,RequestBody>) = personDynamicService.toAddDynamic(permissionArgs,contentsArgs)
     suspend fun toDeleteDynamic(dynamicId:Int) = personDynamicService.deleteDynamic(dynamicId)
 
 

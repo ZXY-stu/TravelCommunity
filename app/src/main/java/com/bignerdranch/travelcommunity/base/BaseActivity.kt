@@ -30,7 +30,6 @@ abstract class BaseActivity<T:ViewDataBinding> : AppCompatActivity()
         InjectorUtils.baseViewModelFactory(this)
     }
 
-
     abstract val layoutId:Int
     lateinit var binding:T
     var loadingState = MutableLiveData<Boolean>()
@@ -42,12 +41,6 @@ abstract class BaseActivity<T:ViewDataBinding> : AppCompatActivity()
         binding = DataBindingUtil.setContentView(this,layoutId)
 
         binding.lifecycleOwner = this
-
-    //    loadingState.observe(this,LoadingObserver(this))
-        baseViewModel.close.observeForever{
-            LogUtil.e("guanbi")
-            ToastUtil.test("关闭当前Activity")
-        }
     }
 
 }
