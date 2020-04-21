@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Environment
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
@@ -125,6 +126,15 @@ object UserBindingAdapter{
             "w" -> view.setImageResource(R.drawable.woman)
         }
     }
+
+    @JvmStatic
+    @BindingAdapter("visibleGone")
+    fun showHide(view: View, show: Boolean) {
+        view.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+
+
 
 
 

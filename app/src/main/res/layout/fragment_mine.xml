@@ -305,6 +305,7 @@
 
                     </LinearLayout>
 
+
                     <androidx.appcompat.widget.Toolbar
                         android:id="@+id/userToolbar"
                         android:layout_width="match_parent"
@@ -376,7 +377,7 @@
       android:id="@+id/menu_nav"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_gravity="end"
+      android:layout_gravity="right"
       app:menu="@menu/user_menu"
       app:itemTextAppearance="@style/UserDescriptionText"
       app:headerLayout="@layout/user_head_layout"

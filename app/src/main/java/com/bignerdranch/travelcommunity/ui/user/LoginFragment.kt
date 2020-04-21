@@ -9,7 +9,6 @@ import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.get
-import com.bignerdranch.travelcommunity.HomepageDirections
 import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.base.BaseFragment
 import com.bignerdranch.travelcommunity.databinding.LoginFragmentBinding
@@ -44,7 +43,7 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>() {
             }
         }
 
-        _viewModel._toRegisterPage.observe(viewLifecycleOwner){
+        _viewModel.toRegisterPage.observe(viewLifecycleOwner){
             if(it){
                 findNavController().navigate(R.id.action_loginFragment_to_registerFragment) //跳转到注册界面
             }
@@ -54,14 +53,15 @@ class LoginFragment : BaseFragment<LoginFragmentBinding>() {
                 user ->
             //成功登录后，把user保持至本地
             if(user!=null) {
-                _viewModel.insertUser(user)
+
+                //_viewModel.insertUser(user)
                 LogUtil.e("插入中")
             }else{
                 LogUtil.e("null")
             }
         }
 
-        with(binding.toolbar.public_toolbar) {
+        with(binding.toolbar.publicToolbar) {
             setNavigationOnClickListener {
              startActivity(Intent(requireContext(),HomePageActivity::class.java))
             }

@@ -4,6 +4,7 @@ import com.bignerdranch.travelcommunity.data.db.daos.CommentsMsgDao
 import com.bignerdranch.travelcommunity.data.db.daos.LikeDao
 import com.bignerdranch.travelcommunity.data.db.daos.PersonDynamicDao
 import com.bignerdranch.travelcommunity.data.db.daos.UserDao
+import com.bignerdranch.travelcommunity.data.db.entity.AddDynamicArgs
 import com.bignerdranch.travelcommunity.data.db.entity.CommentsMsg
 import com.bignerdranch.travelcommunity.data.db.entity.Like
 import com.bignerdranch.travelcommunity.data.db.entity.PersonDynamic
@@ -25,107 +26,96 @@ class PersonDynamicRepository private constructor(
     private val userDao: UserDao
 ):BaseRepository(personDynamicDao,commentsMsgDao, likeDao,userDao){
 
-
-/*
-* val toAddLike = get()
-    val toAddComments = get()
-    val toAddFriend = get()
-    val toAddDynamic = get()
-
-    val toDeleteFriend = get()
-    val toDeleteComment = get()
-    val toDeleteDynamic = get()
-    val toDeleteLike = get()
-
-    val toQueryLikes = get()
-    val toQueryDynamic = get()
-    val toQueryComments = get()
-* */
+    private suspend fun <T> launch(block:suspend ()->T):T = withContext(Dispatchers.IO){ block() }
 
     /*=================================================================================================*/
     /*动态板块*/
-    suspend fun toQueryPersonDynamics(queryDynamicArgs:Map<String,String>)
-   = withContext(Dispatchers.IO){
-          _network.toQueryDynamics(queryDynamicArgs)
+    suspend fun toQueryPersonDynamics(queryDynamicArgs:Map<String,String>) = launch {
+        _network.toQueryDynamics(queryDynamicArgs)
     }
 
-    suspend fun toAddDynamic(permissionArgs:Map<String,String>,contentsArgs:Map<String,RequestBody>) =  withContext(Dispatchers.IO){
-        _network.toAddDynamic(permissionArgs,contentsArgs)
+    suspend fun toAddDynamic(permissionArgs: HashMap<String,String>,contentsArgs:HashMap<String,RequestBody>) = launch {
+        _network.toAddDynamic(contentsArgs)
     }
 
+    suspend fun toDeleteDynamic(dynamicId:Int) = launch {
+        _network.toDeleteDynamic(dynamicId)
+    }
 
+    fun toQueryPersonDynamicLocal()  = run {
+        personDynamicDao.getPersonDynamics()
+    }
 
+    suspend fun toDeletePersonDynamicLocal(personDynamic:PersonDynamic) = launch {
+        personDynamicDao.deletePersonDynamic(personDynamic)
+    }
 
-
-    suspend fun  toInsertDynamicToLocal(personDynamic: PersonDynamic) = withContext(Dispatchers.IO){
+    suspend fun  toInsertDynamicLocal(personDynamic: PersonDynamic) = launch {
          personDynamicDao.insertPersonDynamic(personDynamic)
     }
-
-    suspend fun  toInsertAll(personDynamics: List<PersonDynamic>) = withContext(Dispatchers.IO) {
+    suspend fun  toInsertDynamicAllLocal(personDynamics: List<PersonDynamic>) = launch {
         personDynamicDao.insertAll(personDynamics)
     }
+
+
     /*=================================================================================================*/
     /*评论板块*/
-    suspend  fun toQueryCommentsMsg(queryCommentsArgs:Map<String,String>) = withContext(Dispatchers.IO){
+    suspend  fun toQueryComments(queryCommentsArgs:Map<String,String>) = launch {
+        _network.toQueryComments(queryCommentsArgs)
+    }
 
+    suspend  fun  toAddComments(commentsMsg:CommentsMsg) = launch {
+        _network.toAddComments(commentsMsg)
     }
-    suspend  fun  toSendComments(message:String,commentsArgs:Map<String,String>) = withContext(Dispatchers.IO){
-        _network.toComments(message,commentsArgs)
-    }
-    suspend  fun toDeleteComments(msgId:Int) = withContext(Dispatchers.IO){
+
+    suspend  fun toDeleteComments(msgId:Int) = launch {
         _network.toDeleteComments(msgId)
     }
-    suspend fun toInsertComments(commentsMsg: CommentsMsg) = withContext(Dispatchers.IO){
+
+    fun toQueryCommentsMsgLocal() = run{
+        commentsMsgDao.getCommentsMsg()
+    }
+
+    suspend fun toInsertCommentsLocal(commentsMsgs: List<CommentsMsg>) = launch {
+        commentsMsgDao.insertMsgAll(commentsMsgs)
+    }
+
+    suspend fun toInsertCommentLocal(commentsMsg: CommentsMsg) = launch {
         commentsMsgDao.insertMsg(commentsMsg)
     }
-    suspend  fun toDeleteLocalMsg(commentsMsg: CommentsMsg) = withContext(Dispatchers.IO) {
+
+    suspend  fun toDeleteCommentLocal(commentsMsg: CommentsMsg) = launch {
         commentsMsgDao.deleteMsg(commentsMsg)
     }
-    suspend  fun toDeleteLocalMsgs(commentsMsgs: List<CommentsMsg>) = withContext(Dispatchers.IO) {
-        commentsMsgDao.deleteMsgAll(commentsMsgs)
-    }
+
 
     /*=================================================================================================*/
     /*点赞板块*/
 
-    suspend fun toQueryLike(queryLikeArgs: Map<String, String>) = withContext(Dispatchers.IO){
-    /*    var likes = if (NetWorkStateReceiver.haveNetwork) {
+    suspend fun toQueryLike(queryLikeArgs: Map<String, String>) = launch {
             _network.toQueryLike(queryLikeArgs)
-        } else likeDao.queryLike()
-        if(NetWorkStateReceiver.haveNetwork) {   //有网络，更新本地数据库中的内容
-
-        }
-        likes*/
     }
-/*
-* val toAddLike = get()
-    val toAddComments = get()
-    val toAddFriend = get()
-    val toAddDynamic = get()
+    suspend fun toAddLike(likeArgs:Map<String,String>) = launch {
+        _network.toAddLike(likeArgs)
+    }
+    suspend fun toDeleteLike(likeId:Int) = launch {
+        _network.toDeleteLike(likeId)
+    }
 
-    val toDeleteFriend = get()
-    val toDeleteComment = get()
-    val toDeleteDynamic = get()
-    val toDeleteLike = get()
+    suspend fun toInsertLikesLocal(likes: List<Like>) = launch {
+          likeDao.insertLikes(likes)
+    }
 
-    val toQueryLikes = get()
-    val toQueryDynamic = get()
-    val toQueryComments = get()
-* */
-    suspend fun toInsertLike(like: Like) = withContext(Dispatchers.IO){
+    suspend fun toInsertLikeLocal(like: Like) = launch {
         likeDao.insertLike(like)
     }
 
-    suspend fun toInsertLike(likes: List<Like>) = withContext(Dispatchers.IO){
-        likeDao.insertLikes(likes)
+    suspend fun toDeleteLikeLocal(like: Like) = launch {
+         likeDao.deleteLike(like)
     }
 
-    suspend fun toAddLike(likeArgs:Map<String,String>) = withContext(Dispatchers.IO){
-        _network.toAddLike(likeArgs)
-    }
-
-    suspend fun toDeleteLike(likeId:Int) = withContext(Dispatchers.IO){
-        _network.toCancelLike(likeId)
+     fun toQueryLikeLocal() = run{
+        likeDao.queryLike()
     }
 
 

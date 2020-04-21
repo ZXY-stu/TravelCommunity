@@ -1,11 +1,9 @@
 package com.bignerdranch.travelcommunity.data.db.daos
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.bignerdranch.travelcommunity.data.db.entity.Like
+
 
 /**
  * @author zhongxinyu
@@ -24,4 +22,7 @@ interface LikeDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertLikes(likes:List<Like>)
+
+    @Delete
+    suspend fun deleteLike(like: Like)
 }

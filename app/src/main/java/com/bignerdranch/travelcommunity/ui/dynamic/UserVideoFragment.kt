@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
+import com.bignerdranch.travelcommunity.R
+import com.bignerdranch.travelcommunity.base.BaseFragment
 
 import com.bignerdranch.travelcommunity.data.db.TCDataBases
 import com.bignerdranch.travelcommunity.databinding.FragmentUserVideoBinding
@@ -28,22 +30,22 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 
-class UserVideoFragment : Fragment() {
+class UserVideoFragment() : BaseFragment<FragmentUserVideoBinding>() {
+    override val layoutId: Int = R.layout.fragment_user_video
 
     private val _viewModel:PersonDynamicViewModel by viewModels {
         InjectorUtils.personDynamicViewModelFactory(requireContext())
     }
 
-    private lateinit var binding:FragmentUserVideoBinding
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentUserVideoBinding.inflate(inflater, container, false)
 
-
-
+      super.onCreateView(inflater, container, savedInstanceState)
+        binding.viewModel = _viewModel
+        _viewModel.toQueryDynamic()
        initBindingAndAdapter()
         return binding.root
     }
@@ -54,6 +56,7 @@ class UserVideoFragment : Fragment() {
             with(binding) {
                 userVideoView.adapter = adapter
                 viewModel = _viewModel
+              //  _viewModel.attachLoading(loadingState)
                 subscribeUi(adapter, binding)
 
                 userVideoView.addOnScrollListener(TCRecycleViewListener().setViewModel(_viewModel))
@@ -70,14 +73,23 @@ class UserVideoFragment : Fragment() {
             LogUtil.e(it.toString())
                adapter.submitList(_viewModel.toVideoSimpleData(it))
            }
-        /*   _viewModel.isLoading.observe(viewLifecycleOwner){
-               if(it) _viewModel.initHomePageVideo()
-           }*/
+           _viewModel.loading.observe(viewLifecycleOwner){
+                 if(it){
+                     LogUtil.e("来饿了")
+                     _viewModel.toAddHomeVideoPage()
+                     _viewModel.loadingMore()
+                     _viewModel.loading.value = false
+                 }
+           }
      }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        _viewModel.initHomePageVideo()
+
+    }
+
+    override fun initImmersionBar() {
+
     }
 
 }

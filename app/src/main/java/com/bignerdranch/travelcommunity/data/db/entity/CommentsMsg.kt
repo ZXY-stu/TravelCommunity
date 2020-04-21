@@ -31,12 +31,12 @@ import java.util.*
 
 /*评论区数据*/
 data class CommentsMsg(
-    @PrimaryKey val id:Int,
+    @PrimaryKey val id:Int = -1,
     @ColumnInfo(name = "dynamic_id")   val dynamicId:Int,
     @ColumnInfo(name = "user_id")      val user_id:Int,
     val userAccount:String,//评论人的账户
-    val UserNickName:String,   //评论人的昵称
+    val userNickName:String,   //评论人的昵称
     val friendNickName:String,  //被评论人的昵称。
     val Msg:String , //消息内容
-    val times: String  //评论时间 可能需要考虑Date类型
+    val times: Date  //评论时间 可能需要考虑Date类型
 )

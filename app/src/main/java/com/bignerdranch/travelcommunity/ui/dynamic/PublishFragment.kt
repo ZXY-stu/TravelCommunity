@@ -15,7 +15,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationSet
+import android.view.animation.AnimationUtils
 import androidx.core.content.FileProvider
+import androidx.core.net.toFile
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -23,15 +28,26 @@ import androidx.navigation.get
 
 import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.base.BaseFragment
+import com.bignerdranch.travelcommunity.data.network.Network
+import com.bignerdranch.travelcommunity.data.network.Util
 import com.bignerdranch.travelcommunity.databinding.FragmentPublishBinding
 import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel
 import com.bignerdranch.travelcommunity.ui.user.UserViewModel
 import com.bignerdranch.travelcommunity.util.InjectorUtils
+import com.bignerdranch.travelcommunity.util.LogUtil
+import com.bignerdranch.travelcommunity.util.PathUtils
+import com.bignerdranch.travelcommunity.util.ToastUtil
 import com.gyf.immersionbar.ktx.immersionBar
 import kotlinx.android.synthetic.main.fragment_publish.*
 import kotlinx.android.synthetic.main.my_toolbar.*
 import kotlinx.android.synthetic.main.my_toolbar.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import java.io.File
+import java.io.FileInputStream
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,16 +74,21 @@ class PublishFragment :BaseFragment<FragmentPublishBinding>() {
    private lateinit var  imageUrl: Uri
     private lateinit var outputImage: File
     private val takePhoto = 1
+    private lateinit var uploadRequestMap: Map<String,RequestBody>
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+
         // Inflate the layout for this fragment
          super.onCreateView(inflater, container, savedInstanceState)
+        subscribeObserve()
           binding.dynamicViewModel = _dynamicViewModel
           binding.userViewModel = _userViewModel
-          subscribeObserve()
+
           initComponent()   //初始化控件
           return binding.root
     }
@@ -85,13 +106,44 @@ class PublishFragment :BaseFragment<FragmentPublishBinding>() {
             2 ->{
                 if(resultCode == Activity.RESULT_OK && data !=null){
                     data.data?.let {
+                        ToastUtil.test(it.toString()+_dynamicViewModel.textContent.value)
                         val bitmap = getBitMapFromUri(it)
+                        _dynamicViewModel.contentsArgs.putAll(getUploadRequestMap(listOf(it)))
+
                         cover_img.setImageBitmap(bitmap)
                     }
                 }
-
             }
         }
+    }
+/*
+
+fun uploadImage(@PartMap map: HashMap<String, RequestBody>): Observable<NetResult<String>>
+
+
+* val pic = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+
+partMap["file\";filename=\"" +"file.jpg"] = pic
+
+val lengthBody = RequestBody.create(MediaType.parse("multipart/form-data"),"" + length)
+
+val widthBody = RequestBody.create(MediaType.parse("multipart/form-data"),"" + width)
+
+* */
+    private    fun  getUploadRequestMap(uris:List<Uri>):HashMap<String,RequestBody>{
+        val requestMap = HashMap<String, RequestBody>()
+        var i=0
+        for (uri in uris) {
+            val path = PathUtils.getPath(requireContext(),uri)
+            LogUtil.e(path)
+            val file = File(path)
+             requestMap.put("file\";filename=\"" +file.name,
+                RequestBody.create(MediaType.parse("multipart/form-data"),file))
+            i++
+        }
+       val text = RequestBody.create(MediaType.parse("multipart/form-data"),""+_dynamicViewModel.textContent.value)
+       requestMap["textContent"] = text
+        return requestMap
     }
 
     private fun getBitMapFromUri(uri:Uri) = requireContext().contentResolver.openFileDescriptor(uri,"r")
@@ -118,12 +170,15 @@ class PublishFragment :BaseFragment<FragmentPublishBinding>() {
     }
 
     private fun subscribeObserve(){
-
+        //_dynamicViewModel.dynamicResponseResult.observe(viewLifecycleOwner){
+       //     LogUtil.e(_dynamicViewModel.permissionArgs.toString())
+         //   LogUtil.e(_dynamicViewModel.contentsArgs.toString())
+      //  }
     }
 
     private  fun   initComponent() {
 
-        with(binding.publishToolbar.public_toolbar) {
+        with(binding.publishToolbar.publicToolbar) {
             setNavigationOnClickListener {
                 findNavController().also {
                     it.popBackStack(R.id.action_global_HomePageFragment, false)
@@ -135,15 +190,25 @@ class PublishFragment :BaseFragment<FragmentPublishBinding>() {
                 text = "发布"
                 setOnClickListener {
                     //click event
-                    //openAlbum()
+                    //_dynamicViewModel.toAddDynamic()
 
+                        Thread {
+                            runBlocking {
+                               LogUtil.e( Network.getInstance().toAddDynamic(_dynamicViewModel.contentsArgs)
+                               )}
+                        }.start()
 
                 }
             }
         }
         binding.chooseCover.setOnClickListener {
             //click event
-          takePhoto(requireContext())
+            openAlbum()
+
+        }
+
+        binding.setPermission.setOnClickListener {
+            findNavController().navigate(R.id.privateFragment)
         }
     }
 

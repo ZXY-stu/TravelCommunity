@@ -17,7 +17,7 @@ import java.math.BigInteger
 @Dao
 interface PersonDynamicDao {
     @Query("SELECT * from PERSON_DYNAMIC")
-    fun getPersonDynamics(): List<PersonDynamic>
+    fun getPersonDynamics(): LiveData<List<PersonDynamic>>
 
     @Query("SELECT user_id  from person_dynamic where person_dynamic.id = :personDynamicId")
     fun getUserId(personDynamicId:Int):LiveData<Int>

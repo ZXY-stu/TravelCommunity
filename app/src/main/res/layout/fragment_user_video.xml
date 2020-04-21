@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
             name="listener"
@@ -9,12 +11,13 @@
             type="com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel" />
     </data>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.dynamic.UserVideoFragment">
+
+
+
+
 
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
       android:id="@+id/video_refresh"
@@ -22,14 +25,19 @@
       android:layout_height="wrap_content"
       onDownPullRefresh="@{()->viewModel.videoRefresh()}"
       >
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/user_video_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:spanCount="1"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/video_card"
-        />
+
+          <androidx.recyclerview.widget.RecyclerView
+              android:id="@+id/user_video_view"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+              app:spanCount="1"
+              tools:listitem="@layout/video_card" />
+
+
+
+
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

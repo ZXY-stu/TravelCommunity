@@ -21,45 +21,59 @@ interface UserDao {
     @Query("SELECT * from user where user.id = :loginId")
     fun getUser(loginId:Int):LiveData<User>
 
-    //for test
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun  insertUser(user:User):Long
-
-    @Delete
-    suspend fun deleteUser(user: User)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertFriendRecord(addFriendRecord: AddFriendRecord)
-
     @Query("select * from addFriendRecord")
     fun getFriendRecord():LiveData<List<AddFriendRecord>>
-
-    @Delete(entity = AddFriendRecord::class)
-    fun deleteFriendRecord(friendId: FriendId)
-
-    @Delete(entity = AddFriendRecord::class)
-    fun deleteAllFriendRecord(userId:UserId)
 
     @Query("select * from chat where chat.userId =:userId and chat.friendId = :friendId")
     fun getChat(userId:Int,friendId:Int):LiveData<List<Chat>>
 
-    @Delete
-    fun deleteChat(chat:Chat)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertChats(chats:List<Chat>)
+    @Query("select * from user_relation")
+    fun getUserRelation():LiveData<List<UserRelation>>   //获取好友关系列表
 
     @Query("select * from chat")
     fun getChat():LiveData<List<Chat>>
 
-    @Query("select * from user_relation")
-    fun getUserRelation():LiveData<List<UserRelation>>
+
+    //for test
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun  insertUser(user:User):Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertUserRelation(userRelation: UserRelation)
+    suspend fun insertFriendRecord(addFriendRecord: AddFriendRecord)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertUserRelations(userRelations: List<UserRelation>)
+    fun insertChats(chats:List<Chat>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertChat(chat:Chat)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertUserRelation(userRelation: UserRelation)   //添加一个好友
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertUserRelations(userRelations: List<UserRelation>)    //插入好友关系表
+
+
+    @Delete
+    suspend fun deleteUser(user: User)
+
+    @Delete(entity = AddFriendRecord::class)
+    suspend fun deleteFriendRecord(friendId: FriendId)
+
+    @Delete(entity = AddFriendRecord::class)
+    suspend fun deleteAllFriendRecord(userId:UserId)
+
+    @Delete
+    suspend fun deleteChat(chat:Chat)
+
+    @Delete(entity = Chat::class)
+    suspend  fun deleteAllChat(userId:UserId)
+
+    @Delete(entity = Chat::class)
+    suspend  fun deleteChatAbout(friendId: FriendId)
+
+    @Delete
+    suspend  fun deleteRelation(userRelation: UserRelation)
 
 }
 

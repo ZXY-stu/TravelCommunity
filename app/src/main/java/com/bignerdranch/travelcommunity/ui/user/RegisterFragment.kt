@@ -55,7 +55,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
          binding.viewModel = _viewModel
-         with(binding.toolbar.public_toolbar) {
+         with(binding.toolbar.publicToolbar) {
              setNavigationOnClickListener {
                  it.findNavController().popBackStack(R.id.login_and_register, false)
              }

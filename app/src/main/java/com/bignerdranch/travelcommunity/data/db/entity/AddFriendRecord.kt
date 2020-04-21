@@ -30,10 +30,3 @@ data class AddFriendRecord(
     val memo:String  //备注名
 )
 
-data class FriendId(
-    val friendId:Int
-)
-
-data class UserId(
-    val userId:Int
-)

@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import okhttp3.RequestBody
 import java.util.*
 
 /**
@@ -25,6 +26,10 @@ data class Chat(
     @PrimaryKey val id:Int,   //聊天记录ID
     val userId:Int, //用户Id
     val friendId:Int, //朋友用户Id
-    val content:String, //这条对话内容
+    val content:String = "", //这条对话内容
+    val imageUrl:String = "",// 这条对话的图片内容
+    val videoUrl:String ="",//这条对话的视频内容
+    val voiceUrl:String = "", //这条对话的语言内容
     val time: Date //对话时间
 )
+

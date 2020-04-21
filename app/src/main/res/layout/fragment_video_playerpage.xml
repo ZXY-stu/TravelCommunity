@@ -11,6 +11,9 @@
        <variable
            name="personDynamic"
            type="com.bignerdranch.travelcommunity.data.db.entity.PersonDynamic" />
+        <variable
+            name="viewModel"
+            type="com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -90,16 +93,18 @@
 
             </LinearLayout>
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/headUrl"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 android:layout_marginBottom="8dp"
-                android:src="@mipmap/like"
+                android:src="@mipmap/abc"
+                android:onClick="@{()->viewModel.toUserPage()}"
+                imageFromUrl="@{personDynamic.headPortraitUrl}"
                 app:layout_constraintBottom_toTopOf="@+id/like"
                 app:layout_constraintEnd_toEndOf="@+id/like"
                 app:layout_constraintStart_toStartOf="@+id/like"
-                app:srcCompat="@mipmap/like" />
+                 />
 
 
             <TextView
@@ -118,6 +123,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
                 android:src="@mipmap/like"
+                android:onClick="@{()->viewModel.toAddLike(personDynamic.userId)}"
                 app:layout_constraintBottom_toTopOf="@+id/likeCount"
                 app:layout_constraintEnd_toEndOf="@+id/likeCount"
                 app:layout_constraintStart_toStartOf="@+id/likeCount" />
@@ -145,7 +151,7 @@
                 app:layout_constraintHorizontal_bias="0.953"
                 app:layout_constraintStart_toStartOf="parent" />
 
-
+<!--Coverters.fromIntToString(personDynamic.commentsCount)-->
             <TextView
                 android:id="@+id/commentsCount"
                 android:layout_width="wrap_content"

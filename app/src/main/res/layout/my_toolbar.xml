@@ -1,5 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<layout>
+    <data>
+      <variable
+         name="titleName"
+         type="String" />
+
+        <variable
+            name="titleIsVisible"
+            type="Boolean" />
+
+        <variable
+            name="NavigateTitleIsVisible"
+            type="Boolean" />
+
+
+        <variable
+            name="backButtonVisible"
+            type="Boolean" />
+
+        <variable
+            name="addButoonVisible"
+            type="Boolean" />
+
+        <variable
+            name="backListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="titleClickListener"
+            type="android.view.View.OnClickListener" />
+
+        <variable
+            name="actionListener"
+            type="android.view.View.OnClickListener" />
+
+
+        <variable
+            name="addClickListener"
+            type="android.view.View.OnClickListener" />
+    </data>
 
 
 <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -37,11 +77,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:visibility="invisible"
+             android:visibility="gone"
             android:textAppearance="@style/UserDescriptionText"
             android:hint="@string/publish"
             />
 
+
+
     </androidx.appcompat.widget.Toolbar>
 </com.google.android.material.appbar.AppBarLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

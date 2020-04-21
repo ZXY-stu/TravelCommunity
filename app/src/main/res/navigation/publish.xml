@@ -11,6 +11,15 @@
         android:name="com.bignerdranch.travelcommunity.ui.dynamic.PublishFragment"
         android:label="PublishFragment"
         tools:layout="@layout/fragment_publish"
-        />
+        >
+        <action
+            android:id="@+id/action_publishFragment_to_privateFragment"
+            app:destination="@id/privateFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/privateFragment"
+        android:name="com.bignerdranch.travelcommunity.ui.dynamic.PrivateFragment"
+        android:label="PrivateFragment" />
 
 </navigation>

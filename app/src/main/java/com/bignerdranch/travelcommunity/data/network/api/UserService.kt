@@ -18,9 +18,11 @@ import java.lang.reflect.MalformedParameterizedTypeException
 
 
 interface UserService {
+
+    // 登陆和注册 都需要返回一个ApiResponse<User>
     //用户登录
-    @GET("api/user")
-    fun login(@Query("account")account:String,@Query("password") password:String):LiveData<ApiResponse<User>>
+    @GET("api/login")
+    fun login(@Query("account")account:String,@Query("password") password:String):LiveData<ApiResponse<String>>
 
     //注册用户
     @POST("api/user")
@@ -42,7 +44,7 @@ interface UserService {
 
     //查询好友API
     @GET("api/user/{userInfo}")
-    fun queryUser(@Path("userInfo") userInfo:String):LiveData<ApiResponse<User>>
+    fun queryUsers(@Path("userInfo") userInfo:String):LiveData<ApiResponse<List<User>>>
 
     //添加好友
     @POST("api/user/{friendAccount}")
@@ -50,9 +52,12 @@ interface UserService {
                         @QueryMap addWithBackArgs:Map<String,String>)
    //获取好友列表
     @GET("api/user/lists")
-    fun getFriends(@Query("account") account:String):LiveData<ApiResponse<List<UserRelation>>>
+    fun getFriendList(@Query("account") account:String):LiveData<ApiResponse<List<UserRelation>>>
 
     //删除好友
     @DELETE("api/user/{friendAccount}")
     fun deleteFriend(@Path("friendAccount") friendAccount: String)
+
+
+
 }
