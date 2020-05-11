@@ -5,6 +5,7 @@ package com.bignerdranch.tclib.data.db.entity
  * @date 2020/4/12
  * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
  **/
+
 data class UserDynamicPermission(
     val userId:Int,
     val dynamicId:Int,

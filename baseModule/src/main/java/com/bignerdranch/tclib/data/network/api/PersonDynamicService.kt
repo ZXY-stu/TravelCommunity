@@ -18,7 +18,6 @@ import retrofit2.http.*
  **/
 interface PersonDynamicService {
 
-
     /* 动态发表
     *  permissionArgs  权限列表
     *  userId 发表人Id
@@ -109,6 +108,5 @@ interface PersonDynamicService {
     * 两者任选一 进行不同内容的查询
     */
     @GET("api/user/like")
-    fun queryLike(@FieldMap likeArgs:HashMap<String,Any>)
-            :LiveData<ApiResponse<List<Like>>>
+    fun queryLike(@FieldMap likeArgs:HashMap<String,Any>):LiveData<ApiResponse<List<Like>>>
 }

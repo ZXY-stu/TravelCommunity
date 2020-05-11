@@ -18,7 +18,6 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
     tools:context=".ui.dynamic.PublishFragment">
 
 
@@ -91,16 +90,16 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@color/black"
+
             android:layout_weight="2"
             >
 
             <ImageView
                 android:id="@+id/cover_img"
-                imageFromUrl=""
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@mipmap/abc"
+                android:background="@color/gray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -109,7 +108,7 @@
                 android:id="@+id/nothing"
                 android:layout_width="match_parent"
                 android:layout_height="20dp"
-                android:background="@color/black"
+                android:background="@color/gray"
                 android:alpha="0.5"
                 app:layout_constraintBottom_toBottomOf="@+id/cover_img"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -147,6 +146,7 @@
             android:id="@+id/set_permission"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/gray"
             android:layout_margin="@dimen/userPage_layout_margin"
             >
             <ImageView
@@ -161,7 +161,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="@dimen/userPage_textMargin"
-                android:textAppearance="@style/UserDescriptionText"
+                android:textAppearance="@style/UserCommentsText"
                 android:text="谁可以看"
                 />
 
@@ -169,7 +169,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/userPage_textMargin"
-                android:textAppearance="@style/UserDescriptionText"
+                android:textAppearance="@style/UserCommentsText"
                 android:text="公开"
                 />
 
@@ -185,6 +185,7 @@
             android:id="@+id/set_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/gray"
             android:layout_margin="@dimen/userPage_layout_margin"
             >
             <ImageView
@@ -199,7 +200,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="@dimen/userPage_textMargin"
-                android:textAppearance="@style/UserDescriptionText"
+                android:textAppearance="@style/UserCommentsText"
                 android:text="所在位置"
                 />
 

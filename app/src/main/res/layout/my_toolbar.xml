@@ -52,7 +52,7 @@
 <com.google.android.material.appbar.AppBarLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/backgroud_color"
+    android:background="@color/white"
   >
 
     <androidx.appcompat.widget.Toolbar
@@ -60,7 +60,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
 
-        app:navigationIcon="@drawable/back_white"
+        app:navigationIcon="@drawable/back_black"
         >
 
         <TextView
@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/login"
-            android:textAppearance="@style/UserDescriptionText"
+            android:textAppearance="@style/UserCommentsText"
             android:layout_gravity="center"
             />
 

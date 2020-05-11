@@ -11,6 +11,7 @@ import java.util.*
  * @date 2020/4/12
  * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
  **/
+
 @Entity(tableName = "addFriendRecord",
     foreignKeys = [
     ForeignKey(

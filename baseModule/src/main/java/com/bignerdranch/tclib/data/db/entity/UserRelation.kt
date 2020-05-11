@@ -8,7 +8,6 @@ import androidx.room.*
  * @date 2020/4/2
  * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
  **/
-
 @Entity(tableName = "user_relation",
     foreignKeys = [
         ForeignKey(entity = User::class,

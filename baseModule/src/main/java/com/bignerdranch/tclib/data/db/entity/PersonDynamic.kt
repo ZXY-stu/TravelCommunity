@@ -25,6 +25,7 @@ import java.util.*
 /*
 * 改动 ，Int -> String
 * */
+
 @Entity(tableName = "person_dynamic")
 data class PersonDynamic(
  @PrimaryKey val id:Int = 0,  //主键

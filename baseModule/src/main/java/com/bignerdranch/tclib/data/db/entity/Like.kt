@@ -11,6 +11,7 @@ import androidx.room.PrimaryKey
 
 /*点赞列表*/
 
+
 @Entity(tableName = "like")
 data  class Like(
     @PrimaryKey val id:Int,

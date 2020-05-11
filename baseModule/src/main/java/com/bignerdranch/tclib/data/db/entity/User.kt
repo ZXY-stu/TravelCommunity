@@ -18,6 +18,7 @@ import java.util.*
     ]
 )
 
+
 /*   nick_name account identifyNumber phoneNumber都不能重复 */
 data class User(
     @PrimaryKey(autoGenerate = true)

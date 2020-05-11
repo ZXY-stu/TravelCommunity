@@ -13,6 +13,7 @@ import java.util.*
  * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
  **/
 
+
 @Entity(tableName = "chat",
      foreignKeys = [
          ForeignKey(
