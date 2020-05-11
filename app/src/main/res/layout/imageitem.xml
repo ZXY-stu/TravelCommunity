@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<data>
+
+    <variable
+        name="url"
+        type="String" />
+</data>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="2dp"
+    android:background="@color/white"
+    android:clipToPadding="true"
+   app:contentPadding="2dp"
+    >
+
+   <ImageView
+       android:id="@+id/picture"
+       android:layout_width="@dimen/dynamicImageWidthSize"
+       android:layout_height="@dimen/dynamicImageHeightSize"
+       android:src="@drawable/abc"
+       imageFromUrl="@{url}"
+       android:scaleType="centerCrop"
+       />
+</androidx.cardview.widget.CardView>
+
+
+</layout>

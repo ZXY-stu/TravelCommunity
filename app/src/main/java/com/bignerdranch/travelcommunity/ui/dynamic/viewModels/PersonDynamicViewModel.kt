@@ -1,21 +1,22 @@
 package com.bignerdranch.travelcommunity.ui.dynamic.viewModels
 
 import androidx.lifecycle.*
-import com.bignerdranch.travelcommunity.data.db.entity.CommentsMsg
-import com.bignerdranch.travelcommunity.data.db.entity.PersonDynamic
-import com.bignerdranch.travelcommunity.data.db.entity.QueryDynamicArgs
-import com.bignerdranch.travelcommunity.data.db.entity.SimpleVideoData
-import com.bignerdranch.travelcommunity.data.repository.PersonDynamicRepository
+import com.bignerdranch.tclib.LogUtil
+import com.bignerdranch.tclib.LogUtil.eee
+import com.bignerdranch.tclib.data.db.entity.CommentsMsg
+import com.bignerdranch.tclib.data.db.entity.PersonDynamic
+import com.bignerdranch.tclib.data.db.entity.SimpleVideoData
+import com.bignerdranch.tclib.data.network.model.ApiResponse
+import com.bignerdranch.tclib.data.repository.PersonDynamicRepository
 import com.bignerdranch.travelcommunity.base.BaseViewModel
-import com.bignerdranch.travelcommunity.data.model.PersonDynamicBody
-import com.bignerdranch.travelcommunity.data.network.model.ApiResponse
 import com.bignerdranch.travelcommunity.util.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-import okhttp3.RequestBody
+import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
+import kotlin.math.absoluteValue
 
 /**
  * @author zhongxinyu
@@ -26,45 +27,209 @@ import kotlin.collections.HashMap
 
 
 class PersonDynamicViewModel internal constructor(
-    private val personDynamicRepository: PersonDynamicRepository) :
+    private val personDynamicRepository: PersonDynamicRepository
+) :
     BaseViewModel<PersonDynamicRepository>(personDynamicRepository) {
+    private val pers = ArrayList<PersonDynamic>()
 
-    lateinit var commentsMsg: CommentsMsg
+    private var i:Int = 0
 
-    val waitCommentsResponse = executeRequest(toAddComments) {
-            personDynamicRepository.toAddComments(commentsMsg)
+
+     init {
+
+      pers.add(PersonDynamic(id = 1 ,userId = 1,videoUrl = "http://ips.ifeng.com/video19.ifeng.com/video09/2014/06/16/1989823-102-086-0009.mp4",
+             imageUrls = images[0],headPortraitUrl = images[2],userNickName = "杀猪饲料1",likesCount = "100w",textContent =
+          "我2遇的关怀和吗，谁吗"))
+       pers.add(PersonDynamic(id = 2 ,userId = 2,videoUrl = "http://vjs.zencdn.net/v/oceans.mp4",
+             imageUrls = images[1],headPortraitUrl = images[3],userNickName = "杀猪饲料3",likesCount = "100w",textContent =
+             "我2遇的关怀和吗，想知道是谁吗"))
+         pers.add(PersonDynamic(id = 3 ,userId = 3,videoUrl = "https://media.w3.org/2010/05/sintel/trailer.mp4",
+             imageUrls = images[2],headPortraitUrl = images[1],userNickName = "杀猪饲料4",likesCount = "100w",textContent =
+             "我2遇的关怀和吗"))
+         pers.add(PersonDynamic(id = 4 ,userId = 4,videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",
+             imageUrls = images[5],headPortraitUrl = images[4],userNickName = "杀猪饲料6",likesCount = "100w",textContent =
+                     "我遇好漂亮的花是谁吗"))
+
+         pers.add(PersonDynamic(id = 55 ,userId = 31,videoUrl = "http://ips.ifeng.com/video19.ifeng.com/video09/2014/06/16/1989823-102-086-0009.mp4",
+             imageUrls = images[0],headPortraitUrl = images[2],userNickName = "杀猪饲料1",likesCount = "100w",textContent =
+             "好漂亮的花"))
+         pers.add(PersonDynamic(id = 44 ,userId = 22,videoUrl = "http://vjs.zencdn.net/v/oceans.mp4",
+             imageUrls = images[1],headPortraitUrl = images[3],userNickName = "杀猪饲料3",likesCount = "100w",textContent =
+             "好漂亮的花，想知道是谁吗"))
+         pers.add(PersonDynamic(id = 23 ,userId = 32,videoUrl = "https://media.w3.org/2010/05/sintel/trailer.mp4",
+             imageUrls = images[2],headPortraitUrl = images[1],userNickName = "杀猪饲料4",likesCount = "100w",textContent =
+             "好漂亮的花"))
+         pers.add(PersonDynamic(id = 34 ,userId = 14,videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",
+             imageUrls = images[5],headPortraitUrl = images[4],userNickName = "杀猪饲料6",likesCount = "100w",textContent =
+             "我遇见大人好漂亮的花想知道是谁吗"))
+
+       runBlocking {
+           personDynamicRepository.toInsertDynamicAllLocal(pers)
+        //   personDynamicRepository.toInsertCommentLocal(CommentsMsg())
+       }
+     }
+
+    val personDynamics = personDynamicRepository.toQueryPersonDynamicLocal()
+    val commentsMsgLocal = personDynamicRepository.toQueryCommentsMsgLocal()
+    val likesLocal = personDynamicRepository.toQueryLikeLocal()
+
+
+    val waitAddComment= executeRequest(toAddComments) {
+            personDynamicRepository.toAddComments(currentCommentsMsg)
     }
 
-    val commentsResponsResult = waitResponseResult(waitCommentsResponse) {
+    val addCommentsResult = waitResponseResult(waitAddComment) {
+        eee("addCommentsResult"+it)
         personDynamicRepository.toInsertCommentLocal(it)
     }
-/*
-    val waitDynamicResponse =  Transformations.switchMap(toAddDynamic) {
-        runBlocking {
-            LogUtil.e("处理了网络")
-         val a =   personDynamicRepository.toAddDynamic(permissionArgs, contentsArgs)
-            LogUtil.e(a.value.toString())
-            a
-        }
-    }*/
-/*
-    val dynamicResponseResult = Transformations.map(waitDynamicResponse){
-        LogUtil.e(it.toString())
-        it
-       // personDynamicRepository.toInsertDynamicLocal(it)
-    }
-*/
-    val waitLikeResponse = executeRequest(toAddLike){
-         personDynamicRepository.toAddLike(likeArgs)
+
+    val waitAddDynamic=  executeRequest(toAddDynamic) {
+        /* 动态发表
+         *  permissionArgs  权限列表
+         *  account 发表人的账户
+         *  permissionId  隐私设置
+         *  0 表示开放
+         *  1 表示仅关注的人可见
+         *  2 表示自定义，需通过查询权限表获取访问权限
+         *  3 表示私密，仅自己可见
+         *  userList      用户列表
+         *
+         * contentArgs  内容列表
+         * textContent  动态的文本内容
+         * imageFiles   动态的图片文件 最多9张
+         * videoFile   动态的视频文件
+         * */
+         personDynamicRepository.toAddDynamic(permissionArgs,contentsArgs)
     }
 
-    val likeResponseResult = waitResponseResult(waitLikeResponse){
+    val addDynamicResult = waitResponseResult(waitAddDynamic){
+        eee("得到了dynamic")
+        personDynamicRepository.toInsertDynamicLocal(it)
+    }
+
+    val waitAddLike = executeRequest(toAddLike){
+        //为某个动态或者评论点赞 requestArgs
+        // id 评论或动态id
+        // userId
+        // stat 0动态 1 评论
+         personDynamicRepository.toAddLike(requestArgs)
+    }
+
+    val addLikeResult = waitResponseResult(waitAddLike){
         personDynamicRepository.toInsertLikeLocal(it)
     }
 
-    val personDynamics = personDynamicRepository.toQueryPersonDynamicLocal()
 
-    val commentsMsgs = executeRequestLocal(personDynamics){
+    val waitDeleteLike = executeRequest(toDeleteLike){
+        //取消某个动态或者评论的点赞 requestArgs
+        // id 评论或动态id
+        // userId
+        // stat 0动态 1 评论
+        personDynamicRepository.toDeleteLike(requestArgs)
+    }
+
+    val  deleteLikeResult = waitResponseResult(waitDeleteLike){}
+
+    val waitDeleteDynamic = executeRequest(toDeleteDynamic){
+        personDynamicRepository.toDeleteDynamic(_dynamicId)
+    }
+
+    val deleteDynamicResult = waitResponseResult(waitDeleteDynamic){}
+
+    val waitDeleteComments = executeRequest(toDeleteComment){
+        personDynamicRepository.toDeleteComments(_commentsId)
+    }
+
+    val deleteCommentsResult = waitResponseResult(waitDeleteComments){
+    }
+
+
+    /*评论查询 requestArgs
+   * dynamicId 动态id,不能为0
+   * commentsId 评论Id,若不为0，则查询该评论的所有评论
+   * pageNumber 当前页数
+   * */
+   val  waitQueryComments = executeRequest(toQueryComments){
+       personDynamicRepository.toQueryComments(requestArgs)
+   }
+
+   val queryCommentsResult = waitResponseResult(waitQueryComments){
+        personDynamicRepository.toInsertCommentsLocal(it)
+   }
+
+    val waitQueryLike  = executeRequest(toQueryLikes){
+        /*查询点赞 requestArgs
+         *  dynamicId, 获取该动态或者评论所有用户的点赞
+         *  userId，获取该用户所有的对评论或者动态的点赞
+         *  stat 0动态  1评论
+         *  要么dynamicId == -1 要么userId == -1
+         *  两者任选一 进行不同内容的查询
+         * */
+        personDynamicRepository.toQueryLike(requestArgs)
+    }
+
+    val queryLikeResult = waitResponseResult(waitQueryLike){
+        personDynamicRepository.toInsertLikesLocal(it)
+    }
+
+    /* 查询动态 requestArgs
+     * userAccount 用户账户  不为空，则查询所有好友动态
+     * friendAccount 朋友账号  不为空 则查询好友所有的动态
+     * pageNumber 当前页数
+     * */
+    val waitQueryDynamic = executeRequest(toQueryDynamic){
+        personDynamicRepository.toQueryPersonDynamics(requestArgs)
+    }
+
+    val queryDynamicResult = waitResponseResult(waitQueryDynamic){
+        personDynamicRepository.toInsertDynamicAllLocal(it)
+    }
+
+      init {
+          addLikeResult.observeForever {
+              executeResult(it)
+          }
+
+          addDynamicResult.observeForever {
+              executeResult(it)
+          }
+
+          addCommentsResult.observeForever {
+              executeResult(it)
+          }
+
+          deleteLikeResult.observeForever {
+              executeResult(it)
+          }
+
+          deleteDynamicResult.observeForever {
+              executeResult(it)
+          }
+
+          deleteCommentsResult.observeForever {
+              executeResult(it)
+          }
+
+          queryLikeResult.observeForever {
+              executeResult(it)
+          }
+
+          queryCommentsResult.observeForever {
+              executeResult(it)
+          }
+
+          queryDynamicResult.observeForever {
+              executeResult(it)
+          }
+
+
+
+
+      }
+
+
+
+    /*val commentsMsgs = executeRequestLocal(personDynamics){
         dynamics ->
          dynamics.forEach {
              personDynamics.value?.forEach {
@@ -73,15 +238,20 @@ class PersonDynamicViewModel internal constructor(
          }
           personDynamicRepository.toQueryCommentsMsgLocal()
 
-    }
+    }*/
+
 /*
     val userAccount:String="",
     val friendAccount:String="",
     val pageNumber:Int=1*/
 
+   val wait = Transformations.map(page){
+       LogUtil.e("dasdasd")
+     //  addTest()
+   }
 
     val waitDynamicResponses = executeRequestList(page){ pa ->
-         val  args = HashMap<String,String>()
+         val  args = HashMap<String,Any>()
          val userAccount = localUser.value?.account?:""
         when(toQueryWhat){
             MY_FOCUSE -> {
@@ -101,76 +271,39 @@ class PersonDynamicViewModel internal constructor(
          args["pageNumber"] = pa?.toString()?:"1"
          addTest()
          personDynamicRepository.toQueryPersonDynamics(args)
+       // MutableLiveData<List<ApiResponse<PersonDynamic>>>(null)
     }
 
 
     fun addTest() = runBlocking{
-        pers.add(
-            PersonDynamic(
-                ++i, 1, "123", "小暖男", "想当小渣男，还是小暖男呢", "", ""
-                , images[i % images.size], i, i, Date(System.currentTimeMillis()), "", i, i, i, i
-            ))
-        personDynamicRepository.toInsertDynamicAllLocal(pers)
+        val l = System.currentTimeMillis().toInt().absoluteValue
+       pers.add(
+           PersonDynamic(
+               l,l, "123", "${l}", "想当小渣男，还是小暖男呢", "", ""
+               , images[l%5], ""+l,""+l, ""+Date(System.currentTimeMillis()), "",
+               ""+i, ""+i, ""+i, i
+           )
+       )
+        LogUtil.e("$l  ${pers.size}")
+      /*  personDynamicRepository.toInsertDynamicAllLocal(
+           pers
+        )*/
     }
 
 
 
 
 
-    private fun <T,R> executeRequestLocal(liveData: LiveData<List<T>>, block: suspend (List<T>) -> LiveData<R>):LiveData<R>{
-        return Transformations.switchMap(liveData){
-            runBlocking {
-                block(it)
-            }
-        }
-    }
 
-    private fun <T,R> executeRequestList(liveData: LiveData<T>, block: suspend (T) -> LiveData<List<ApiResponse<R>>>):LiveData<List<ApiResponse<R>>>{
-        return Transformations.switchMap(liveData){
-            runBlocking {
-                block(it)
-            }
-        }
-    }
 
-    private fun <T,R> executeRequest(liveData: LiveData<T>, block: suspend (T) -> LiveData<ApiResponse<R>>):LiveData<ApiResponse<R>>{
-        return Transformations.switchMap(liveData){
-            runBlocking {
-                  block(it)
-            }
-        }
-    }
 
-    private fun <T> waitResponseResult(liveData:LiveData<ApiResponse<T>>, block: suspend (T) -> Unit):LiveData<Int>{
-            return Transformations.map(liveData){
-                 it?.run {
-                     when(errorCode){
-                         SUCCESS -> {
-                             data?.also {
-                                 runBlocking {
-                                     block(it)
-                                 }
-                             }
-                             SUCCESS
-                         }
-                         else -> FAILUER
-                     }
-                 }?: SERVER_OR_NETWORK_ERROR
-            }
-    }
 
 
     fun loadingMore(){
         //toQueryDynamic()
+        addTest()
         }
-    val dynamicBody = PersonDynamicBody()
-    val pers = ArrayList<PersonDynamic>()
-    val images = listOf(
-        "https://upload.wikimedia.org/wikipedia/commons/6/67/Mangos_criollos_y_pera.JPG","https://upload.wikimedia.org/wikipedia/commons/0/03/Grape_Plant_and_grapes9.jpg",
-        "https://upload.wikimedia.org/wikipedia/commons/2/22/Apfelsinenbaum--Orange_tree.jpg", "https://upload.wikimedia.org/wikipedia/commons/a/aa/Sunflowers_in_field_flower.jpg",
-        "https://api.ixiaowai.cn/gqapi/gqapi.php","https://upload.wikimedia.org/wikipedia/commons/a/ab/Cypripedium_reginae_Orchi_004.jpg"
-    )
-    var i:Int = 0
+
 
 
 
@@ -223,9 +356,7 @@ class PersonDynamicViewModel internal constructor(
     }
 
 
-   private  fun launch(block:suspend ()->Unit) = viewModelScope.launch{
-        block()
-    }
+
 
     companion object{
         const val  MY_FOCUSE = 0    //我的关注内容

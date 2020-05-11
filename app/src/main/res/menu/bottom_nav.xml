@@ -20,11 +20,10 @@
 
     <item
         android:id="@+id/publish"
-        android:enabled="true"
-        android:icon="@drawable/publish_select_color"
         android:contentDescription="@string/cd_list"
+       android:enabled="false"
         android:title="@string/cd_list"
-        />
+        app:actionViewClass="android.widget.ImageView" />
 
 
     <item

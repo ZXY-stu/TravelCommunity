@@ -43,6 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
+            checkError="@{true}"
             android:theme="@style/login_and_register_editText_style"
             android:text="@={viewModel.account}"
             />
@@ -57,10 +58,11 @@
 
         <EditText
 
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_weight="4"
             android:textColor="@color/white"
+            checkError="@{true}"
             android:theme="@style/login_and_register_editText_style"
             android:text="@={viewModel.password}"
             />
@@ -68,8 +70,9 @@
         <Button
             android:id="@+id/register"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_weight="1"
+            android:background="#F80032"
             android:onClick="@{()->viewModel.toRegister()}"
             android:textAppearance="@style/UserDescriptionText"
             android:text="@string/getCode"

@@ -1,26 +1,24 @@
 package com.bignerdranch.travelcommunity.adapters
 
-import android.net.Uri
 import android.os.Build
-import android.os.Environment
+import android.text.Html
 import android.util.Log
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import androidx.core.view.size
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bignerdranch.travelcommunity.R
-import com.bignerdranch.travelcommunity.util.LogUtil
+import com.bignerdranch.tclib.LogUtil
+import com.bignerdranch.tclib.LogUtil.eee
+import com.bignerdranch.tclib.data.db.entity.CommentsMsg
+import com.bignerdranch.travelcommunity.util.HtmlTextStyleUtil
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import java.io.File
 
 
 /**
@@ -133,8 +131,29 @@ object UserBindingAdapter{
         view.visibility = if (show) View.VISIBLE else View.GONE
     }
 
+    @JvmStatic
+    @BindingAdapter("content")
+    fun setText(view: TextView, message:CommentsMsg) {
+        val style = HtmlTextStyleUtil.getInstance()
+            .setFontSize("8")
+            .setText(message.msg)
+            .setSubText(message.times)
+
+        if(message.friendNickName.isNotEmpty()){
+           view.text =  style.setNickName(message.friendNickName).buildStyle(HtmlTextStyleUtil.REPLAY_WITH_TIME)
+        }else{
+            view.text = style.buildStyle(HtmlTextStyleUtil.NOREPLAY_WITH_TIME)
+        }
+    }
 
 
+      @JvmStatic
+      @BindingAdapter("checkError")
+      fun checkError(view:View,toCheck:Boolean){
+          if(toCheck){
+
+          }
+      }
 
 
 

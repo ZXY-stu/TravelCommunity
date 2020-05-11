@@ -3,10 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/login_and_register"
-    app:startDestination="@id/loginFragment">
+    app:startDestination="@id/noticeLoginFragment">
 
+    <fragment
+        android:id="@+id/noticeLoginFragment"
+        android:name="com.bignerdranch.travelcommunity.ui.user.NoticeLoginFragment"
+        android:label="NoticeLoginFragment"
+        tools:layout="@layout/fragment_notice_login"
+        >
+        <action
+            android:id="@+id/action_noticeLoginFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            />
+    </fragment>
 
-    <include app:graph="@navigation/homepage" />
 
     <fragment
         android:id="@+id/loginFragment"
@@ -16,21 +26,19 @@
         >
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
-            app:destination="@id/registerFragment" />
-
-        <action
-            android:id="@+id/action_loginFragment_to_homepage"
-            app:destination="@id/homepage" />
-
+            app:destination="@id/registerFragment"
+            app:popUpTo="@id/registerFragment"
+            app:popUpToInclusive="true"
+           />
     </fragment>
 
     <fragment
         android:id="@+id/registerFragment"
         android:name="com.bignerdranch.travelcommunity.ui.user.RegisterFragment"
         android:label="RegisterFragment"
-        tools:layout="@layout/login_fragment"
-        />
-
+        tools:layout="@layout/fragment_register"
+        >
+    </fragment>
 
 
 

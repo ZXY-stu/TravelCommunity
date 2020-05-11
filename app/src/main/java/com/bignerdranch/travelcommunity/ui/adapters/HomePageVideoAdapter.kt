@@ -2,12 +2,18 @@ package com.bignerdranch.travelcommunity.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bignerdranch.travelcommunity.data.db.entity.PersonDynamic
+import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.databinding.FragmentVideoPlayerpageBinding
-import com.bignerdranch.travelcommunity.util.LogUtil
+import com.bignerdranch.tclib.LogUtil
+import com.bignerdranch.tclib.data.db.entity.PersonDynamic
+import com.bignerdranch.travelcommunity.databinding.DynamicStyleUserpageBinding
+import com.bignerdranch.travelcommunity.ui.utils.VideoPageSnapHelper
+import com.bignerdranch.travelcommunity.util.ToastUtil
 
 /**
  * @author zhongxinyu
@@ -15,36 +21,31 @@ import com.bignerdranch.travelcommunity.util.LogUtil
  * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
  **/
 class HomePageVideoAdapter:ListAdapter<PersonDynamic,RecyclerView.ViewHolder>(PersonDynamicDiff()) {
-
-    init {
-        LogUtil.w("在HomePage")
-    }
-
-    class HomePagevideoViewHolder(private val binding: FragmentVideoPlayerpageBinding)
+    val images = listOf(
+        "https://upload.wikimedia.org/wikipedia/commons/6/67/Mangos_criollos_y_pera.JPG","https://upload.wikimedia.org/wikipedia/commons/0/03/Grape_Plant_and_grapes9.jpg",
+        "https://upload.wikimedia.org/wikipedia/commons/2/22/Apfelsinenbaum--Orange_tree.jpg", "https://upload.wikimedia.org/wikipedia/commons/a/aa/Sunflowers_in_field_flower.jpg",
+       "https://upload.wikimedia.org/wikipedia/commons/a/ab/Cypripedium_reginae_Orchi_004.jpg"
+    )
+    private val adapter = VideoAdapter()
+   inner class HomePagevideoViewHolder(private val binding: DynamicStyleUserpageBinding)
         :RecyclerView.ViewHolder(binding.root){
 
         init {
-            LogUtil.w("创建")
-            binding.setClickListener {
-                binding.personDynamic?.let{ dynamic ->
-                    //跳转处理
-                    navigateTo(dynamic.id)
-                }
+            with(binding){
+                   imageMatrix.adapter = adapter
+                   VideoPageSnapHelper().attachToRecyclerView(imageMatrix)
             }
         }
 
         fun bind(item:PersonDynamic){
             with(binding){
                 personDynamic = item
-                LogUtil.w("绑定"+personDynamic.toString())
+                adapter.submitList(images)
                 executePendingBindings()
             }
         }
-
-        private fun navigateTo(dynamicId:Int){
-
-        }
     }
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val dynamic = getItem(position)
         LogUtil.w("绑定")
@@ -53,7 +54,7 @@ class HomePageVideoAdapter:ListAdapter<PersonDynamic,RecyclerView.ViewHolder>(Pe
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         LogUtil.w("创建")
-         return HomePagevideoViewHolder(FragmentVideoPlayerpageBinding.inflate(
+         return HomePagevideoViewHolder(DynamicStyleUserpageBinding.inflate(
              LayoutInflater.from(parent.context),parent,false))
     }
 
@@ -67,7 +68,6 @@ class HomePageVideoAdapter:ListAdapter<PersonDynamic,RecyclerView.ViewHolder>(Pe
             LogUtil.w("比较")
             return oldItem.id == newItem.id
         }
-
     }
 
 }

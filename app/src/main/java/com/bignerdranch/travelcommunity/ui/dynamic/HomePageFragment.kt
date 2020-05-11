@@ -1,32 +1,31 @@
 package com.bignerdranch.travelcommunity.ui.dynamic
 
-import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 
 import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.base.BaseFragment
 import com.bignerdranch.travelcommunity.databinding.FragmentVideoViewPageBinding
 import com.bignerdranch.travelcommunity.ui.adapters.PageViewAdapter
-import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel
 import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel.Companion.MY_FOCUSE
 import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel.Companion.SYSTEM_RECOMMAND
-import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel.Companion.USER_DYNAMIC
 import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel.Companion.toQueryWhat
-import com.bignerdranch.travelcommunity.ui.listener.TCRecycleViewListener
-import com.bignerdranch.travelcommunity.ui.user.LoginFragment
-import com.bignerdranch.travelcommunity.util.LogUtil
-import com.bignerdranch.travelcommunity.util.ToastUtil
+import com.bignerdranch.tclib.LogUtil
+import com.bignerdranch.tclib.LogUtil.eee
+import com.bignerdranch.travelcommunity.base.BaseDialogFragment
+import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel
+import com.bignerdranch.travelcommunity.util.InjectorUtils
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gyf.immersionbar.ImmersionBar
-import com.gyf.immersionbar.components.SimpleImmersionFragment
 
 
 /**
@@ -36,8 +35,15 @@ import com.gyf.immersionbar.components.SimpleImmersionFragment
  */
 
 
-class HomePageFragment : BaseFragment<FragmentVideoViewPageBinding>() {
+class HomePageFragment: BaseFragment<FragmentVideoViewPageBinding>() {
     override val layoutId: Int = R.layout.fragment_video_view_page
+    override val needLogin: Boolean = false
+     var lastView:View? = null
+    var hasCreated = false
+
+     private val _viewModel by activityViewModels<PersonDynamicViewModel> {
+         InjectorUtils.personDynamicViewModelFactory(requireContext())
+     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,13 +51,16 @@ class HomePageFragment : BaseFragment<FragmentVideoViewPageBinding>() {
         savedInstanceState: Bundle?
     ): View? {
 
-        super.onCreateView(inflater, container, savedInstanceState)
 
-        subscribeViewPage()   //初始化viewPage
+             eee("savedInstanceState")
+             super.onCreateView(inflater, container, savedInstanceState)
+             subscribeViewPage()   //初始化viewPage
+             lastView = binding.root
 
-        return binding.root
+      //  _viewModel.attachPublishPage(toPublishPage)
+
+        return  lastView
     }
-
 
 
 
@@ -60,14 +69,17 @@ class HomePageFragment : BaseFragment<FragmentVideoViewPageBinding>() {
         val viewPager = binding.viewPager
 
         viewPager.adapter = PageViewAdapter(this).build(mapOf(
-            SYSTEM_RECOMMAND to {VideoFragment() },
-            MY_FOCUSE to { UserVideoFragment()}
+            SYSTEM_RECOMMAND to { HomePageVideoFragment() },
+            MY_FOCUSE to { HomePageDynamic() }
         ) as MutableMap<Int, () -> Fragment>)
+
 
         // Set the icon and text for each tab
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = getTabTitle(position)
         }.attach()
+
+
 
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
@@ -83,19 +95,17 @@ class HomePageFragment : BaseFragment<FragmentVideoViewPageBinding>() {
                     }
                 }
             }
+
+
         })
+
 
        // viewPager.setCurrentItem(SYSTEM_RECOMMAND)
 
 
     }
     override fun initImmersionBar() {
-        ImmersionBar.with(this)
-            .transparentStatusBar()
-            .transparentNavigationBar()
-            .transparentBar()
-            .barAlpha(0.0f)
-            .init()
+
     }
 
     private fun getTabIcon(position: Int): Int {

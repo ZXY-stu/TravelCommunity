@@ -13,7 +13,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-
     >
 
 
@@ -56,12 +55,13 @@
                 />
 
 
-            <TextView
+            <Button
                 android:layout_width="300dp"
                 android:layout_height="40dp"
                 android:layout_margin="@dimen/userPage_layout_margin"
-                android:background="@drawable/login_button"
                 android:gravity="center"
+                android:textAppearance="@style/UserDescriptionText"
+                android:background="#F80032"
                 android:layout_gravity="center"
                 android:onClick="@{()->viewModel.toLogin()}"
                 android:text="登 录"
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textAppearance="@style/UserCommentsText"
+                android:textAppearance="@style/UserDescriptionText"
                 android:text="@string/register"
                 android:onClick="@{()->viewModel.toRegisterPage()}"
                 />
@@ -90,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:textAppearance="@style/UserCommentsText"
+                android:textAppearance="@style/UserDescriptionText"
                 android:onClick="@{()->viewModel.toFindPassword()}"
 
                 android:text="@string/forget"

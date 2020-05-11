@@ -4,7 +4,7 @@
     <data>
         <variable
             name="userData"
-            type="com.bignerdranch.travelcommunity.data.db.entity.User" />
+            type="com.bignerdranch.tclib.data.db.entity.User" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout

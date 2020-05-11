@@ -1,0 +1,19 @@
+package com.bignerdranch.travelcommunity.videocache.file;
+
+
+
+import java.io.File;
+import java.io.IOException;
+
+/**
+ * Unlimited version of {@link com.bignerdranch.travelcommunity.videocache.file.DiskUsage}.
+ *
+ * @author Alexey Danilov (danikula@gmail.com).
+ */
+public class UnlimitedDiskUsage implements DiskUsage {
+
+    @Override
+    public void touch(File file) throws IOException {
+        // do nothing
+    }
+}

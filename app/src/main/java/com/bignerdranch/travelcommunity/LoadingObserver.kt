@@ -7,8 +7,10 @@ package com.bignerdranch.travelcommunity
  **/
 import android.content.Context
 import androidx.lifecycle.Observer
-import com.bignerdranch.travelcommunity.util.LogUtil
+import com.bignerdranch.tclib.LogUtil
 import com.kaopiz.kprogresshud.KProgressHUD
+
+
 
 class LoadingObserver(context: Context) : Observer<Boolean> {
     private val dialog = KProgressHUD(context)

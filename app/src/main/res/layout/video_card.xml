@@ -8,35 +8,25 @@
             type="android.view.View.OnClickListener" />
        <variable
            name="video"
-           type="com.bignerdranch.travelcommunity.data.db.entity.SimpleVideoData" />
+           type="com.bignerdranch.tclib.data.db.entity.SimpleVideoData" />
     </data>
 
 
-
-    <!--androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="@{clickListener}"
-  -->
-
-        <!--VideoView
-            android:id="@+id/videoView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" /-->
-
     <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        app:cardElevation="5dp"
         android:layout_margin="5dp"
-        app:cardCornerRadius="4dp">
+        app:cardMaxElevation="2dp"
+        app:cardBackgroundColor="@color/backgroud_color"
+        app:contentPadding="2dp"
+        app:cardCornerRadius="5dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            >
+
 
             <TextView
                 android:id="@+id/textView"
@@ -75,7 +65,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-              imageFromUrl="@{video.imageUrls}"
+                android:src="@mipmap/abc"
+                imageFromUrl="@{video.imageUrls}"
                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

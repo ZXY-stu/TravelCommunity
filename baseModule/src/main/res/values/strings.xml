@@ -1,0 +1,4 @@
+<resources>
+    <item name="app_name" type="id"></item>
+    <string name="app_name">TravelCommunity</string>
+</resources>

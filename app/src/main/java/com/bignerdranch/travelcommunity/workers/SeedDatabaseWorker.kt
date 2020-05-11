@@ -5,11 +5,7 @@ import android.util.JsonReader
 import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
-import com.bignerdranch.travelcommunity.data.db.TCDataBases
-import com.bignerdranch.travelcommunity.data.db.entity.User
 import com.bignerdranch.travelcommunity.util.PLANT_DATA_FILENAME
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.coroutineScope
 
 class SeedDatabaseWorker(

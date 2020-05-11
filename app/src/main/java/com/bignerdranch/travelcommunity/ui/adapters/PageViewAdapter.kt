@@ -2,14 +2,7 @@ package com.bignerdranch.travelcommunity.ui.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.bignerdranch.travelcommunity.ui.dynamic.UserVideoFragment
-import com.bignerdranch.travelcommunity.ui.dynamic.VideoFragment
-import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel.Companion.MY_FOCUSE
-import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel.Companion.SYSTEM_RECOMMAND
-import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel.Companion.USER_DYNAMIC
-import com.bignerdranch.travelcommunity.ui.user.LoginFragment
-import com.bignerdranch.travelcommunity.ui.user.UserFragment
-import com.bignerdranch.travelcommunity.util.LogUtil
+import com.bignerdranch.tclib.LogUtil
 
 /**
  * @author zhongxinyu

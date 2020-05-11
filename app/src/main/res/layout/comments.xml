@@ -4,7 +4,7 @@
     <data>
      <variable
          name="comments"
-         type="com.bignerdranch.travelcommunity.data.db.entity.CommentsMsg" />
+         type="com.bignerdranch.tclib.data.db.entity.CommentsMsg" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

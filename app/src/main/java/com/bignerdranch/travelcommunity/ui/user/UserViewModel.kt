@@ -1,19 +1,20 @@
 package com.bignerdranch.travelcommunity.ui.user
 
-import android.annotation.SuppressLint
+import android.os.Handler
+import android.os.Looper
+import android.os.Message
 import androidx.lifecycle.*
-import com.bignerdranch.travelcommunity.data.db.entity.User
-import com.bignerdranch.travelcommunity.data.repository.UserRepository
+import com.bignerdranch.tclib.LogUtil
+import com.bignerdranch.tclib.LogUtil.eee
+import com.bignerdranch.tclib.data.db.entity.User
+import com.bignerdranch.tclib.data.network.model.ApiResponse
+import com.bignerdranch.tclib.data.repository.UserRepository
 import com.bignerdranch.travelcommunity.base.BaseViewModel
-import com.bignerdranch.travelcommunity.base.NetworkConnectChangedReceiver
-import com.bignerdranch.travelcommunity.base.NetworkConnectChangedReceiver.Companion.haveNetwork
-import com.bignerdranch.travelcommunity.data.ErrorCode
-import com.bignerdranch.travelcommunity.data.network.model.ApiResponse
-import com.bignerdranch.travelcommunity.util.LogUtil
+import com.bignerdranch.travelcommunity.util.FAILUER
+import com.bignerdranch.travelcommunity.util.SERVER_OR_NETWORK_ERROR
 import com.bignerdranch.travelcommunity.util.SUCCESS
 import com.bignerdranch.travelcommunity.util.ToastUtil
 import kotlinx.coroutines.*
-import java.util.*
 
 
 /**
@@ -22,80 +23,144 @@ import java.util.*
  * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
  **/
 
-
-
 //处理数据层 和 UI层的交互
 class UserViewModel internal constructor(private val userRepository: UserRepository) :
     BaseViewModel<UserRepository>(userRepository) {
 
-    val account = MutableLiveData<String>()   //账号
-    val password = MutableLiveData<String>()   //密码
-    val code = MutableLiveData<String>()   //验证码
+     //用户登录
+    private val waitUserLogin = executeRequest(toLogin) {
+          userRepository.toUserLogin("" + account.value, "" + password.value)
+    }
 
-
-
-
-    private var userLogin = Transformations.switchMap(toLogin) {
-        runBlocking {
-            val a = userRepository.toUserLogin("" + account.value, "" + password.value)
-            LogUtil.e("${a.value?.data}")
-            a
+    private val userLoginResult = waitResponseResult(waitUserLogin){
+        with(it){
+            val user = User(1,nickName,account,age,birthday, headPortraitUrl, backgroundImageUrl,
+                phoneNumber, password, address, identifyNumber, sex, hobby, introduce,
+                stat, lastLoginTime, isMember, privateModel, likeTotal, fansTotal, focusTotal)
+            userRepository.toInsertUserLocal(user)
         }
     }
 
-    val user = Transformations.map(userLogin) {
-       check(it)
+    //用户注册
+    private val waitUserRegister = executeRequest(toRegister) {
+            val account = account?.value
+            val password = password?.value
+            userRepository.toUserRegister(""+account, ""+password)
     }
 
-
-    private val userRegister = Transformations.switchMap(toRegister) {
-        runBlocking {
-            val account = account.value!!
-            val password = password.value!!
-            userRepository.toUserRegister(account, password)
+    private val userRegisterResult =  waitResponseResult(waitUserRegister){
+        with(it){
+            val user = User(1,nickName,account,age,birthday, headPortraitUrl, backgroundImageUrl,
+                phoneNumber, password, address, identifyNumber, sex, hobby, introduce,
+                stat, lastLoginTime, isMember, privateModel, likeTotal, fansTotal, focusTotal)
+            userRepository.toInsertUserLocal(user)
         }
     }
 
-    val register = Transformations.map(userRegister) {
-         check(it)
+    //用户注销
+    private val waitUserLogout = executeRequest(toLogout){
+        userRepository.toUserLogout(localUser.value!!)
     }
 
+    private val  userLogoutResult = waitResponseResult(waitUserLogout){
+        eee("userLogoutResult")
+    }
 
-    private fun <T> check(response: ApiResponse<T>): T? {
-       var data:T? = null
-        when (response.errorCode) {
-            SUCCESS -> {
-                loading.value = false
-               data = response.data
-            }
-            else -> {
+    //搜索好友
+    private val waitQueryFriend = executeRequest(toQueryFriend){
+        userRepository.toQueryFriend(_userInfo)
+    }
 
-                LogUtil.e("失败，请重试"+response.errorCode)
-            }
-        }
-        return data
+    private val queryFriendResult =  waitResponseResult(waitQueryFriend){
+           userRepository.toInsertUserAllLocal(it)
+    }
+
+    //查询好友信息
+    private val waitQueryFriendInfo = executeRequest(toQueryFriend){
+        userRepository.toQueryFriend(_friendId)
+    }
+
+    private val queryFriendInfoResult =  waitResponseResult(waitQueryFriendInfo){
+        userRepository.toInsertUserLocal(it)
+    }
+
+    //查询好友关系表
+    private val waitQueryFriendList = executeRequest(toQueryFriendList){
+        userRepository.toQueryFriendList(getUserId())
+    }
+
+    private val queryFriendListResult = waitResponseResult(waitQueryFriendList){
+        userRepository.toInsertRelationsLocal(it)
+    }
+
+    //添加或者关注朋友
+    private val waitAddFriend  = executeRequest(toAddFriend){
+        userRepository.toAddFriend(requestArgs)
+    }
+
+    private val addFriendResult = waitResponseResult(waitAddFriend){
+        eee("addFriendResult")
+    }
+
+    //删除或者取消关注朋友
+    private val waitDeleteFriend = executeRequest(toDeleteFriend){
+        userRepository.toDeleteFriend(_friendId)
+    }
+
+    private val deleteFriendResult = waitResponseResult(waitDeleteFriend){
+        eee("deleteFriendResult")
+    }
+
+    //更新用户基本信息
+    private val waitUpdateUser = executeRequest(toUpdateUser){
+        userRepository.toUpdateUserInfo(localUser.value!!,contentsArgs)
+    }
+
+    private val updateUserResult = waitResponseResult(waitUpdateUser){
+        userRepository.toInsertUserLocal(it)
     }
 
 
         init {
 
-            toLogout.observeForever {
-                localUser.value?.let {
-                    launch {
-                        userRepository.toUserLogout(it)  //注销用户
-                    }
-                }
+
+
+            deleteFriendResult.observeForever {
+                executeResult(it)
+            }
+
+            addFriendResult.observeForever {
+                executeResult(it)
+            }
+
+            queryFriendListResult.observeForever {
+                executeResult(it)
+            }
+
+            queryFriendResult.observeForever {
+                executeResult(it)
+            }
+
+            queryFriendInfoResult.observeForever {
+                executeResult(it)
+            }
+
+            userRegisterResult.observeForever {
+                executeResult(it)
+            }
+
+            userLoginResult.observeForever {
+                executeResult(it)
+            }
+
+            userLogoutResult.observeForever {
+                executeResult(it)
+            }
+
+            updateUserResult.observeForever {
+                executeResult(it)
             }
         }
-
-
-        fun deleteUser(user: User) {
-            launch {
-
-            }
-        }
-
-
 
         fun insertUser(user: User) {
             launch {
@@ -103,14 +168,7 @@ class UserViewModel internal constructor(private val userRepository: UserReposit
             }
         }
 
-
-        private fun launch(block: suspend () -> Unit) = viewModelScope.launch {
-            try {
-                block()
-            } catch (t: Throwable) {
-                t.printStackTrace()
-            }
-        }
+        fun getUserId() = localUser.value?.userId?:-1
 
 }
 

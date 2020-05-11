@@ -3,13 +3,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/message"
-    app:startDestination="@id/userFragment2">
+    app:startDestination="@id/chatFragment">
+
+
+
+    <include app:graph="@navigation/login_and_register" />
+
 
 
     <fragment
-        android:id="@+id/userFragment2"
-        android:name="com.bignerdranch.travelcommunity.ui.user.UserFragment"
-        android:label="UserFragment"
-        tools:layout="@layout/fragment_mine"
-        />
+        android:id="@+id/chatFragment"
+        android:name="com.bignerdranch.travelcommunity.ui.user.ChatFragment"
+        android:label="fragment_chat"
+        tools:layout="@layout/fragment_chat" />
+
+    
+    <fragment
+        android:id="@+id/messageFragment"
+        android:name="com.bignerdranch.travelcommunity.ui.user.MessageFragment"
+        android:label="fragment_message"
+        tools:layout="@layout/fragment_message" >
+        <action
+            android:id="@+id/action_messageFragment_to_publish"
+            app:destination="@id/publish" />
+    </fragment>
+
+    <include app:graph="@navigation/publish" />
+
 </navigation>

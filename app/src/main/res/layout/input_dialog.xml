@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+
+
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_textContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:padding="5dp"
+            android:background="@drawable/bg_edittext_normal"
+            android:textSize="15sp"
+            android:hint="  留下你的评论呗..."
+           />
+
+
+
+
+        <TextView
+            android:id="@+id/submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/action_padding"
+            android:layout_marginEnd="@dimen/action_padding"
+            android:layout_gravity="center"
+            android:textAppearance="@style/UserCommentsText"
+            android:text="发送"
+            />
+    </LinearLayout>
+
+
+</layout>

@@ -8,9 +8,7 @@ import android.net.NetworkInfo
 import android.net.wifi.WifiManager
 import android.os.Parcelable
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import com.bignerdranch.travelcommunity.util.LogUtil
-import com.bignerdranch.travelcommunity.util.LogUtil.e
+import com.bignerdranch.tclib.LogUtil
 
 /**
  * @author zhongxinyu

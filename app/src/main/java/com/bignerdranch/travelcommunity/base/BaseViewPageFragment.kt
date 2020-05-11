@@ -33,13 +33,13 @@ abstract  class BaseViewPageFragment: Fragment(){
         val viewPager = binding.viewPager
 
 
-        viewPager.adapter = PageViewAdapter(this)
+      //  viewPager.adapter = PageViewAdapter(this)
 
-        // Set the icon and text for each tab
+   /*     // Set the icon and text for each tab
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.setIcon(getTabIcon(position))
             tab.text = getTabTitle(position)
-        }.attach()
+        }.attach()*/
       return  binding.root
     }
 

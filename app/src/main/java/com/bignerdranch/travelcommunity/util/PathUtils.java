@@ -17,6 +17,8 @@ import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 
 
+import androidx.annotation.RequiresApi;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
@@ -60,6 +62,7 @@ public class PathUtils {
     /**
      * 全平台处理方法
      */
+
     public static String getPath(final Context context, final Uri uri) throws Exception {
 
         final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;

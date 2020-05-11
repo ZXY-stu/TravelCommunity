@@ -16,8 +16,10 @@
 
 package com.bignerdranch.travelcommunity.ui
 
+import android.content.Context
 import android.content.Intent
 import android.util.SparseArray
+import android.view.View
 import androidx.core.util.forEach
 import androidx.core.util.set
 import androidx.fragment.app.FragmentManager
@@ -26,8 +28,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.bignerdranch.travelcommunity.R
-import com.bignerdranch.travelcommunity.util.LogUtil
+import com.bignerdranch.travelcommunity.base.BaseViewModel
+import com.bignerdranch.tclib.LogUtil
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import kotlinx.android.synthetic.main.activity_home_page.view.*
+
 
 /**
  * Manages the various graphs needed for a [BottomNavigationView].
@@ -42,6 +47,9 @@ fun BottomNavigationView.setupWithNavController(
 ): LiveData<NavController> {
 
     // Map of tags
+
+
+
     val graphIdToTagMap = SparseArray<String>()
     // Result. Mutable live data with the selected controlled
     val selectedNavController = MutableLiveData<NavController>()
@@ -92,55 +100,76 @@ fun BottomNavigationView.setupWithNavController(
     // When a navigation item is selected
     setOnNavigationItemSelectedListener { item ->
         // Don't do anything if the state is state has already been saved.
-        if (fragmentManager.isStateSaved) {
-            false
-        } else {
-            val newlySelectedItemTag = graphIdToTagMap[item.itemId]
-            if (selectedItemTag != newlySelectedItemTag) {
-                // Pop everything above the first fragment (the "fixed start destination")
-                //
-                fragmentManager.popBackStack(firstFragmentTag, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                val selectedFragment = fragmentManager.findFragmentByTag(newlySelectedItemTag)
-                    as NavHostFragment
 
-                // Exclude the first fragment tag because it's always in the back stack.
-                //排除第一个fragment，因为他总是存在返回堆栈中
-                if (firstFragmentTag != newlySelectedItemTag) {
-                    //提交一个事务，来清空返回堆栈并添加第一个fragment进入返回堆栈中，
-                    //以将第一个fragment作为下一次返回的目的地
-                    // Commit a transaction that cleans the back stack and adds the first fragment
-                    // to it, creating the fixed started destination.
-                    fragmentManager.beginTransaction()
-                        .setCustomAnimations(
-                            R.anim.nav_default_enter_anim,
-                            R.anim.nav_default_exit_anim,
-                            R.anim.nav_default_pop_enter_anim,
-                            R.anim.nav_default_pop_exit_anim)
-                        .attach(selectedFragment)
-                        .setPrimaryNavigationFragment(selectedFragment)
-                        .apply {
-                            // Detach all other Fragments
-                            graphIdToTagMap.forEach { _, fragmentTagIter ->
-                                if (fragmentTagIter != newlySelectedItemTag) {
-                                    detach(fragmentManager.findFragmentByTag(firstFragmentTag)!!)
-                                }
-                            }
-                        }
-                        .addToBackStack(firstFragmentTag)
-                        .setReorderingAllowed(true)
-                        .commit()
-                }
-                selectedItemTag = newlySelectedItemTag
-                isOnFirstFragment = selectedItemTag == firstFragmentTag
+           if (fragmentManager.isStateSaved) {
+               false
+           } else {
+               val newlySelectedItemTag = graphIdToTagMap[item.itemId]
+               if (selectedItemTag != newlySelectedItemTag) {
+                   // Pop everything above the first fragment (the "fixed start destination")
+                   //
+                   fragmentManager.popBackStack(
+                       firstFragmentTag,
+                       FragmentManager.POP_BACK_STACK_INCLUSIVE
+                   )
+                   val selectedFragment = fragmentManager.findFragmentByTag(newlySelectedItemTag)
+                           as NavHostFragment
+                   /*
+                * 进行登陆判断
+                * */
 
-                LogUtil.e(selectedFragment.navController.toString() +"zxzxx"+ selectedFragment.navController.currentDestination.toString())
-                selectedNavController.value = selectedFragment.navController
-                true
-            } else {
-                false
-            }
-        }
-    }
+                   with(selectedFragment.navController) {
+                       when (item.itemId) {
+                           R.id.mine, R.id.other, R.id.message -> {
+                               if (!BaseViewModel.userIsLogin)
+                                   navigate(R.id.login_and_register)
+                           }
+
+
+                       }
+                   }
+
+                   // Exclude the first fragment tag because it's always in the back stack.
+                   //排除第一个fragment，因为他总是存在返回堆栈中
+                   if (firstFragmentTag != newlySelectedItemTag) {
+                       //提交一个事务，来清空返回堆栈并添加第一个fragment进入返回堆栈中，
+                       //以将第一个fragment作为下一次返回的目的地
+                       // Commit a transaction that cleans the back stack and adds the first fragment
+                       // to it, creating the fixed started destination.
+                       fragmentManager.beginTransaction()
+                           .setCustomAnimations(
+                               R.anim.nav_default_enter_anim,
+                               R.anim.nav_default_exit_anim,
+                               R.anim.nav_default_pop_enter_anim,
+                               R.anim.nav_default_pop_exit_anim
+                           )
+                           .attach(selectedFragment)
+                           .setPrimaryNavigationFragment(selectedFragment)
+                           .apply {
+                               // Detach all other Fragments
+                               graphIdToTagMap.forEach { _, fragmentTagIter ->
+                                   if (fragmentTagIter != newlySelectedItemTag) {
+                                       detach(fragmentManager.findFragmentByTag(firstFragmentTag)!!)
+                                   }
+                               }
+                           }
+                           .addToBackStack(firstFragmentTag)
+                           .setReorderingAllowed(true)
+                           .commit()
+                   }
+                   selectedItemTag = newlySelectedItemTag
+                   isOnFirstFragment = selectedItemTag == firstFragmentTag
+
+                   selectedNavController.value = selectedFragment.navController
+
+
+                   true
+               } else {
+                   false
+               }
+           }
+       }
+
 
     // Optional: on item reselected, pop back stack to the destination of the graph
     setupItemReselected(graphIdToTagMap, fragmentManager)
@@ -259,3 +288,10 @@ private fun FragmentManager.isOnBackStack(backStackName: String): Boolean {
 }
 
 private fun getFragmentTag(index: Int) = "bottomNavigation#$index"
+
+//清空返回栈
+fun clearAndToHome(context: Context){
+    val intent = Intent(context,HomePageActivity::class.java)
+        .setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+    context.startActivity(intent)
+}

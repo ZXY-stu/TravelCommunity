@@ -15,11 +15,19 @@
         <action
             android:id="@+id/action_publishFragment_to_privateFragment"
             app:destination="@id/privateFragment" />
+
     </fragment>
 
     <fragment
         android:id="@+id/privateFragment"
         android:name="com.bignerdranch.travelcommunity.ui.dynamic.PrivateFragment"
         android:label="PrivateFragment" />
+
+    <include app:graph="@navigation/login_and_register" />
+
+    <action android:id="@+id/action_global_publishFragment" app:destination="@id/publishFragment"/>
+
+
+
 
 </navigation>

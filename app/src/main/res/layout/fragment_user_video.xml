@@ -13,29 +13,25 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".ui.dynamic.UserVideoFragment">
-
-
-
-
 
   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
       android:id="@+id/video_refresh"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      onDownPullRefresh="@{()->viewModel.videoRefresh()}"
-      >
 
+
+      >
           <androidx.recyclerview.widget.RecyclerView
               android:id="@+id/user_video_view"
               android:layout_width="match_parent"
+              android:overScrollMode="ifContentScrolls"
+              android:orientation="vertical"
               android:layout_height="match_parent"
               app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
               app:spanCount="1"
               tools:listitem="@layout/video_card" />
-
-
-
 
   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

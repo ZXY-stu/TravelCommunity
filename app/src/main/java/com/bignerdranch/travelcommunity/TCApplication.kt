@@ -4,8 +4,9 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.IntentFilter
-import android.net.ConnectivityManager
 import com.bignerdranch.travelcommunity.base.NetworkConnectChangedReceiver
+import com.bignerdranch.travelcommunity.videocache.HttpProxyCacheServer
+
 
 /**
  * @author zhongxinyu
@@ -29,10 +30,24 @@ class TCApplication : Application() {
     }
 
 
-
     companion object {
         @SuppressLint("StaticFieldLeak")
         lateinit var context: Context
+
+        private var proxy: HttpProxyCacheServer? = null
+
+        fun getProxy(): HttpProxyCacheServer {
+            return proxy?: synchronized(this){
+                proxy?: newProxy()
+            }
+        }
+
+        private fun newProxy():HttpProxyCacheServer{
+            return HttpProxyCacheServer.Builder(context)
+                .maxCacheFilesCount(5)
+                .maxCacheSize(1024*1024*1024)
+                .build()
+        }
     }
 
 

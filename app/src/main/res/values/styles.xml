@@ -13,9 +13,9 @@
     <style name="UserTabLayoutStyle" parent="Base.Widget.Design.TabLayout">
         <item name="tabBackground">@drawable/background</item>
         <item name="tabIndicatorColor">@color/tab_line</item>
-        <item name="alpha">0.1</item>
+        <item name="alpha">1</item>
         <item name="tabIndicatorHeight">1dp</item>
-        <item name="tabSelectedTextColor">@color/white</item>
+        <item name="tabSelectedTextColor">@color/black</item>
         <item name="android:textSize">30sp</item>
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/tab_unSelect_color</item>
@@ -24,7 +24,7 @@
 <style name="UserNavigationStyle" parent="Widget.MaterialComponents.BottomNavigationView">
     <item name="enforceTextAppearance">true</item>
     <item name="enforceMaterialTheme">true</item>
-    <item name="android:background">@color/black</item>
+    <item name="android:background">@color/white</item>
     <item name="itemBackground">@color/black</item>
     <item name="itemHorizontalTranslationEnabled">false</item>
     <item name="itemIconTint">@color/red</item>
@@ -35,22 +35,70 @@
 
 </style>
 
-
-    <style name="AppTheme.TransparentStatusBar.light" parent="Theme.MaterialComponents.Light">
-        <item name="windowActionBar">false</item>								//取消系统默认的actionBar
+    <style name="Com.TravelCommunity.Dark" parent="Theme.AppCompat.NoActionBar">
+        <item name="windowActionBar">true</item>								//取消系统默认的actionBar
         <item name="windowNoTitle">true</item>									//取消actionBar的标题
-        <item name="android:windowTranslucentStatus">false</item>				//允许页面可以拉伸到顶部状态栏并且定义顶部状态栏透明，安卓4.4才有
+        <item name="android:windowTranslucentStatus">true</item>				//允许页面可以拉伸到顶部状态栏并且定义顶部状态栏透明，安卓4.4才有
         <item name="android:windowTranslucentNavigation">true</item>			//设置虚拟键透明
-        <item name="android:statusBarColor">@android:color/transparent</item>	//设置状态栏的颜色为透明
+       <item name="android:windowBackground">@color/white</item>
+
     </style>
 
-    <style name="AppTheme.TransparentStatusBar.dark" parent="Theme.AppCompat.NoActionBar">
-        <item name="windowActionBar">false</item>								//取消系统默认的actionBar
+
+    <style name="Com.TravelCommunity.Light" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <!--顶部导航栏或者状态栏底色-->
+        <item name="colorPrimary">@color/white</item>
+        <!--状态栏底色-->
+        <item name="colorPrimaryDark">@color/white</item>
+
+        <!--导航栏上的标题颜色,这里的颜色还可以自己定义喜欢的类型-->
+        <item name="android:textColorPrimary">@color/white</item>
+        <!--Activity窗口的颜色,注意：这个颜色值要通过color属性引进来-->
+        <item name="android:windowBackground">@color/white</item>
+        <item name="backgroundColor">@color/white</item>
+        <!--按钮选中或者点击获得焦点后的颜色-->
+        <item name="colorAccent">@color/white</item>
+        <!--和 colorAccent相反，正常状态下按钮的颜色,如果我们的colorPrimary是深色，一般设置这里为白色-->
+        <item name="colorControlNormal">#fff</item>
+        <!--Button按钮正常状态颜色,根据项目来定义-->
+        <item name="colorButtonNormal">@color/gray</item>
+        <!--EditText 输入框中字体的颜色，colorPrimary如果设置深色，一般字体设置为白色-->
+        <item name="editTextColor">@android:color/white</item>
+
+        <item name="windowActionBar">true</item>								//取消系统默认的actionBar
         <item name="windowNoTitle">true</item>									//取消actionBar的标题
-        <item name="android:windowTranslucentStatus">false</item>				//允许页面可以拉伸到顶部状态栏并且定义顶部状态栏透明，安卓4.4才有
+        <item name="android:windowTranslucentStatus">true</item>				//允许页面可以拉伸到顶部状态栏并且定义顶部状态栏透明，安卓4.4才有
         <item name="android:windowTranslucentNavigation">true</item>			//设置虚拟键透明
-        <item name="android:statusBarColor">@android:color/transparent</item>	//设置状态栏的颜色为透明
     </style>
+
+
+
+
+    <!--style name="PictureChooseStyle" parent="Theme.AppCompat.NoActionBar">
+
+
+            <item name="colorPrimary">@color/backgroud_color</item>
+            <item name="colorPrimaryDark">@color/backgroud_color</item>
+            <item name="toolbar">@style/Toolbar.Dracula</item>
+            <item name="album.title.color">@color/dracula_album_title_text</item>
+            <item name="album.count.color">@color/dracula_album_count_text</item>
+            <item name="album.selected">@android:color/white</item>
+            <item name="album.placeholder">@color/dracula_album_placeholder</item>
+            <item name="album.emptyView">@drawable/ic_empty_dracula</item>
+            <item name="album.emptyView.color">@color/dracula_empty_view</item>
+            <item name="item.placeholder">@color/dracula_item_placeholder</item>
+            <item name="page.bg">@color/dracula_page_bg</item>
+            <item name="bottomToolbar.bg">@color/backgroud_color</item>
+            <item name="bottomToolbar.preview.color">@color/white</item>
+            <item name="bottomToolbar.apply.color">@android:color/holo_blue_bright</item>
+            <item name="android:listPopupWindowStyle">@style/Popup.Dracula</item>
+            <item name="listPopupWindowStyle">@style/Popup.Dracula</item>
+            <item name="capture.color">@color/dracula_capture</item>
+
+
+    </style-->
+
 
     <style name="UserAppbarLayout" parent="Widget.Design.AppBarLayout">
 
@@ -65,23 +113,47 @@
 
     </style>
 
+    <style name="UserPageText" parent="TextAppearance.AppCompat.Body1">
+
+        <item name="android:textColor"> @color/divider </item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <style name="action_text" parent="TextAppearance.MaterialComponents.Body2">
+
+        <item name="android:textColor"> @color/gray </item>
+       <item name="android:textSize">@dimen/action_text</item>
+    </style>
+
     <style name="UserCommentsText"  parent="TextAppearance.MaterialComponents.Body2">
 
-        <item name="android:textColor"> @color/gray</item>
+        <item name="android:textColor"> @color/black</item>
         <item name="android:textSize">@dimen/commentsText</item>
 
     </style>
 
     <style name="HomeTabText"  parent="TextAppearance.MaterialComponents.Body2">
 
-        <item name="android:textColor"> @color/white</item>
+        <item name="android:textColor">@color/divider</item>
         <item name="android:textSize">@dimen/TabText</item>
         <item name="android:textStyle">bold</item>
 
     </style>
 
     <dimen name="commentsText">15dp</dimen>
-    <dimen name="TabText">20dp</dimen>
+    <dimen name="TabText">16dp</dimen>
+    <dimen name="action_text">10dp</dimen>
+
+
+
+    <style name="MyProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:maxHeight">50dip</item>
+        <item name="android:minHeight">10dip</item>
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
+        <item name="android:progressDrawable">@drawable/progress</item>
+    </style>
 
 
     <style name="publish_editText_style" parent="Theme.AppCompat.Light">
@@ -111,6 +183,168 @@
 
         <!--被选中时下划线的颜色-->
         <item name="android:textCursorDrawable">@drawable/cursor_color</item>
+    </style>
+
+
+
+    <style name="Widget.App.ActionButton" parent="@style/Widget.AppCompat.ActionButton">
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="Preference_Text" >
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+
+    <style name="menu_labels_style">
+        <item name="android:background">@drawable/fab_label_background</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="FullscreenTheme" parent="Theme.App.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+
+
+
+    <style name="Theme.App.NoActionBar" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="actionButtonStyle">@style/Widget.App.ActionButton</item>
+    </style>
+
+
+
+    <style name="MediaButtonCompat">
+        <item name="android:background">@null</item>
+        <item name="android:layout_width">71dip</item>
+        <item name="android:layout_height">52dip</item>
+    </style>
+
+    <style name="MediaButtonCompat.Previous">
+        <item name="android:src">@mipmap/vvc_ic_media_previous</item>
+    </style>
+
+    <style name="MediaButtonCompat.Next">
+        <item name="android:src">@mipmap/vvc_ic_media_next</item>
+    </style>
+
+    <style name="MediaButtonCompat.Play">
+        <item name="android:src">@mipmap/vvc_ic_media_play</item>
+    </style>
+
+    <style name="MediaButtonCompat.Ffwd">
+        <item name="android:src">@mipmap/vvc_ic_media_ff</item>
+    </style>
+
+    <style name="MediaButtonCompat.Rew">
+        <item name="android:src">@mipmap/vvc_ic_media_rew</item>
+    </style>
+
+    <style name="MediaButtonCompat.Pause">
+        <item name="android:src">@mipmap/vvc_ic_media_pause</item>
+    </style>
+
+    <style name="AppThemeNoTitleBar" parent="Theme.AppCompat.Light.NoActionBar">
+    </style>
+
+    <!--播放器进度条的styles-->
+    <style name="SeekBarAppTheme">
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:focusable">true</item>
+        <item name="android:progressDrawable">
+            @drawable/jky_player_progressbar
+        </item>
+        <item name="android:thumb">@drawable/ic_circles</item>
+        <item name="android:minHeight">5dip</item>
+        <item name="android:maxHeight">5dip</item>
+        <item name="android:paddingLeft">5.0dip</item>
+        <item name="android:paddingRight">5.0dip</item>
+    </style>
+
+
+    <style name="MyAnimDialog" parent="android:Theme.Dialog">
+        <!-- 背景颜色及透明程度 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 是否半透明 -->
+        <item name="android:windowIsTranslucent">false</item>
+        <!-- 是否没有标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 是否浮现在activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 是否背景模糊 -->
+        <item name="android:backgroundDimEnabled">false</item>
+        <!-- 设置背景模糊的透明度-->
+        <item name="android:backgroundDimAmount">0.5</item>
+        <!-- 动画 -->
+        <item name="android:windowAnimationStyle">@style/dialog_animation_bottom</item>
+    </style>
+
+
+    <style name="DialogFullScreen" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <!--导航栏底色-->
+        <item name="colorPrimary">#FFFFFF</item>
+        <!--状态栏底色-->
+        <item name="colorPrimaryDark">#FFFFFF</item>
+
+        <!--导航栏上的标题颜色,这里的颜色还可以自己定义喜欢的类型-->
+        <item name="android:textColorPrimary">@color/white</item>
+
+        <item name="android:background">@color/white</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <!--Activity窗口的颜色,注意：这个颜色值要通过color属性引进来-->
+        <item name="android:windowBackground">@color/white</item>
+        <!--按钮选中或者点击获得焦点后的颜色-->
+        <item name="colorAccent">@color/white</item>
+        <!--和 colorAccent相反，正常状态下按钮的颜色,如果我们的colorPrimary是深色，一般设置这里为白色-->
+        <item name="colorControlNormal">#fff</item>
+        <!--Button按钮正常状态颜色,根据项目来定义-->
+        <item name="colorButtonNormal">@color/gray</item>
+        <!--EditText 输入框中字体的颜色，colorPrimary如果设置深色，一般字体设置为白色-->
+        <item name="editTextColor">@android:color/white</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="windowActionBar">true</item>								//取消系统默认的actionBar
+        <item name="windowNoTitle">true</item>									//取消actionBar的标题
+        <item name="android:windowTranslucentStatus">true</item>				//允许页面可以拉伸到顶部状态栏并且定义顶部状态栏透明，安卓4.4才有
+        <item name="android:windowTranslucentNavigation">true</item>			//设置虚拟键透明
+
+    </style>
+
+    <style name="DialogFullScreen_Bottom" parent="DialogFullScreen">
+        <!-- 动画 -->
+        <item name="android:windowAnimationStyle">@style/dialog_animation_bottom</item>
+    </style>
+
+
+    <style name="DialogFullScreen_Right" parent="DialogFullScreen">
+        <!-- 动画 -->
+        <item name="android:windowAnimationStyle">@style/dialog_animation_right</item>
+    </style>
+
+    <!-- 对话框显示和退出动画 -->
+    <style name="dialog_animation_bottom">
+        <item name="android:windowEnterAnimation">@anim/dialog_bottom_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_bottom_exit</item>
+    </style>
+
+    <!-- 对话框显示和退出动画 -->
+    <style name="dialog_animation_right">
+        <item name="android:windowEnterAnimation">@anim/dialog_right_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_right_exit</item>
     </style>
 
 </resources>

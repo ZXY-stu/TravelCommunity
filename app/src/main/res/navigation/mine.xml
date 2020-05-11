@@ -4,17 +4,31 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mine"
-    app:startDestination="@id/userFragment14">
+    app:startDestination="@id/userFragment">
 
     <fragment
-        android:id="@+id/userFragment14"
+        android:id="@+id/userFragment"
         android:name="com.bignerdranch.travelcommunity.ui.user.UserFragment"
         android:label="UserFragment"
         tools:layout="@layout/fragment_mine"
-    />
+    >
+        <action
+            android:id="@+id/action_userFragment_to_login_and_register"
+            app:destination="@id/login_and_register"
+            app:popUpTo="@id/login_and_register"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_userFragment_to_publish"
+            app:destination="@id/publish" />
+
+    </fragment>
 
 
     <include app:graph="@navigation/login_and_register" />
+
+    <include app:graph="@navigation/video_action" />
+
+    <include app:graph="@navigation/publish" />
 
 
 </navigation>

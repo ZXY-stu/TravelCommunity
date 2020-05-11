@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_to_video"
+    app:startDestination="@id/userFragment">
+
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.bignerdranch.travelcommunity.ui.user.UserFragment"
+        android:label="userFragment"
+        tools:layout="@layout/fragment_mine"
+        >
+
+        <action
+            android:id="@+id/action_userFragment_to_videoFragment"
+            app:destination="@id/videoFragment" />
+        <argument
+            android:name="userId"
+            app:argType="integer" />
+
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="www.travelCommunity.user/{userId}" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/videoFragment"
+        android:name="com.bignerdranch.travelcommunity.ui.dynamic.HomePageVideoFragment"
+        android:label="VideoFragment"
+        tools:layout="@layout/homepage_video_fragment">
+
+        <deepLink
+            android:id="@+id/deepLink"
+            app:uri="www.travelCommunity.dynamic/{dynamicId}" />
+
+        <argument
+            android:name="dynamicId"
+            app:argType="integer"
+            android:defaultValue="0" />
+
+        <argument
+            android:name="userId"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <action
+            android:id="@+id/action_videoFragment_to_userFragment"
+            app:destination="@id/userFragment" />
+
+    </fragment>
+
+</navigation>

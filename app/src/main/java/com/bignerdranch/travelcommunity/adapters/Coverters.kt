@@ -24,4 +24,9 @@ object Coverters {
         return date.toString()
     }
 
+    @JvmStatic fun getFristUrlfromString(imageUrl:String):String{
+        return imageUrl
+    }
+
+
 }

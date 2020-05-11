@@ -1,12 +1,22 @@
 package com.bignerdranch.travelcommunity.ui.user
 
+import android.content.Context
 import android.os.Bundle
+import android.view.*
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.observe
+import androidx.recyclerview.widget.RecyclerView
+import com.bignerdranch.tclib.data.db.entity.PersonDynamic
 import com.bignerdranch.travelcommunity.R
+import com.bignerdranch.travelcommunity.base.BaseFragment
+import com.bignerdranch.travelcommunity.databinding.FragmentMessageBinding
+import com.bignerdranch.travelcommunity.ui.adapters.VideoViewAdapter
+import com.bignerdranch.travelcommunity.util.InjectorUtils
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -18,44 +28,37 @@ private const val ARG_PARAM2 = "param2"
  * Use the [MessageFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MessageFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class MessageFragment( override val needLogin: Boolean = false,
+                       override val layoutId: Int = R.layout.fragment_message)
+    : BaseFragment<FragmentMessageBinding>() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    private val _viewModel by activityViewModels<UserViewModel> {
+        InjectorUtils.userViewModelFactory(requireContext())
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_message, container, false)
+            super.onCreateView(inflater, container, savedInstanceState)
+
+           return   inflater.inflate(layoutId,container,false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MessageFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MessageFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun initImmersionBar() {
     }
+
+
+
+   /* override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
+        if (enter) {
+            return AnimationUtils.loadAnimation(getActivity(), R.anim.slide_in_right);
+        } else {
+            return AnimationUtils.loadAnimation(getActivity(), R.anim.slide_out_right);
+        }
+
+    }*/
+
+
 }

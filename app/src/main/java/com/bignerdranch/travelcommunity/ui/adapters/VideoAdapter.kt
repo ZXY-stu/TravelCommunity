@@ -1,16 +1,14 @@
 package com.bignerdranch.travelcommunity.ui.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.adapters.ViewBindingAdapter.setClickListener
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bignerdranch.travelcommunity.data.db.entity.SimpleVideoData
-import com.bignerdranch.travelcommunity.databinding.RecycleviewFootStyleBinding
+import com.bignerdranch.tclib.data.db.entity.SimpleVideoData
+import com.bignerdranch.travelcommunity.databinding.ImageitemBinding
 import com.bignerdranch.travelcommunity.databinding.VideoCardBinding
-import com.bignerdranch.travelcommunity.util.LogUtil
-import java.lang.IllegalStateException
 
 /**
  * @author zhongxinyu
@@ -18,17 +16,20 @@ import java.lang.IllegalStateException
  * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
  **/
 
-class VideoAdapter: ListAdapter<SimpleVideoData,RecyclerView.ViewHolder>(VideoDiffCallback()) {
+class VideoAdapter: ListAdapter<String,RecyclerView.ViewHolder>(VideoDiffCallback()) {
 
     companion object ViewType{
-        private val REFRESH_VIEW = 1
-        private val VIDIEO_VIEW = 2
+        private const val REFRESH_VIEW = 1
+        private const val VIDEO_VIEW = 2
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            VIDIEO_VIEW  -> VideoViewHolder(
-                VideoCardBinding.inflate(
-                    LayoutInflater.from(parent.context), parent, false
+      return   VideoViewHolder(ImageitemBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        ))
+      /*  return when (viewType) {
+            VIDEO_VIEW  -> VideoViewHolder(VideoCardBinding.inflate(
+                     LayoutInflater.from(parent.context), parent, false
                 ))
             REFRESH_VIEW   ->{
                  RefreshViewHolder(RecycleviewFootStyleBinding.inflate(
@@ -36,74 +37,61 @@ class VideoAdapter: ListAdapter<SimpleVideoData,RecyclerView.ViewHolder>(VideoDi
                  ))
              }
             else -> throw IllegalStateException("VideoAdapter View ERROR")
-        }
+        }*/
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val video = getItem(position)
         if(video!=null) {
-            if(holder is VideoViewHolder)  holder.bind(video)
+            (holder as VideoViewHolder).bind(video)
         }
-        else  (holder as RefreshViewHolder).bind("正在加载...")
+      //  else  (holder as RefreshViewHolder).bind("正在加载...")
     }
 
-    override fun getItemViewType(position: Int): Int {
-         return if(currentList.get(position)==null) REFRESH_VIEW else VIDIEO_VIEW
-    }
+    /*override fun getItemViewType(position: Int): Int {
+         return if(currentList.get(position)==null) REFRESH_VIEW else VIDEO_VIEW
+    }*/
 
-  class RefreshViewHolder(private val binding: RecycleviewFootStyleBinding)
+  /*class RefreshViewHolder(private val binding: RecycleviewFootStyleBinding)
       :RecyclerView.ViewHolder(binding.root){
+
       fun bind(item:String) {
           binding.apply {
               state = item
               executePendingBindings()
           }
       }
-  }
+  }*/
 
-    class VideoViewHolder(private  val binding:VideoCardBinding)
-        : RecyclerView.ViewHolder(binding.root)
-    {
+    class VideoViewHolder(private  val binding:ImageitemBinding)
+        : RecyclerView.ViewHolder(binding.root) {
          init {
-             binding.setClickListener {
-                binding.video?.let {  video ->
-                       navigateToVideo(video,it)
-                }
+
+             with(binding) {
+
              }
          }
-
-        fun navigateToVideo(video:SimpleVideoData,
-                            view: View) {
-
-        }
-         fun  bind(itme:SimpleVideoData){
+         fun  bind(item:String){
             binding.apply {
-                video = itme
+                url = item
                 executePendingBindings()
             }
         }
     }
 
-
-
-
-    private class VideoDiffCallback : DiffUtil.ItemCallback<SimpleVideoData>() {
-
+    private class VideoDiffCallback : DiffUtil.ItemCallback<String>() {
         override fun areItemsTheSame(
-            oldItem: SimpleVideoData,
-            newItem: SimpleVideoData
+            oldItem: String,
+            newItem: String
         ): Boolean {
-            return  oldItem.dynamicId == newItem.dynamicId
+            return  oldItem == newItem
         }
 
         override fun areContentsTheSame(
-            oldItem: SimpleVideoData,
-            newItem: SimpleVideoData
+            oldItem: String,
+            newItem: String
         ): Boolean {
             return oldItem== newItem
         }
     }
-
-
-
 }

@@ -3,7 +3,7 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
-    <color name="tab_select_color">#ffffff</color>
+    <color name="tab_select_color">#000000</color>
     <color name="tab_unSelect_color">#616060</color>
     <color name="article_read_color">#969696</color>
     <color name="article_unread_color">#c8c8c8</color>
@@ -18,9 +18,47 @@
     <color name="tab_line">#FAEDB200</color>
     <color name="blue">#0000ff</color>
     <color name="black">#000000</color>
+    <color name="backgroud_color">#F8F5F5</color>
     <color name="white">#ffffff</color>
     <color name="gray">#c8c8c8</color>
     <color name="yellow">#FAEDB200</color>
+
+
+
+
+
+    /**/
+
+    <color name="bg">#F6F6F6</color>
+    <color name="textColor">#4D4D4D</color>
+    <color name="tra">#00000000</color>
+    <color name="black_semi_transparent">#B2000000</color>
+
+    <color name="white44">#44FFFFFF</color>
+    <color name="fab_pressed_main">#3EBBDB</color>
+    <color name="fab_pressed_son">#1C8D87</color>
+    <color name="ripple_color">#A0A0A0</color>
+
+    <color name="ijk_color_blue_main">@color/ijk_color_blue_500</color>
+    <color name="ijk_color_blue_50">#E3F2FD</color>
+    <color name="ijk_color_blue_100">#BBDEFB</color>
+    <color name="ijk_color_blue_200">#90CAF9</color>
+    <color name="ijk_color_blue_300">#64B5F6</color>
+    <color name="ijk_color_blue_400">#42A5F5</color>
+    <color name="ijk_color_blue_500">#2196F3</color>
+    <color name="ijk_color_blue_600">#1E88E5</color>
+    <color name="ijk_color_blue_700">#1976D2</color>
+    <color name="ijk_color_blue_800">#1565C0</color>
+    <color name="ijk_color_blue_900">#0D47A1</color>
+
+    <color name="ijk_transparent_dark">#77000000</color>
+    <color name="colorOverlay">#50ffffff</color>
+    <color name="transparent">#00000000</color>
+
+    <color name="dim_foreground_dark">#bebebe</color>
+
+    <color name="progressBar">#1C8D87</color>
+    <color name="secondaryProgressBar">#441C8D87</color>
 </resources>
 
 

@@ -5,12 +5,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <import type="com.bignerdranch.travelcommunity.adapters.Coverters"/>
-        <variable
-            name="clickListener"
-            type="android.view.View.OnClickListener" />
        <variable
            name="personDynamic"
-           type="com.bignerdranch.travelcommunity.data.db.entity.PersonDynamic" />
+           type="com.bignerdranch.tclib.data.db.entity.PersonDynamic" />
+
         <variable
             name="viewModel"
             type="com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel" />
@@ -19,35 +17,24 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="5dp"
         app:cardElevation="5dp"
         android:layout_margin="5dp"
         app:cardMaxElevation="2dp"
-        app:contentPadding="2dp">
+        app:cardBackgroundColor="@color/backgroud_color"
+        app:contentPadding="2dp"
+        app:cardCornerRadius="5dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:onClick="@{clickListener}">
-
-            <!--VideoView
-            android:id="@+id/videoView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0"
-           /-->
-
+        >
 
             <ImageView
-                imageFromUrl="@{personDynamic.imageUrls}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
+                android:src="@mipmap/abc"
+                imageFromUrl="@{personDynamic.imageUrls}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -67,11 +54,13 @@
                     android:layout_margin="@dimen/userPage_textMargin"
                     android:orientation="horizontal"
                     >
+
                 <TextView
-                    android:id="@+id/nickName"
+                    android:id="@+id/topNickName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/UserDescriptionText"
+                    android:hint="太好了"
                     android:text="@{personDynamic.userNickName}"
                     />
 
@@ -79,13 +68,16 @@
                     android:id="@+id/submitsTime"
                     android:layout_marginStart="@dimen/userPage_textMargin"
                     android:layout_width="match_parent"
+                    android:hint="09.30"
                     android:layout_height="wrap_content"
-                    android:text="@{Coverters.fromDateToString(personDynamic.submitsTime)}"
+                    android:text="@{personDynamic.submitsTime}"
                     />
             </LinearLayout>
+
                 <TextView
                     android:id="@+id/description"
                     android:layout_margin="@dimen/userPage_textMargin"
+                    android:hint="这事儿过于神奇！"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@{personDynamic.textContent}"
@@ -98,8 +90,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_marginBottom="8dp"
-                android:src="@mipmap/abc"
-                android:onClick="@{()->viewModel.toUserPage()}"
+                android:src="@drawable/abc"
                 imageFromUrl="@{personDynamic.headPortraitUrl}"
                 app:layout_constraintBottom_toTopOf="@+id/like"
                 app:layout_constraintEnd_toEndOf="@+id/like"
@@ -112,7 +103,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="@{Coverters.fromIntToString(personDynamic.likesCount)}"
+                android:text="@{personDynamic.likesCount}"
                 app:layout_constraintBottom_toTopOf="@+id/comments"
                 app:layout_constraintEnd_toEndOf="@+id/comments"
                 app:layout_constraintStart_toStartOf="@+id/comments" />
@@ -123,7 +114,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
                 android:src="@mipmap/like"
-                android:onClick="@{()->viewModel.toAddLike(personDynamic.userId)}"
                 app:layout_constraintBottom_toTopOf="@+id/likeCount"
                 app:layout_constraintEnd_toEndOf="@+id/likeCount"
                 app:layout_constraintStart_toStartOf="@+id/likeCount" />
@@ -143,7 +133,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
-                android:layout_marginRight="5dp"
                 android:layout_marginBottom="30dp"
                 android:src="@mipmap/share"
                 app:layout_constraintBottom_toTopOf="@+id/linearLayout"
@@ -151,13 +140,13 @@
                 app:layout_constraintHorizontal_bias="0.953"
                 app:layout_constraintStart_toStartOf="parent" />
 
-<!--Coverters.fromIntToString(personDynamic.commentsCount)-->
+
             <TextView
                 android:id="@+id/commentsCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"
-                android:text="@{Coverters.fromIntToString(personDynamic.commentsCount)}"
+                android:text="@{personDynamic.commentsCount}"
                 app:layout_constraintBottom_toTopOf="@+id/share"
                 app:layout_constraintEnd_toEndOf="@+id/share"
                 app:layout_constraintStart_toStartOf="@+id/share" />
@@ -167,7 +156,7 @@
                 android:layout_width="50dp"
                 android:layout_height="20dp"
                 android:layout_marginBottom="8dp"
-                android:src="@mipmap/add"
+                android:src="@drawable/add_friend"
                 app:layout_constraintBottom_toTopOf="@+id/like"
                 app:layout_constraintEnd_toEndOf="@+id/headUrl"
                 app:layout_constraintStart_toStartOf="@+id/headUrl" />

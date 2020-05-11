@@ -23,48 +23,51 @@
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/app_bar_layout"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
+            android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             >
 
 
 
-
-            <!-- Override tabIconTint attribute of style with selector -->
-            <com.google.android.material.tabs.TabLayout
-                android:id="@+id/tabs"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/UserTabLayoutStyle"
-               >
-            </com.google.android.material.tabs.TabLayout>
-
-        </com.google.android.material.appbar.AppBarLayout>
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/userToolbar"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:background="@android:color/transparent"
-            app:contentInsetStartWithNavigation="0dp"
-            app:layout_collapseMode="pin"
-
-            app:navigationIcon="@drawable/back_white" >
+            android:layout_height="@dimen/toolbarHeight"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:contentInsetEnd="0dp"
+            app:maxButtonHeight="20dp"
+            app:titleMargin="0dp"
+            >
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
+                android:layout_marginEnd="@dimen/userPage_textMargin"
+                android:layout_marginStart="@dimen/userPage_textMargin"
+
                 >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/userPage_textMargin"
+                    android:background="@drawable/live"
+                    />
+
+
                 <TextView
                     android:id="@+id/textView10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/HomeTabText"
                     android:layout_weight="1"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/userPage_textMargin"
-                    android:text="@string/MyFocus"
+                    android:text="攻略"
                    />
 
                 <TextView
@@ -75,20 +78,28 @@
                     android:layout_weight="1"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/userPage_textMargin"
-                    android:text="@string/recommand"
+                    android:text="游记"
                     />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0"
+                <TextView
+                    android:layout_width="@dimen/action_pic_size"
+                    android:layout_height="@dimen/action_pic_size"
                     android:layout_gravity="center"
                     android:layout_margin="@dimen/userPage_textMargin"
-                    android:src="@drawable/search"
+                    android:background="@drawable/search"
                     />
 
             </LinearLayout>
         </androidx.appcompat.widget.Toolbar>
+
+
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:tabTextColor="@color/black"/>
+        </com.google.android.material.appbar.AppBarLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

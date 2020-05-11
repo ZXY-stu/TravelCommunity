@@ -2,7 +2,7 @@ package com.bignerdranch.travelcommunity.ui.dynamic.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.bignerdranch.travelcommunity.data.repository.PersonDynamicRepository
+import com.bignerdranch.tclib.data.repository.PersonDynamicRepository
 
 /**
  * @author zhongxinyu

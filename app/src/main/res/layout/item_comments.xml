@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+<data>
+
+    <variable
+        name="comments"
+        type="com.bignerdranch.tclib.data.db.entity.CommentsMsg" />
+
+    <variable
+        name="viewModel"
+        type="com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel" />
+</data>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/lineItem"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:background="@color/white"
+   android:layout_margin="@dimen/userPage_layout_margin"
+    >
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/user_head"
+        android:layout_width="@dimen/head_size"
+        android:layout_height="@dimen/head_size"
+        android:src="@drawable/abc"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/userNickName"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/userNickName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="17dp"
+        android:layout_marginBottom="16dp"
+        android:hint="杀猪饲料"
+        android:text="@{comments.userNickName}"
+        app:layout_constraintBottom_toBottomOf="@+id/user_head"
+        app:layout_constraintStart_toEndOf="@+id/user_head" />
+
+    <TextView
+        android:id="@+id/content"
+        content="@{comments}"
+        android:layout_width="260dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textAppearance="@style/UserCommentsText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/userNickName" />
+
+    <TextView
+        android:id="@+id/author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:background="@android:color/holo_red_light"
+        android:text="作者"
+        android:textAppearance="@style/UserDescriptionText"
+        visibleGone="@{comments.user_id == viewModel.localUser.userId}"
+        app:layout_constraintStart_toEndOf="@+id/userNickName"
+        app:layout_constraintTop_toTopOf="@+id/userNickName" />
+
+    <TextView
+        android:id="@+id/like"
+        android:layout_width="@dimen/action_pic_size"
+        android:layout_height="@dimen/action_pic_size"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toEndOf="@+id/textView7"
+        app:layout_constraintStart_toStartOf="@+id/textView7"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@drawable/like" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="4dp"
+        android:text="1234"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/like"
+        app:layout_constraintVertical_bias="1.0" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

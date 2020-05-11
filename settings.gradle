@@ -1,2 +1,5 @@
 rootProject.name='TravelCommunity'
 include ':app'
+include ':baseModule'
+include ':ijkplayer-java'
+include ':lib2'

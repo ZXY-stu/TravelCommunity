@@ -27,15 +27,52 @@
         android:id="@+id/HomePageFragment"
         android:name="com.bignerdranch.travelcommunity.ui.dynamic.HomePageFragment"
         android:label="HomePageFragment"
+
         tools:layout="@layout/fragment_video_view_page"
         >
+
+        <action
+            android:id="@+id/action_HomePageFragment_to_commentsFragment3"
+            app:destination="@id/commentsFragment3" />
+        <action
+            android:id="@+id/action_HomePageFragment_to_login_and_register2"
+            app:destination="@id/login_and_register" />
+
+        <action
+            android:id="@+id/action_HomePageFragment_to_list_to_video"
+            app:destination="@id/list_to_video" />
+        <action
+            android:id="@+id/action_HomePageFragment_to_messageFragment2"
+            app:destination="@id/messageFragment2" />
+        <action
+            android:id="@+id/action_HomePageFragment_to_publish2"
+            app:destination="@id/publish" />
+
+
     </fragment>
 
 
+    <fragment
+        android:id="@+id/commentsFragment3"
+        android:name="com.bignerdranch.travelcommunity.ui.dynamic.CommentsDialog"
+        android:label="CommentsFragment"
+        tools:layout="@layout/fragment_message"
+        />
 
 
 
+    <include app:graph="@navigation/login_and_register" />
 
+    <include app:graph="@navigation/video_action" />
+
+    <fragment
+        android:id="@+id/messageFragment2"
+        android:name="com.bignerdranch.travelcommunity.ui.user.MessageFragment"
+        android:label="MessageFragment"
+        tools:layout="@layout/fragment_message"
+        />
+
+    <include app:graph="@navigation/publish" />
 
 
 </navigation>

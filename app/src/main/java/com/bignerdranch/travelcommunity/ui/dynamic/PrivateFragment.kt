@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils
 import androidx.navigation.fragment.findNavController
 
 import com.bignerdranch.travelcommunity.R
+import com.bignerdranch.travelcommunity.base.BaseDialogFragment
 import com.bignerdranch.travelcommunity.base.BaseFragment
 import com.bignerdranch.travelcommunity.databinding.FragmentPrivateBinding
 import kotlinx.android.synthetic.main.mytitle.view.*
@@ -24,15 +25,16 @@ private const val ARG_PARAM2 = "param2"
  * Use the [PrivateFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class PrivateFragment: BaseFragment<FragmentPrivateBinding>() {
+class PrivateFragment(
+    override val windowHeight: Double = 2.0,
+    override val themeResId: Int = R.style.DialogFullScreen
+) : BaseDialogFragment<FragmentPrivateBinding>() {
 
 
     override val layoutId: Int = R.layout.fragment_private
+    override val needLogin: Boolean = false
 
 
-    override fun initImmersionBar() {
-
-    }
 
     override fun onCreateAnimation(transit: Int, enter: Boolean, nextAnim: Int): Animation? {
         if (enter) {
@@ -47,14 +49,13 @@ class PrivateFragment: BaseFragment<FragmentPrivateBinding>() {
         savedInstanceState: Bundle?
     ): View? {
              super.onCreateView(inflater, container, savedInstanceState)
-
             return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         binding.privateToolbar.publicToolbar.setNavigationOnClickListener {
-            findNavController().popBackStack(R.id.publishFragment,false)
+            dismiss()
         }
     }
 

@@ -1,15 +1,11 @@
 package com.bignerdranch.travelcommunity.base
 
-import android.app.Activity
 import android.content.Context
-import android.content.res.TypedArray
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
-import androidx.navigation.findNavController
 import com.bignerdranch.travelcommunity.R
-import com.bignerdranch.travelcommunity.util.LogUtil
 import kotlinx.android.synthetic.main.mytitle.view.*
 
 

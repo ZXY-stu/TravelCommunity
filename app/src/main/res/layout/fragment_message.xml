@@ -1,14 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.user.MessageFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+  <data>
+      <variable
+          name="viewModel"
+          type="com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel" />
+
+      <variable
+          name="dynamic"
+          type="com.bignerdranch.tclib.data.db.entity.PersonDynamic" />
+
+  </data>
+
+<androidx.cardview.widget.CardView
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+
+ app:cardCornerRadius="5dp"
+ app:cardElevation="5dp"
+>
+
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+          android:orientation="vertical"
+        android:background="@color/white"
+        >
 
-</FrameLayout>
+
+
+           <LinearLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_margin="5dp"
+               >
+
+
+           <TextView
+               android:layout_width="0dp"
+               android:layout_height="wrap_content"
+               android:textColor="@color/black"
+              android:text="@string/comments"
+               android:layout_margin="5dp"
+               android:layout_weight="1"
+               android:gravity="center"
+               />
+
+           <TextView
+              android:id="@+id/close"
+               android:layout_width="@dimen/action_pic_size"
+               android:layout_height="@dimen/action_pic_size"
+               android:layout_margin="5dp"
+               android:background="@drawable/close"
+               />
+
+
+           </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/message_recycleView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:background="@color/white"
+                    android:layout_weight="1"
+                    android:orientation="vertical"
+                    tools:listitem="@layout/item_comments"
+                    />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/userPage_layout_margin"
+        >
+
+        <EditText
+            android:id="@+id/edit_textContent"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:hint="@string/leftComments"
+            android:layout_weight="4"
+            android:textSize="15sp"
+            android:text="@={viewModel.textContent}"
+            android:textColorHint="@color/gray"
+            android:autofillHints="@string/leftComments" />
+
+        <Button
+            android:id="@+id/submit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/userPage_textMargin"
+            android:layout_marginEnd="@dimen/userPage_textMargin"
+            android:background="@android:color/holo_red_light"
+            android:textColor="@color/white"
+            android:text="提交"
+            />
+    </LinearLayout>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
+
+</layout>
+

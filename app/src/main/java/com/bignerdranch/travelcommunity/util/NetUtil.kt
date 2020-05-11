@@ -2,6 +2,7 @@ package com.bignerdranch.travelcommunity.util
 
 import android.content.Context
 import android.net.ConnectivityManager
+import com.bignerdranch.tclib.LogUtil
 
 /**
  * @author zhongxinyu
@@ -43,6 +44,7 @@ class NetUtil {
             } else {
                 return NETWORK_NONE
             }
+
             return NETWORK_NONE
         }
     }

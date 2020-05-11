@@ -2,7 +2,8 @@ package com.bignerdranch.travelcommunity.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.bignerdranch.travelcommunity.data.repository.BaseRepository
+import com.bignerdranch.tclib.data.repository.BaseRepository
+
 
 /**
  * @author zhongxinyu

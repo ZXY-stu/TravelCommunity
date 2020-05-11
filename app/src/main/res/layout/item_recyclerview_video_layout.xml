@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+     <variable
+         name="personDynamic"
+         type="com.bignerdranch.tclib.data.db.entity.PersonDynamic" />
+    </data>
+
+<androidx.cardview.widget.CardView
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/black"
+    app:cardCornerRadius="10dp"
+    app:cardUseCompatPadding="true"
+    >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layoutControl"
+            android:layout_width="match_parent"
+            android:background="@color/black"
+            android:layout_height="match_parent">
+
+
+            <com.bignerdranch.travelcommunity.tcvideoplayer.TCPlayer
+                android:id="@+id/adapter_super_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" >
+
+                <ImageView
+                android:id="@+id/video_cover"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+            </com.bignerdranch.travelcommunity.tcvideoplayer.TCPlayer>
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/headUrl"
+                imageFromUrl="@{personDynamic.headPortraitUrl}"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginBottom="5dp"
+                android:src="@drawable/abc"
+                app:layout_constraintBottom_toTopOf="@+id/like"
+                app:layout_constraintEnd_toEndOf="@+id/addFocus"
+                app:layout_constraintStart_toStartOf="@+id/addFocus"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.89" />
+
+
+            <TextView
+                android:id="@+id/likeCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@{personDynamic.likesCount}"
+                android:hint="10w"
+                android:textAppearance="@style/UserDescriptionText"
+                app:layout_constraintBottom_toTopOf="@+id/comments"
+                app:layout_constraintEnd_toEndOf="@+id/comments"
+                app:layout_constraintStart_toStartOf="@+id/comments" />
+
+            <ImageView
+                android:id="@+id/like"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/like"
+                app:layout_constraintBottom_toTopOf="@+id/likeCount"
+                app:layout_constraintEnd_toEndOf="@+id/likeCount"
+                app:layout_constraintStart_toStartOf="@+id/likeCount" />
+
+            <ImageView
+                android:id="@+id/comments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/comment"
+                app:layout_constraintBottom_toTopOf="@+id/commentsCount"
+                app:layout_constraintEnd_toEndOf="@+id/commentsCount"
+                app:layout_constraintStart_toStartOf="@+id/commentsCount" />
+
+            <ImageView
+                android:id="@+id/share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:src="@mipmap/share"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.953"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.83" />
+
+            <!--Coverters.fromIntToString(personDynamic.commentsCount)-->
+            <TextView
+                android:id="@+id/commentsCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:hint="10w"
+                android:textAppearance="@style/UserDescriptionText"
+                android:text="@{personDynamic.commentsCount}"
+                app:layout_constraintBottom_toTopOf="@+id/share"
+                app:layout_constraintEnd_toEndOf="@+id/share"
+                app:layout_constraintStart_toStartOf="@+id/share" />
+
+
+            <ImageView
+                android:id="@+id/addFocus"
+                android:layout_width="@dimen/action_pic_size"
+                android:layout_height="@dimen/action_pic_size"
+                android:layout_marginBottom="8dp"
+                android:src="@drawable/add_friend"
+                app:layout_constraintBottom_toTopOf="@+id/like"
+                app:layout_constraintEnd_toEndOf="@+id/like"
+                app:layout_constraintStart_toStartOf="@+id/like"
+                app:layout_constraintTop_toBottomOf="@+id/headUrl"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+
+                app:layout_constraintStart_toStartOf="parent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/userPage_textMargin"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/topNickName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="太好了"
+                        android:text="@{personDynamic.userNickName}"
+                        android:textAppearance="@style/UserDescriptionText" />
+
+                    <TextView
+                        android:id="@+id/submitsTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/userPage_textMargin"
+                        android:hint="09.30"
+                        android:text="@{personDynamic.submitsTime}" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/userPage_textMargin"
+                    android:hint="这事儿过于神奇！！这事儿过于神奇！这事儿过于神奇！这事儿过于神奇！这事儿过于神奇！"
+                    android:text="@{personDynamic.textContent}" />
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="@style/MyProgressBar"
+                    android:progress="1"
+                    android:layout_marginTop="@dimen/userPage_textMargin"
+                    android:background="@color/transparent"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+<RelativeLayout
+    android:id="@+id/adapter_player_control"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</layout>

@@ -2,6 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel" />
+    </data>
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,7 +20,12 @@
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+         >
+
+    </androidx.fragment.app.FragmentContainerView>
+
+
 
 
 
@@ -25,9 +36,20 @@
         app:itemIconSize="30dp"
         app:itemIconTint="@drawable/bottom_text_color"
         app:labelVisibilityMode="unlabeled"
-        app:menu="@menu/bottom_nav">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
 
+        android:background="@color/white"
+        app:menu="@menu/bottom_nav" >
 
+        <TextView
+            android:layout_width="@dimen/head_size"
+            android:layout_height="@dimen/head_size"
+            android:layout_gravity="center"
+            android:onClick="@{()->viewModel.toPublishPage()}"
+            android:background="@drawable/add_friend"
+            />
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 
