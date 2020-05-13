@@ -1,6 +1,7 @@
 package com.bignerdranch.travelcommunity.ui.user
 
 import android.content.Context
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -27,6 +29,7 @@ import com.bignerdranch.travelcommunity.util.InjectorUtils
 import com.bignerdranch.tclib.LogUtil
 import com.bignerdranch.tclib.LogUtil.eee
 import com.bignerdranch.travelcommunity.base.BaseDialogFragment
+import com.bignerdranch.travelcommunity.ui.dynamic.HomePageDynamic
 import com.bignerdranch.travelcommunity.ui.dynamic.HomePageVideo
 import com.bignerdranch.travelcommunity.ui.dynamic.HomePageVideoFragment
 import com.bignerdranch.travelcommunity.util.DataCleanManager
@@ -46,15 +49,17 @@ private const val ARG_PARAM2 = "param2"
  * Use the [UserFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class FriendFragment(override val windowHeight: Double = 1.0,
-                     override val themeResId: Int = R.style.DialogFullScreen,
+class FriendFragment(
+                     override val themeResId: Int = R.style.DialogFullScreen_Right,
                     val _viewModel:PersonDynamicViewModel
 ) : BaseDialogFragment<FragmentMineBinding>() {
 
 
-    override val needLogin: Boolean = true
+    override val needLogin: Boolean = false
     override val layoutId: Int  = R.layout.fragment_mine
     private lateinit var headView:UserHeadLayoutBinding
+    private val frangment1 = HomePageDynamic()
+    private val fragment2 = NoticeLoginFragment()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -85,17 +90,27 @@ class FriendFragment(override val windowHeight: Double = 1.0,
         }
     }
 
+
+
     fun setFriendId(friendId:Int):FriendFragment{
         _viewModel._friendId = friendId
         return this
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+      eee("onDismiss")
+    }
+
 
     private fun subscribeViewPage(viewPager: ViewPager2,tabLayout:TabLayout){
+
+        binding.userPageMenu.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
         viewPager.adapter = PageViewAdapter(this).build(
             mapOf(
-                MY_FOCUSE to { HomePageVideo() },
-                SYSTEM_RECOMMAND to { HomePageVideo() }
+                MY_FOCUSE to {
+                    HomePageDynamic() },
+                SYSTEM_RECOMMAND to { NoticeLoginFragment()}
             ) as MutableMap<Int, () -> Fragment>
         )
 

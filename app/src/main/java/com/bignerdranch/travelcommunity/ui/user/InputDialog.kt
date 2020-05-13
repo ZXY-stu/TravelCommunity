@@ -19,9 +19,11 @@ import java.util.*
  **/
 class InputDialog(override val layoutId: Int = R.layout.input_dialog,
                   override val needLogin: Boolean = false,
-                  override val windowHeight: Double = 0.1,
-                  override val themeResId: Int = R.style.MyAnimDialog
+                  override val themeResId: Int = R.style.Dialog_Bottom
 ) :BaseDialogFragment<InputDialogBinding>(){
+    init {
+        windowHeight = 0.1
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

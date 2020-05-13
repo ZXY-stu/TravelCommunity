@@ -29,6 +29,7 @@ class NoticeLoginFragment : BaseFragment<FragmentNoticeLoginBinding>() {
 
     override val layoutId: Int = R.layout.fragment_notice_login
     override val needLogin = false
+    override val dark: Boolean = false
    private val _viewModel by activityViewModels<UserViewModel> {
        InjectorUtils.userViewModelFactory(requireContext())
    }
@@ -42,17 +43,10 @@ class NoticeLoginFragment : BaseFragment<FragmentNoticeLoginBinding>() {
 
          binding.viewModel = _viewModel
          _viewModel.toLoginPage.observe(viewLifecycleOwner){
-             LogUtil.e("在 notice")
+             LogUtil.eee("在 notice")
              if(it)
-             findNavController().navigate(R.id.action_noticeLoginFragment_to_loginFragment)
+             LoginFragment().show(requireActivity().supportFragmentManager,"NoticeLoginFragment")
          }
         return binding.root
     }
-
-
-
-    override fun initImmersionBar() {
-
-    }
-
 }

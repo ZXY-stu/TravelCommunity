@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.bignerdranch.tclib.LogUtil
 import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.ui.dynamic.OPEN_ALBUM
+import com.bignerdranch.travelcommunity.util.MediaFileUtil
 import com.bignerdranch.travelcommunity.util.PathUtils
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
@@ -71,10 +72,15 @@ object Utils {
                 val path = PathUtils.getPath(context, uri)
                 LogUtil.e(path)
                 val file = File(path)
-                requestMap.put(
-                    "file" + i + "\";filename=\"" + file.name,
-                    RequestBody.create(MediaType.parse("multipart/form-data"), file)
-                )
+               val type =  if(MediaFileUtil.isAudioFileType(path)){
+                    "AudioFile"
+               }else if(MediaFileUtil.isImageFileType(path)){
+                   "imageFile"
+               }else if(MediaFileUtil.isVideoFileType(path)){
+                   "videoFile"
+               }else "unKnow"
+
+                requestMap.put("imgs" + "\";filename=\"" + file.name, RequestBody.create(MediaType.parse("multipart/form-data"), file))
                 i++
             }
         }
@@ -91,6 +97,7 @@ fun SelectionCreator.openAlbum(requestCode:Int){
         .maxSelectable(9) // 图片选择的最多数量
         .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
         .captureStrategy(CaptureStrategy(true,"com.bignerdranch.travelcommunity.ui.HomePageActivity"))
+        .capture(true)
         .thumbnailScale(0.85f) // 缩略图的比例
         .theme( R.style.Matisse_Zhihu)
         .imageEngine(GlideEngine()) // 使用的图片加载引擎

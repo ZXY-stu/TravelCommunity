@@ -202,7 +202,7 @@ class CommentsAdapter(val _viewModel: PersonDynamicViewModel,
          init {
               like.setOnClickListener {
                   openInputMethod()
-                  checkLogin { _viewModel.toAddLike(commentsMsg.user_id, 1) }
+                  checkLogin { _viewModel.toAddLike(commentsMsg.userId, 1) }
               }
               content.setOnClickListener {
                   openInputMethod()
@@ -214,12 +214,12 @@ class CommentsAdapter(val _viewModel: PersonDynamicViewModel,
               }
               userHead.setOnClickListener {
                 dismiss()
-                  friendFragment.setFriendId(commentsMsg.user_id)
+                  friendFragment.setFriendId(commentsMsg.userId)
                 friendFragment.show(fragment.parentFragmentManager,"")
               }
               userNickName.setOnClickListener {
                   dismiss()
-                  friendFragment.setFriendId(commentsMsg.user_id)
+                  friendFragment.setFriendId(commentsMsg.userId)
                   friendFragment.show(fragment.parentFragmentManager,"")
               }
               lineItem.setOnClickListener {
@@ -245,7 +245,7 @@ class CommentsAdapter(val _viewModel: PersonDynamicViewModel,
     fun transferInfo(commentsMsg: CommentsMsg):CommentsMsg{
         return CommentsMsg(
             id = commentsMsg.id,
-            user_id = commentsMsg.user_id,
+            userId = commentsMsg.userId,
             userAccount = commentsMsg.userAccount,
             userNickName = commentsMsg.userNickName,
             dynamicId =  commentsMsg.dynamicId,

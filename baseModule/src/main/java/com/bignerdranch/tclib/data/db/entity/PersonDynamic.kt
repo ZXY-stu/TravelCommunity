@@ -30,7 +30,6 @@ import java.util.*
 data class PersonDynamic(
  @PrimaryKey val id:Int = 0,  //主键
  @ColumnInfo(name = "user_id") val userId:Int = 1, //外部键
- val account:String = "zxy",//用户账号
  val userNickName:String = "zxy",//用户昵称
  val textContent: String ="zxy",  //文本内容
  val headPortraitUrl:String = "",//头像url

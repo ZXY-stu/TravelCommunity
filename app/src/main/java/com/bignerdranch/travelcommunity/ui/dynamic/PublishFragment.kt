@@ -40,9 +40,7 @@ const val   takePhoto = 1
 
     override val layoutId: Int = R.layout.fragment_publish
     override val needLogin: Boolean = true
-     override val themeResId: Int = R.style.DialogFullScreen
-     override val windowHeight: Double = 3.0
-
+     override val themeResId: Int = R.style.DialogFullScreen_Bottom
     private  val _dynamicViewModel  by activityViewModels<PersonDynamicViewModel> {
           InjectorUtils.personDynamicViewModelFactory(requireContext())
     }
@@ -50,7 +48,7 @@ const val   takePhoto = 1
     private val _userViewModel by activityViewModels<UserViewModel>{
         InjectorUtils.userViewModelFactory(requireContext())
     }
-    private lateinit var imageList: MutableList<Uri>
+    private lateinit var fileList: MutableList<Uri>
 
     private var lastView:View? = null
      private var hasCreated = false
@@ -92,7 +90,7 @@ const val   takePhoto = 1
         when(requestCode){
             OPEN_ALBUM ->{
                 if(resultCode == Activity.RESULT_OK && data !=null){
-                    imageList = Matisse.obtainResult(data)
+                    fileList = Matisse.obtainResult(data)
                  /*   data.data?.let {
                         ToastUtil.test(it.toString()+_dynamicViewModel.textContent.value)
                         val bitmap = getBitMapFromUri(it)
@@ -129,11 +127,28 @@ const val   takePhoto = 1
                 text = "发布"
                 setOnClickListener {
                     _dynamicViewModel.contentsArgs.putAll(Utils.getUploadRequestMap(
-                        imageList,requireContext(),commentsContent))
-                    _dynamicViewModel.toAddDynamic(imageList[0],requireContext())
-                    imageList.clear()
+                        fileList,requireContext(),commentsContent))
+                    _dynamicViewModel.toAddDynamic()
+                    eee("s "+ _dynamicViewModel.contentsArgs +"sd")
+
+
                    // clearAndToHome(requireContext())
                    dismiss()
+                    /* 动态发表
+   *  permissionArgs  权限列表
+   *  userId 发表人Id
+   *  permissionId  隐私设置
+   *  0 表示开放
+   *  1 表示仅关注的人可见
+   *  2 表示自定义，需通过查询权限表获取访问权限
+   *  3 表示私密，仅自己可见
+   *  userList     需要处理权限的用户列表，处理后，存入UserRelation
+   *
+   * contentArgs  动态内容列表
+   * textContent  动态的文本内容
+   * imageFiles   动态的图片文件 最多9张
+   * videoFile   动态的视频文件
+   * */
                 }
             }
         }
@@ -163,6 +178,7 @@ const val   takePhoto = 1
            OPEN_ALBUM -> {
                   if(grantResults.isNotEmpty() &&  grantResults[0] == PackageManager.PERMISSION_GRANTED){
                       openAlbum(OPEN_ALBUM)
+                      eee("open Album")
                   }else{
                       ToastUtil.show("You denied the permission")
                   }

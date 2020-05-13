@@ -22,9 +22,11 @@ import com.bignerdranch.tclib.LogUtil
 import com.bignerdranch.tclib.LogUtil.eee
 import com.bignerdranch.tclib.data.repository.BaseRepository
 import com.bignerdranch.tclib.utils.DeviceUtils
-import com.bignerdranch.travelcommunity.ui.utils.StatusBarUtil
+import com.bignerdranch.travelcommunity.ui.utils.AndroidWorkaround
+
 
 import com.bignerdranch.travelcommunity.util.InjectorUtils
+import com.gyf.immersionbar.ImmersionBar
 
 /*Redeclaration*/
 abstract class BaseActivity<T:ViewDataBinding> : AppCompatActivity()
@@ -39,14 +41,17 @@ abstract class BaseActivity<T:ViewDataBinding> : AppCompatActivity()
     @SuppressLint("SourceLockedOrientationActivity")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         binding = DataBindingUtil.setContentView(this,layoutId)
-        val deviceWidth = DeviceUtils.deviceWidth(this)
-        val deviceHeight = DeviceUtils.deviceHeight(this)
-
-        eee("deviceWidth$deviceHeight")
         binding.lifecycleOwner = this
     }
+
+
+      override fun onDestroy() {
+          super.onDestroy()
+
+      }
 
 
 

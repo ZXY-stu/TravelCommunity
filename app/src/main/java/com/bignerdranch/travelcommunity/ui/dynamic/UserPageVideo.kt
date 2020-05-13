@@ -33,6 +33,7 @@ class UserPageVideo(override val layoutId: Int = R.layout.fragment_user_video
                     , override val needLogin: Boolean = false)
     : BaseFragment<FragmentUserVideoBinding>(){
     private val currentVideoIndex = 0
+    override val dark: Boolean = false
 
     private val _viewModel:PersonDynamicViewModel by viewModels {
         InjectorUtils.personDynamicViewModelFactory(requireContext())
@@ -75,9 +76,6 @@ class UserPageVideo(override val layoutId: Int = R.layout.fragment_user_video
      //   initView()
     }
 
-    override fun initImmersionBar() {
-
-    }
 
 
     private fun initBindingAndAdapter(){

@@ -48,7 +48,7 @@ class Network private constructor(){
 
 
           //PersonDynamicService
-          suspend fun toAddDynamic(permissionArgs:HashMap<String,Any>,contentsArgs:HashMap<String,RequestBody>) = personDynamicService.addDynamic(permissionArgs,contentsArgs)
+          suspend fun toAddDynamic(permissionArgs:HashMap<String,Any>,contentsArgs:HashMap<String,RequestBody>) = personDynamicService.addDynamic(contentsArgs)
           fun toDeleteDynamic(dynamicId: Int) = personDynamicService.deleteDynamic(dynamicId)
            fun toQueryDynamics(queryDynamicArgs:HashMap<String,Any>) = personDynamicService.queryDynamics(queryDynamicArgs)
           fun toAddLike(likeArgs:HashMap<String,Any>) = personDynamicService.addLike(likeArgs)

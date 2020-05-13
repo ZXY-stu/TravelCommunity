@@ -16,5 +16,6 @@ import androidx.room.PrimaryKey
 data  class Like(
     @PrimaryKey val id:Int,
     val dynamicId:Int,  //动态
-    val userId:Int  //点赞用户
+    val userId:Int,  //点赞用户
+    val isDynamic:Boolean //true 动态  false 评论
 )

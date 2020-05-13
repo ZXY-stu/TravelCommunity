@@ -40,11 +40,8 @@ class CommentsDialog(
     val _viewModel: PersonDynamicViewModel,
     override val  themeResId: Int = R.style.MyAnimDialog,
     override val layoutId: Int = R.layout.fragment_message,
-    override val needLogin: Boolean = false,
-    override val windowHeight: Double = 0.8
+    override val needLogin: Boolean = false
 ) : BaseDialogFragment<FragmentMessageBinding>(){
-
-
 
 
     private lateinit var recyclerView: RecyclerView
@@ -54,7 +51,6 @@ class CommentsDialog(
 
 
     private var  friendNickName =""
-
     private var currentPage = 0
     private var currentPosition = 0
     private lateinit var inputMethodManager: InputMethodManager
@@ -63,7 +59,7 @@ class CommentsDialog(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        windowHeight  = 0.8
         // 预先设置Dialog的一些属性
         setStyle(STYLE_NO_TITLE,themeResId)
     }

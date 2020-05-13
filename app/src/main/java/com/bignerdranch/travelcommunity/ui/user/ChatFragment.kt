@@ -14,6 +14,8 @@ import com.bignerdranch.travelcommunity.databinding.FragmentChatBinding
 class ChatFragment(override val layoutId: Int = R.layout.fragment_chat,
                    override val needLogin: Boolean = true) : BaseFragment<FragmentChatBinding>() {
 
+
+    override val dark: Boolean = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -23,8 +25,5 @@ class ChatFragment(override val layoutId: Int = R.layout.fragment_chat,
         return inflater.inflate(R.layout.fragment_chat, container, false)
     }
 
-    override fun initImmersionBar() {
-
-    }
 
 }

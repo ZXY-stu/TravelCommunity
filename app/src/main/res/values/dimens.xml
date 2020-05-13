@@ -7,7 +7,7 @@
     <dimen name="cardCorner">5dp</dimen>
     <dimen name="toolbar_button_width">50dp</dimen>
     <dimen name="toolbar_button_height">30dp</dimen>
-    <dimen name="cardElevation">5dp</dimen>
+    <dimen name="cardElevation">0dp</dimen>
     <dimen name="card_padding">3dp</dimen>
     <dimen name="dynamic_image_size">230dp</dimen>
 <dimen name="userPage_textgroup_Margin">10dp</dimen>

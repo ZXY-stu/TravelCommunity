@@ -15,6 +15,7 @@ import com.bignerdranch.travelcommunity.ui.clearAndToHome
 import com.bignerdranch.travelcommunity.util.InjectorUtils
 import com.bignerdranch.tclib.LogUtil
 import com.bignerdranch.tclib.LogUtil.eee
+import com.bignerdranch.travelcommunity.base.BaseDialogFragment
 import kotlinx.android.synthetic.main.my_toolbar.view.*
 
 
@@ -28,9 +29,8 @@ private const val ARG_PARAM2 = "param2"
  * Use the [RegisterFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
-
-
+class RegisterFragment : BaseDialogFragment<FragmentRegisterBinding>() {
+    override val themeResId: Int = R.style.DialogFullScreen_Right
     override val needLogin: Boolean = false
     private  val _viewModel by activityViewModels<UserViewModel> {
         InjectorUtils.userViewModelFactory(requireContext())
@@ -39,9 +39,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
     override val layoutId: Int = R.layout.fragment_register
 
 
-    override fun initImmersionBar() {
-         LogUtil.e("")
-    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -71,7 +68,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>() {
              //若注册成功，跳转到主界面，同时服务器进行登陆操作
              eee("clearAndToHome &$it")
              it?.let {
-                 clearAndToHome(requireContext())
+                clearAndToHome(requireContext())
              }
          }
     }

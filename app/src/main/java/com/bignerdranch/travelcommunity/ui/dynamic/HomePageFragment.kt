@@ -22,6 +22,7 @@ import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewM
 import com.bignerdranch.tclib.LogUtil
 import com.bignerdranch.tclib.LogUtil.eee
 import com.bignerdranch.travelcommunity.base.BaseDialogFragment
+import com.bignerdranch.travelcommunity.base.BaseViewModel
 import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel
 import com.bignerdranch.travelcommunity.util.InjectorUtils
 import com.google.android.material.tabs.TabLayoutMediator
@@ -36,8 +37,11 @@ import com.gyf.immersionbar.ImmersionBar
 
 
 class HomePageFragment: BaseFragment<FragmentVideoViewPageBinding>() {
+
+
     override val layoutId: Int = R.layout.fragment_video_view_page
     override val needLogin: Boolean = false
+    override val dark: Boolean = true
      var lastView:View? = null
     var hasCreated = false
 
@@ -52,7 +56,7 @@ class HomePageFragment: BaseFragment<FragmentVideoViewPageBinding>() {
     ): View? {
 
 
-             eee("savedInstanceState")
+
              super.onCreateView(inflater, container, savedInstanceState)
              subscribeViewPage()   //初始化viewPage
              lastView = binding.root
@@ -63,6 +67,10 @@ class HomePageFragment: BaseFragment<FragmentVideoViewPageBinding>() {
     }
 
 
+    override fun onResume() {
+        super.onResume()
+        eee("HomePageFragment ${BaseViewModel.isParentHaveSetFont}")
+    }
 
     private  fun subscribeViewPage(){
         val tabLayout = binding.tabs
@@ -104,9 +112,7 @@ class HomePageFragment: BaseFragment<FragmentVideoViewPageBinding>() {
 
 
     }
-    override fun initImmersionBar() {
 
-    }
 
     private fun getTabIcon(position: Int): Int {
         LogUtil.e(""+position)

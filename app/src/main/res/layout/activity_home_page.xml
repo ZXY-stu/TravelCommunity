@@ -10,8 +10,9 @@
     </data>
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
+
     tools:context=".ui.HomePageActivity"
    >
 
@@ -21,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+
          >
 
     </androidx.fragment.app.FragmentContainerView>
@@ -32,20 +34,16 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         app:itemIconSize="30dp"
         app:itemIconTint="@drawable/bottom_text_color"
         app:labelVisibilityMode="unlabeled"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-
         android:background="@color/white"
         app:menu="@menu/bottom_nav" >
 
         <TextView
-            android:layout_width="@dimen/head_size"
-            android:layout_height="@dimen/head_size"
+            android:layout_width="@dimen/toolbarHeight"
+            android:layout_height="@dimen/toolbarHeight"
             android:layout_gravity="center"
             android:onClick="@{()->viewModel.toPublishPage()}"
             android:background="@drawable/add_friend"

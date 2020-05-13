@@ -10,12 +10,14 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
+import com.bignerdranch.tclib.LogUtil.eee
 import com.bignerdranch.tclib.data.db.entity.PersonDynamic
 import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.base.BaseFragment
 import com.bignerdranch.travelcommunity.databinding.FragmentMessageBinding
 import com.bignerdranch.travelcommunity.ui.adapters.VideoViewAdapter
 import com.bignerdranch.travelcommunity.util.InjectorUtils
+import com.gyf.immersionbar.ImmersionBar
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -32,6 +34,7 @@ class MessageFragment( override val needLogin: Boolean = false,
                        override val layoutId: Int = R.layout.fragment_message)
     : BaseFragment<FragmentMessageBinding>() {
 
+    override val dark: Boolean = true
     private val _viewModel by activityViewModels<UserViewModel> {
         InjectorUtils.userViewModelFactory(requireContext())
     }
@@ -42,11 +45,8 @@ class MessageFragment( override val needLogin: Boolean = false,
         savedInstanceState: Bundle?
     ): View? {
             super.onCreateView(inflater, container, savedInstanceState)
-
+             eee("onCreateView")
            return   inflater.inflate(layoutId,container,false)
-    }
-
-    override fun initImmersionBar() {
     }
 
 
@@ -59,6 +59,15 @@ class MessageFragment( override val needLogin: Boolean = false,
         }
 
     }*/
+
+
+    override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+    }
 
 
 }

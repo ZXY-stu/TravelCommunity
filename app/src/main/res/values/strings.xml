@@ -9,10 +9,10 @@
     <string name="logout">注销</string>
     <string name="cd_home">首页</string>
     <string name="title_home">首页</string>
-    <string name="cd_shop">商城</string>
+    <string name="cd_shop">周边</string>
     <string name="cd_list">发布</string>
     <string name="title_list">发布</string>
-    <string name="title_shop">商城</string>
+    <string name="title_shop">周边</string>
     <string name="cd_mine">我的</string>
     <string name="title_mine">我的</string>
     <string name="title_message">消息</string>

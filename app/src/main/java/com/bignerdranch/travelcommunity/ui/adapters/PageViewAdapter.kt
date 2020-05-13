@@ -1,8 +1,10 @@
 package com.bignerdranch.travelcommunity.ui.adapters
 
+import android.os.Parcelable
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.bignerdranch.tclib.LogUtil
+
 
 /**
  * @author zhongxinyu
@@ -35,4 +37,8 @@ class PageViewAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
         LogUtil.e("zhixingle $position")
         return _tabFragmentsCreators[position]?.invoke() ?: throw IndexOutOfBoundsException()
     }
+
+
+
+
 }

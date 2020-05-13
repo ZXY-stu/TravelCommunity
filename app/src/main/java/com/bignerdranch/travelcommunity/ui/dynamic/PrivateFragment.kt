@@ -26,7 +26,6 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class PrivateFragment(
-    override val windowHeight: Double = 2.0,
     override val themeResId: Int = R.style.DialogFullScreen
 ) : BaseDialogFragment<FragmentPrivateBinding>() {
 

@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.observe
@@ -24,6 +25,7 @@ import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewM
 import com.bignerdranch.travelcommunity.ui.utils.StatusBarUtil
 import com.bignerdranch.travelcommunity.util.InjectorUtils
 import com.bignerdranch.travelcommunity.util.ToastUtil
+import com.gyf.immersionbar.ImmersionBar
 import com.gyf.immersionbar.components.SimpleImmersionFragment
 import java.util.*
 
@@ -44,15 +46,14 @@ abstract  class BaseDialogFragment<T: ViewDataBinding>: DialogFragment(){
     abstract  val layoutId:Int
     abstract val needLogin:Boolean
     lateinit var binding:T
-    abstract val windowHeight:Double
+    protected var windowHeight:Double = -0.1
     abstract  val  themeResId: Int
     private var isShow = false
     private var lastView:View? = null
     protected var userId:Int? = -1
     protected var dynamicId:Int? = -1
-    protected var authorUserId:Int? = -1
     protected var friendAccount:String=""
-
+    private var deviceHeight  = 0
 
 
     private fun checkLogin(){
@@ -66,10 +67,13 @@ abstract  class BaseDialogFragment<T: ViewDataBinding>: DialogFragment(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //设置状态栏字体颜色为深色
-        StatusBarUtil.setLightStatusBar(requireActivity(),true,true)
+        deviceHeight = DeviceUtils.deviceHeight(requireContext())
+
         setStyle(STYLE_NO_TITLE,themeResId)
 
     }
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -80,23 +84,37 @@ abstract  class BaseDialogFragment<T: ViewDataBinding>: DialogFragment(){
           checkLogin()
           dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE);
           inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-
-
-
-
           binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
           binding.lifecycleOwner = this
           binding.executePendingBindings()
+
+
          lastView = binding.root
 
          return lastView
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        isShow = false
+
+    override fun onResume() {
+        super.onResume()
+        when(layoutId) {
+            R.layout.fragment_mine ->{
+                setDarkFont(false)
+                eee("fragment_mine")
+            }
+            R.layout.input_dialog->{
+                   //这个不设置状态栏的字体 ,否则会导致输入法无法顶起布局
+                // 因为ImmersionBar函数内部设置了沉浸式，具体原因不太清楚
+            }
+            else -> setDarkFont(true)
+        }
+
     }
 
+    override fun onDismiss(dialog: DialogInterface) {
+        super.onDismiss(dialog)
+
+    }
 
 
     override fun onStart() {
@@ -105,20 +123,28 @@ abstract  class BaseDialogFragment<T: ViewDataBinding>: DialogFragment(){
         if (dialog != null) {
             val dialogWindow =  dialog.window
             val p = dialogWindow!!.attributes
-            val m = dialogWindow.windowManager
-            val d = m.defaultDisplay
-            dialogWindow.attributes = p
-
-            p.height = ((d.height + DeviceUtils.dp2px(requireContext(),
-               requireContext().resources.getDimension(R.dimen.toolbarHeight)
-            )) * windowHeight).toInt()
-
-            p.width = d.width
-            eee("height"+p.height + "width" + p.width )
+            if(windowHeight>0) p.height = (windowHeight * deviceHeight).toInt()
+            else  p.height =  WindowManager.LayoutParams.MATCH_PARENT
+            p.width = WindowManager.LayoutParams.MATCH_PARENT
             p.gravity = Gravity.START or Gravity.BOTTOM
             dialogWindow.attributes = p
         }
     }
+
+    /*override fun onResume() {
+
+        if(height>0) {
+            dialog?.window?.setLayout(WindowManager.LayoutParams.MATCH_PARENT,height)
+            dialog?.window?.setGravity(Gravity.CENTER )
+        }else{
+           val layoutParams =  dialog?.window?.attributes
+            layoutParams?.height = WindowManager.LayoutParams.MATCH_PARENT
+            layoutParams?.width = WindowManager.LayoutParams.MATCH_PARENT
+            dialog?.window?.attributes = layoutParams
+        }
+        super.onResume()
+    }*/
+
 
     fun openInputMethod(){
         val time = Timer()
@@ -149,4 +175,10 @@ abstract  class BaseDialogFragment<T: ViewDataBinding>: DialogFragment(){
         )
     }
 
+    fun setDarkFont(isDarkFont:Boolean){
+        ImmersionBar.with(this).statusBarDarkFont(isDarkFont).init()
+    }
+
+    fun getDimension(resId:Int) = requireContext().resources.getDimension(resId)
+    fun getDimensionPixelSize(resId:Int) = requireContext().resources.getDimensionPixelSize(resId)
 }

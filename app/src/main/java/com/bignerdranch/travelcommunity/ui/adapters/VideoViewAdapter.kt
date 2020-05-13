@@ -91,8 +91,7 @@ Diff()
 
         init {
             val layoutParams = playerLayout.layoutParams
-
-            layoutParams.height = (DeviceUtils.deviceHeight(context)-30*2).toInt()
+            layoutParams.height = (DeviceUtils.deviceHeight(context) - context.resources.getDimension(R.dimen.toolbarHeight)*2).toInt()
             playerLayout.layoutParams = layoutParams
 
             val  onNetChangeListener =  object : OnNetChangeListener {
@@ -146,8 +145,8 @@ Diff()
                 commentsDialog.arguments = bundleOf(
                     "currentPage" to currentPage,
                     "dynamicId" to personDynamic.id,
-                    "authorUserId" to personDynamic.userId,
-                     "friendAccount" to personDynamic.account
+                    "authorUserId" to personDynamic.userId
+
                 )
 
                 commentsDialog.show(fragmentManager.beginTransaction(),"commentsDialog")

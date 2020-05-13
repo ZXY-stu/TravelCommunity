@@ -56,6 +56,7 @@ class HomePageVideoFragment : BaseFragment<HomepageVideoFragmentBinding>(),Cache
         InjectorUtils.personDynamicViewModelFactory(requireContext())
     }
 
+    override val dark: Boolean = false
     override val layoutId: Int = R.layout.homepage_video_fragment
     override val needLogin: Boolean = false
 
@@ -69,7 +70,6 @@ class HomePageVideoFragment : BaseFragment<HomepageVideoFragmentBinding>(),Cache
         if(lastView == null) {
             super.onCreateView(inflater, container, savedInstanceState)
          binding = HomepageVideoFragmentBinding.inflate(inflater, container, false)
-         eee("onCreateView")
          subscribeObserver()
          binding.executePendingBindings()
          lastView = binding.root
@@ -91,9 +91,7 @@ class HomePageVideoFragment : BaseFragment<HomepageVideoFragmentBinding>(),Cache
       }
     }
 
-    override fun initImmersionBar() {
 
-    }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
@@ -125,9 +123,6 @@ class HomePageVideoFragment : BaseFragment<HomepageVideoFragmentBinding>(),Cache
                if (currentPosition != position) {
                     proxy.stopLoad(currentVideoUrl?.get(currentPosition))
                     pause(currentPosition)
-
-
-
                    currentPosition = position
                    proxy.tryLoad(currentVideoUrl?.get(currentPosition))
                    playVideo(position, playProgress)
@@ -215,7 +210,7 @@ class HomePageVideoFragment : BaseFragment<HomepageVideoFragmentBinding>(),Cache
             // proxy.registerCacheListener(this,url)
              with(it) {
                 PersonDynamic(
-                    id, userId, account, userNickName, textContent,
+                    id, userId,  userNickName, textContent,
                     headPortraitUrl, url, imageUrls, likesCount, commentsCount, submitsTime,
                     location, fullWatchCount, backWatchCount, heatDegree, privateModel)
             }
@@ -234,6 +229,7 @@ class HomePageVideoFragment : BaseFragment<HomepageVideoFragmentBinding>(),Cache
 
     override fun onResume() {
         super.onResume()
+        eee("HomePageVideoFragment")
         if(currentVideoUrl != null) {
             proxy.tryLoad(currentVideoUrl?.get(currentPosition))
             playVideo(currentPosition, playProgress)
@@ -252,4 +248,6 @@ class HomePageVideoFragment : BaseFragment<HomepageVideoFragmentBinding>(),Cache
    override fun onCacheAvailable(cacheFile: File?, url: String?, percentsAvailable: Int) {
        eee("per $percentsAvailable" )
     }
+
+
 }

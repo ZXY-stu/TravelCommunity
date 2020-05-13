@@ -33,12 +33,20 @@ interface PersonDynamicService {
     * imageFiles   动态的图片文件 最多9张
     * videoFile   动态的视频文件
     * */
-  @Multipart
+ /* @Multipart
     @POST("api/user/dynamic")
     fun addDynamic(
      @PartMap permissionArgs:HashMap<String,Any>
      ,@PartMap contentsArgs: HashMap<String, RequestBody>
     ): LiveData<ApiResponse<PersonDynamic>>
+*/
+
+    @Multipart
+    @POST("api/user/dynamic")
+    fun addDynamic(
+        @PartMap contentsArgs: HashMap<String, RequestBody>
+    ): LiveData<ApiResponse<PersonDynamic>>
+
 
     //删除动态
     @DELETE("api/user/dynamic")

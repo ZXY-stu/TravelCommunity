@@ -38,30 +38,43 @@ class PersonDynamicViewModel internal constructor(
      init {
 
       pers.add(PersonDynamic(id = 1 ,userId = 1,videoUrl = "http://ips.ifeng.com/video19.ifeng.com/video09/2014/06/16/1989823-102-086-0009.mp4",
-             imageUrls = images[0],headPortraitUrl = images[2],userNickName = "杀猪饲料1",likesCount = "100w",textContent =
-          "我2遇的关怀和吗，谁吗"))
+             imageUrls = images[0],headPortraitUrl = images[0],userNickName = "RIO微醺",likesCount = "100w",textContent =
+          "原来爱情是：\n" +
+                  "\n" +
+                  "我正要表白，而你也刚好“正在输入”"))
        pers.add(PersonDynamic(id = 2 ,userId = 2,videoUrl = "http://vjs.zencdn.net/v/oceans.mp4",
-             imageUrls = images[1],headPortraitUrl = images[3],userNickName = "杀猪饲料3",likesCount = "100w",textContent =
-             "我2遇的关怀和吗，想知道是谁吗"))
+             imageUrls = images[1],headPortraitUrl = images[1],userNickName = "江小白",likesCount = "100w",textContent =
+             "人生没有早知道，\n" +
+                     "\n" +
+                     "只有当下酒，眼前人。\n" +
+                     "\n"))
          pers.add(PersonDynamic(id = 3 ,userId = 3,videoUrl = "https://media.w3.org/2010/05/sintel/trailer.mp4",
-             imageUrls = images[2],headPortraitUrl = images[1],userNickName = "杀猪饲料4",likesCount = "100w",textContent =
-             "我2遇的关怀和吗"))
+             imageUrls = images[2],headPortraitUrl = images[2],userNickName = "方太",likesCount = "100w",textContent =
+             "我没有离开家，\n" +
+                     "\n" +
+                     "只是把家带去了远方。"))
          pers.add(PersonDynamic(id = 4 ,userId = 4,videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",
-             imageUrls = images[5],headPortraitUrl = images[4],userNickName = "杀猪饲料6",likesCount = "100w",textContent =
-                     "我遇好漂亮的花是谁吗"))
+             imageUrls = images[3],headPortraitUrl = images[3],userNickName = "唯品会",likesCount = "100w",textContent =
+                     "我们的一句随口说说 就是父母的大动干戈。"))
 
          pers.add(PersonDynamic(id = 55 ,userId = 31,videoUrl = "http://ips.ifeng.com/video19.ifeng.com/video09/2014/06/16/1989823-102-086-0009.mp4",
-             imageUrls = images[0],headPortraitUrl = images[2],userNickName = "杀猪饲料1",likesCount = "100w",textContent =
-             "好漂亮的花"))
+             imageUrls = images[4],headPortraitUrl = images[4],userNickName = "京东 & 宝洁",likesCount = "100w",textContent =
+             "爱在日常，才不寻常。"))
          pers.add(PersonDynamic(id = 44 ,userId = 22,videoUrl = "http://vjs.zencdn.net/v/oceans.mp4",
-             imageUrls = images[1],headPortraitUrl = images[3],userNickName = "杀猪饲料3",likesCount = "100w",textContent =
-             "好漂亮的花，想知道是谁吗"))
+             imageUrls = images[5],headPortraitUrl = images[5],userNickName = "杜蕾斯春日诗集",likesCount = "100w",textContent =
+             "我把我种在你身体里\n" +
+                     "\n" +
+                     "然后一起躲进时间的褶皱里。"))
          pers.add(PersonDynamic(id = 23 ,userId = 32,videoUrl = "https://media.w3.org/2010/05/sintel/trailer.mp4",
-             imageUrls = images[2],headPortraitUrl = images[1],userNickName = "杀猪饲料4",likesCount = "100w",textContent =
-             "好漂亮的花"))
+             imageUrls = images[1],headPortraitUrl = images[1],userNickName = "蒙牛",likesCount = "100w",textContent =
+             "我不是天生强大，\n" +
+                     "\n" +
+                     "我只是天生要强。"))
          pers.add(PersonDynamic(id = 34 ,userId = 14,videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4",
-             imageUrls = images[5],headPortraitUrl = images[4],userNickName = "杀猪饲料6",likesCount = "100w",textContent =
-             "我遇见大人好漂亮的花想知道是谁吗"))
+             imageUrls = images[2],headPortraitUrl = images[2],userNickName = "CCTV",likesCount = "100w",textContent =
+             "上天给了你太多才华，\n" +
+                     "\n" +
+                     "就注定不会给你太平坦的路。"))
 
        runBlocking {
            personDynamicRepository.toInsertDynamicAllLocal(pers)
@@ -104,6 +117,8 @@ class PersonDynamicViewModel internal constructor(
 
     val addDynamicResult = waitResponseResult(waitAddDynamic){
         eee("得到了dynamic")
+        contentsArgs.clear()
+        permissionArgs.clear()
         personDynamicRepository.toInsertDynamicLocal(it)
     }
 
@@ -281,7 +296,7 @@ class PersonDynamicViewModel internal constructor(
            PersonDynamic(
                l,l, "123", "${l}", "想当小渣男，还是小暖男呢", "", ""
                , images[l%5], ""+l,""+l, ""+Date(System.currentTimeMillis()), "",
-               ""+i, ""+i, ""+i, i
+               ""+i, ""+i,  i
            )
        )
         LogUtil.e("$l  ${pers.size}")

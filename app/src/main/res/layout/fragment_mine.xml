@@ -13,25 +13,25 @@
                 type="com.bignerdranch.travelcommunity.base.BaseViewModel" />
         </data>
 
-    <androidx.drawerlayout.widget.DrawerLayout
+    <com.bignerdranch.travelcommunity.ui.UserDrawerLayout
         android:id="@+id/userPageMenu"
         android:layout_width="match_parent"
-
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        >
 
 
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinator_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
+            android:layout_height="wrap_content"
+
           >
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/user_view_pager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 />
 
@@ -41,7 +41,6 @@
                 android:id="@+id/user_appbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fitsSystemWindows="true"
                 android:stateListAnimator="@animator/show_toolbar"
                 android:animateLayoutChanges="true"
                 >
@@ -49,12 +48,11 @@
                 <com.google.android.material.appbar.CollapsingToolbarLayout
                     android:id="@+id/user_toolbar_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fitsSystemWindows="true"
-                    app:contentScrim="@color/backgroud_color"
-                    app:statusBarScrim="@color/backgroud_color"
+                    android:layout_height="wrap_content"
+                    app:contentScrim="@color/black"
+                    app:statusBarScrim="@color/green"
                     app:collapsedTitleGravity="center"
-                    app:collapsedTitleTextAppearance="@color/white"
+                    app:collapsedTitleTextAppearance="@color/red"
                     app:layout_scrollFlags="scroll|exitUntilCollapsed"
                     app:titleEnabled="false"
                     app:toolbarId="@id/userToolbar">
@@ -62,14 +60,14 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:fitsSystemWindows="true"
+                            android:layout_height="wrap_content"
+
                             >
 
 
@@ -315,9 +313,8 @@
                     <androidx.appcompat.widget.Toolbar
                         android:id="@+id/userToolbar"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/toolbarHeight"
-                        android:background="@android:color/transparent"
-                        app:contentInsetStartWithNavigation="0dp"
+                        android:layout_height="wrap_content"
+                       android:layout_marginTop="20dp"
                         app:layout_collapseMode="pin"
                         app:contentInsetLeft="0dp"
                         app:contentInsetStart="0dp"
@@ -328,7 +325,7 @@
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:orientation="horizontal">
 
 
@@ -457,7 +454,8 @@
                 <com.google.android.material.tabs.TabLayout
                     android:id="@+id/user_tabs"
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
+                    android:layout_height="@dimen/toolbarHeight"
+                    android:textAlignment="textStart"
                     style="@style/UserTabLayoutStyle"
                   />
 
@@ -469,12 +467,12 @@
       android:id="@+id/menu_nav"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_gravity="right"
+      android:layout_gravity="end"
       app:menu="@menu/user_menu"
       app:itemTextAppearance="@style/UserDescriptionText"
       app:headerLayout="@layout/user_head_layout"
       />
 
-    </androidx.drawerlayout.widget.DrawerLayout>
+    </com.bignerdranch.travelcommunity.ui.UserDrawerLayout>
 
 </layout>

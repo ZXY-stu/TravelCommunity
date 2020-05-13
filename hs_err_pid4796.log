@@ -1,0 +1,162 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 1048576 bytes for AllocateHeap
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   The process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+#   JVM is running with Unscaled Compressed Oops mode in which the Java heap is
+#     placed in the first 4GB address space. The Java Heap base address is the
+#     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
+#     to set the Java Heap base and to place the Java Heap above 4GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (memory/allocation.inline.hpp:61), pid=4796, tid=0x00000000000035a8
+#
+# JRE version:  (8.0_212-b04) (build )
+# Java VM: OpenJDK 64-Bit Server VM (25.212-b04 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x00000000028be000):  JavaThread "Unknown thread" [_thread_in_vm, id=13736, stack(0x0000000002cb0000,0x0000000002db0000)]
+
+Stack: [0x0000000002cb0000,0x0000000002db0000]
+[error occurred during error reporting (printing stack bounds), id 0xc0000005]
+
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+
+Other Threads:
+
+=>0x00000000028be000 (exited) JavaThread "Unknown thread" [_thread_in_vm, id=13736, stack(0x0000000002cb0000,0x0000000002db0000)]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+heap address: 0x0000000081800000, size: 2024 MB, Compressed Oops mode: 32-bit
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 3
+Compressed class space size: 1073741824 Address: 0x0000000100000000
+
+Heap:
+ PSYoungGen      total 38400K, used 665K [0x00000000d5d80000, 0x00000000d8800000, 0x0000000100000000)
+  eden space 33280K, 2% used [0x00000000d5d80000,0x00000000d5e26670,0x00000000d7e00000)
+  from space 5120K, 0% used [0x00000000d8300000,0x00000000d8300000,0x00000000d8800000)
+  to   space 5120K, 0% used [0x00000000d7e00000,0x00000000d7e00000,0x00000000d8300000)
+ ParOldGen       total 87552K, used 0K [0x0000000081800000, 0x0000000086d80000, 0x00000000d5d80000)
+  object space 87552K, 0% used [0x0000000081800000,0x0000000081800000,0x0000000086d80000)
+ Metaspace       used 778K, capacity 4480K, committed 4480K, reserved 1056768K
+  class space    used 74K, capacity 384K, committed 384K, reserved 1048576K
+
+Card table byte_map: [0x0000000012270000,0x0000000012670000] byte_map_base: 0x0000000011e64000
+
+Marking Bits: (ParMarkBitMap*) 0x0000000060e79f30
+ Begin Bits: [0x0000000012d20000, 0x0000000014cc0000)
+ End Bits:   [0x0000000014cc0000, 0x0000000016c60000)
+
+Polling page: 0x0000000002890000
+
+CodeCache: size=245760Kb used=328Kb max_used=328Kb free=245431Kb
+ bounds [0x0000000002eb0000, 0x0000000003120000, 0x0000000011eb0000]
+ total_blobs=57 nmethods=0 adapters=38
+ compilation: enabled
+
+Compilation events (0 events):
+No events
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+Events (10 events):
+Event: 0.024 loading class java/lang/Short
+Event: 0.025 loading class java/lang/Short done
+Event: 0.025 loading class java/lang/Integer
+Event: 0.025 loading class java/lang/Integer done
+Event: 0.025 loading class java/lang/Long
+Event: 0.025 loading class java/lang/Long done
+Event: 0.025 loading class java/lang/NullPointerException
+Event: 0.025 loading class java/lang/NullPointerException done
+Event: 0.025 loading class java/lang/ArithmeticException
+Event: 0.025 loading class java/lang/ArithmeticException done
+
+
+Dynamic libraries:
+0x00007ff605c60000 - 0x00007ff605c91000 	D:\Android\jre\jre\bin\java.exe
+0x00007ffd772e0000 - 0x00007ffd774a1000 	C:\Windows\SYSTEM32\ntdll.dll
+0x00007ffd769c0000 - 0x00007ffd76a6d000 	C:\Windows\system32\KERNEL32.DLL
+0x00007ffd73990000 - 0x00007ffd73b78000 	C:\Windows\system32\KERNELBASE.dll
+0x00007ffd76c00000 - 0x00007ffd76ca7000 	C:\Windows\system32\ADVAPI32.dll
+0x00007ffd76390000 - 0x00007ffd7642d000 	C:\Windows\system32\msvcrt.dll
+0x00007ffd76170000 - 0x00007ffd761cb000 	C:\Windows\system32\sechost.dll
+0x00007ffd76cb0000 - 0x00007ffd76dcc000 	C:\Windows\system32\RPCRT4.dll
+0x00007ffd76f20000 - 0x00007ffd77076000 	C:\Windows\system32\USER32.dll
+0x00007ffd76a70000 - 0x00007ffd76bf6000 	C:\Windows\system32\GDI32.dll
+0x00007ffd64540000 - 0x00007ffd647b4000 	C:\Windows\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.10586.0_none_8c15ae12515e1c22\COMCTL32.dll
+0x00007ffd747e0000 - 0x00007ffd74a5d000 	C:\Windows\system32\combase.dll
+0x00007ffd73e90000 - 0x00007ffd73efa000 	C:\Windows\system32\bcryptPrimitives.dll
+0x00007ffd76dd0000 - 0x00007ffd76e0b000 	C:\Windows\system32\IMM32.DLL
+0x00000000605d0000 - 0x00000000606a2000 	D:\Android\jre\jre\bin\msvcr100.dll
+0x00000000606b0000 - 0x0000000060ef6000 	D:\Android\jre\jre\bin\server\jvm.dll
+0x00007ffd74770000 - 0x00007ffd74778000 	C:\Windows\system32\PSAPI.DLL
+0x00007ffd70370000 - 0x00007ffd7037a000 	C:\Windows\SYSTEM32\VERSION.dll
+0x00007ffd71af0000 - 0x00007ffd71b13000 	C:\Windows\SYSTEM32\WINMM.dll
+0x00007ffd65620000 - 0x00007ffd65629000 	C:\Windows\SYSTEM32\WSOCK32.dll
+0x00007ffd76450000 - 0x00007ffd764bb000 	C:\Windows\system32\WS2_32.dll
+0x0000000002920000 - 0x000000000294c000 	C:\Windows\SYSTEM32\WINMMBASE.dll
+0x00007ffd74690000 - 0x00007ffd746d3000 	C:\Windows\system32\cfgmgr32.dll
+0x00007ffd64db0000 - 0x00007ffd64dbf000 	D:\Android\jre\jre\bin\verify.dll
+0x00007ffd5d940000 - 0x00007ffd5d969000 	D:\Android\jre\jre\bin\java.dll
+0x00007ffd64d90000 - 0x00007ffd64da6000 	D:\Android\jre\jre\bin\zip.dll
+
+VM Arguments:
+java_command: org.jetbrains.git4idea.http.GitAskPassApp Username for 'https://github.com': 
+java_class_path (initial): D:/Android/plugins/git4idea/lib/git4idea-rt.jar;D:/Android/lib/xmlrpc-2.0.1.jar;D:/Android/lib/commons-codec-1.13.jar;D:/Android/lib/util.jar
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jdk1.8.0_111
+CLASSPATH=.;C:\Program Files\Java\jdk1.8.0_111\lib;C:\Program Files\Java\jdk1.8.0_111\lib\tools.jar
+PATH=C:\Program Files\Git\mingw64\libexec\git-core;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\Administrator\bin;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0;D:\Anaconda3;D:\Anaconda3\Scripts;C:\HashiCorp\Vagrant\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Git\usr\bin;C:\Program Files\Java\jdk1.8.0_111\bin;C:\Program Files\Java\jdk1.8.0_111\jre\bin;C:\Program Files\Docker Toolbox;C:\Users\Administrator\AppData\Local\Programs\Fiddler
+USERNAME=Administrator
+DISPLAY=:0.0
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 142 Stepping 9, GenuineIntel
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 10.0 , 64 bit Build 10586 (10.0.10586.0)
+
+CPU:total 4 (initial active 4) (2 cores per cpu, 2 threads per core) family 6 model 142 stepping 9, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, erms, 3dnowpref, lzcnt, ht, tsc, tscinvbit, bmi1, bmi2, adx
+
+Memory: 4k page, physical 8286348k(2256080k free), swap 15280776k(5860k free)
+
+vm_info: OpenJDK 64-Bit Server VM (25.212-b04) for windows-amd64 JRE (1.8.0_212-release-1586-b04), built by "builder" with MS VC++ 10.0 (VS2010)
+
+time: Mon May 11 21:58:53 2020
+timezone: 中国标准时间
+elapsed time: 0 seconds (0d 0h 0m 0s)
+

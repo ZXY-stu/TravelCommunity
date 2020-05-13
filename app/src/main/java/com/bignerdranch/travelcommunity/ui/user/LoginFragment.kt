@@ -1,6 +1,9 @@
 package com.bignerdranch.travelcommunity.ui.user
 
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -11,11 +14,14 @@ import com.bignerdranch.travelcommunity.ui.clearAndToHome
 import com.bignerdranch.travelcommunity.util.InjectorUtils
 import com.bignerdranch.tclib.LogUtil
 import com.bignerdranch.tclib.LogUtil.eee
+import com.bignerdranch.travelcommunity.base.BaseDialogFragment
 import kotlinx.android.synthetic.main.my_toolbar.view.*
 
-class LoginFragment(override val needLogin: Boolean = false) : BaseFragment<LoginFragmentBinding>() {
+class LoginFragment(override val needLogin: Boolean = false,
+                    override val themeResId: Int = R.style.DialogFullScreen_Bottom
+) : BaseDialogFragment<LoginFragmentBinding>() {
     override val layoutId: Int = R.layout.login_fragment
-
+    val dark: Boolean = false
     private var returnToHome = false
     private val _viewModel by viewModels<UserViewModel> {
         InjectorUtils.userViewModelFactory(requireContext())
@@ -23,6 +29,15 @@ class LoginFragment(override val needLogin: Boolean = false) : BaseFragment<Logi
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         subscribeObserve()
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+       super.onCreateView(inflater, container, savedInstanceState)
+        return binding.root
     }
 
 
@@ -35,12 +50,13 @@ class LoginFragment(override val needLogin: Boolean = false) : BaseFragment<Logi
 
         _viewModel.isLogin.observe(viewLifecycleOwner){
             if(it) {
-                if (returnToHome)
+                dialog?.dismiss()
+             /*   if (returnToHome)
                     clearAndToHome(requireContext())
                 else
                     with(findNavController()) {
                         popBackStack(graph.startDestination,true)
-                    }
+                    }*/
             }
         }
 
@@ -48,14 +64,13 @@ class LoginFragment(override val needLogin: Boolean = false) : BaseFragment<Logi
             if(it){
                 eee("toRegisterPage")
                  //findNavController().popBackStack(R.id.action_loginFragment_to_registerFragment,true)
-                  val ac = LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
-                  findNavController().navigate(ac)
+                 RegisterFragment().show(requireActivity().supportFragmentManager,"LoginFragment")
                 //跳转到注册界面
             }
         }
 
-       /*
-        测试之前的结果是否OK，暂时注释
+
+   /*
        _viewModel.user.observe(viewLifecycleOwner){
                 user ->
             //成功登录后，把user保持至本地
@@ -66,8 +81,8 @@ class LoginFragment(override val needLogin: Boolean = false) : BaseFragment<Logi
             }else{
                 LogUtil.e("null")
             }
-        }*/
-
+        }
+*/
         with(binding.toolbar.publicToolbar) {
             setNavigationOnClickListener {
                 clearAndToHome(requireContext())
@@ -81,8 +96,6 @@ class LoginFragment(override val needLogin: Boolean = false) : BaseFragment<Logi
         returnToHome = isTo
         return this
     }
-    override fun initImmersionBar() {
 
-    }
 
 }

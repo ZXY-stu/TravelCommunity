@@ -37,14 +37,15 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
 
 
     val images = listOf(
-        "https://upload.wikimedia.org/wikipedia/commons/6/67/Mangos_criollos_y_pera.JPG","https://upload.wikimedia.org/wikipedia/commons/0/03/Grape_Plant_and_grapes9.jpg",
-        "https://upload.wikimedia.org/wikipedia/commons/2/22/Apfelsinenbaum--Orange_tree.jpg", "https://upload.wikimedia.org/wikipedia/commons/a/aa/Sunflowers_in_field_flower.jpg",
-        "https://api.ixiaowai.cn/gqapi/gqapi.php","https://upload.wikimedia.org/wikipedia/commons/a/ab/Cypripedium_reginae_Orchi_004.jpg"
+        "https://api.ixiaowai.cn/gqapi/gqapi.php","https://api.ixiaowai.cn/api/api.php",
+        "https://api.ixiaowai.cn/mcapi/mcapi.php", "https://api.ixiaowai.cn/api/api.php",
+        "https://api.ixiaowai.cn/gqapi/gqapi.php", "https://api.ixiaowai.cn/mcapi/mcapi.php"
     )
 
     val account = MutableLiveData<String>()   //账号
     val password = MutableLiveData<String>()   //密码
     val code = MutableLiveData<String>()   //验证码
+    val permissionId = MutableLiveData<Int>(0)   //动态权限Id
 
 
     var _friendId  = -1  //朋友ID
@@ -52,6 +53,7 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
     var _commentsId  = -1   //评论Id
     var _likeId  = -1       //点赞ID
     private var userId = 1; //当前登录用户默认ID
+    private val userOperationList = ArrayList<Int>()   //用户
 
     val localUser = baseRepository._userDao.getUser(userId)
     val currentUser = baseRepository._userDao.getUser(_friendId)
@@ -62,18 +64,19 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
     }
     companion object {
         var userIsLogin = false
+        var isParentHaveSetFont = false  //状态栏字体颜色状态
     }
     init {
-        runBlocking {
+      /*  runBlocking {
             baseRepository._userDao.insertUser(User(userId = 1, headPortraitUrl = images[1],nickName = "ssadasd"))
 
             baseRepository._userDao.insertUser(User(userId = 2,
                headPortraitUrl = images[2],nickName = "1asd",account = "zxczxczxczc"))
             baseRepository._userDao.insertUser(User(userId = 3,nickName = "wsadsadasd",account = "22222",
                     headPortraitUrl = images[3]))
-            baseRepository._userDao.insertUser(User(userId = 4,nickName = "ezx",account = "zxczxssssczxczc", headPortraitUrl = images[5]
+            baseRepository._userDao.insertUser(User(userId = 4,nickName = "ezx",account = "zxczxssssczxczc", headPortraitUrl = images[4]
             ))
-        }
+        }*/
 
         isLogin.observeForever{
            userIsLogin = it
@@ -253,10 +256,25 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
         _friendId = friendId
         set(toUserPage)
     }
-    fun toAddDynamic(image: Uri,context: Context) {
-        LogUtil.e("变化了")
-        permissionArgs["imageFiles"] = PathUtils.getPath(context,image)
-        permissionArgs["textContent"] = ""+textContent.value
+    /* 动态发表
+*  permissionArgs  权限列表
+*  userId 发表人Id
+*  permissionId  隐私设置
+*  0 表示开放
+*  1 表示仅关注的人可见
+*  2 表示自定义，需通过查询权限表获取访问权限
+*  3 表示私密，仅自己可见
+*  userList     需要处理权限的用户列表，处理后，存入UserRelation
+*
+* contentArgs  动态内容列表
+* textContent  动态的文本内容
+* imageFiles   动态的图片文件 最多9张
+* videoFile   动态的视频文件
+* */
+    fun toAddDynamic() {
+        permissionArgs["userId"] = getUserId()
+        permissionArgs["userList"] = userOperationList
+        permissionArgs["permissionId"] = permissionId.value!!
         toAddDynamic.value = true
     }
 
@@ -272,7 +290,7 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
         currentCommentsMsg = CommentsMsg(
             id = System.currentTimeMillis().toInt(),
                                         dynamicId = friendCommentsMsg.dynamicId,
-                                        user_id = localUser.value!!.userId,
+                                        userId = localUser.value!!.userId,
                                         userNickName = localUser.value!!.nickName,
                                         userAccount = localUser.value!!.account,
                                         commentGroupId = friendCommentsMsg.commentGroupId,
@@ -424,6 +442,7 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
         }
     }
 
+    fun getUserId() = localUser.value?.userId?:-1
     fun mergeData(data1:String) = data1 + "评论数"
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) { callbacks.add(callback) }
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) { callbacks.remove(callback) }

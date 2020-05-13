@@ -64,7 +64,7 @@
         android:background="@android:color/holo_red_light"
         android:text="作者"
         android:textAppearance="@style/UserDescriptionText"
-        visibleGone="@{comments.user_id == viewModel.localUser.userId}"
+        visibleGone="@{comments.userId == viewModel.localUser.userId}"
         app:layout_constraintStart_toEndOf="@+id/userNickName"
         app:layout_constraintTop_toTopOf="@+id/userNickName" />
 

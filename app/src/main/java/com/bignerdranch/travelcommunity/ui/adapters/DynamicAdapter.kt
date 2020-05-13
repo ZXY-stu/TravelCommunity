@@ -1,5 +1,6 @@
 package com.bignerdranch.travelcommunity.ui.adapters
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
@@ -16,6 +17,7 @@ import com.bignerdranch.travelcommunity.databinding.DynamicStyleUserpageBinding
 import com.bignerdranch.travelcommunity.databinding.ItemDynamicBinding
 import com.bignerdranch.travelcommunity.ui.dynamic.DynamicDetails
 import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel
+import com.bignerdranch.travelcommunity.ui.user.FriendFragment
 import com.bignerdranch.travelcommunity.ui.utils.VideoPageSnapHelper
 import com.bignerdranch.travelcommunity.util.ToastUtil
 
@@ -30,7 +32,10 @@ class DynamicAdapter(val viewModel: PersonDynamicViewModel,
 
 
 
+
     val dynamicDetail = DynamicDetails(_viewModel = viewModel)
+
+
 
     inner class  DynamicViewHolder(private val binding: ItemDynamicBinding)
         :RecyclerView.ViewHolder(binding.root){
@@ -38,13 +43,18 @@ class DynamicAdapter(val viewModel: PersonDynamicViewModel,
         init {
             with(binding){
                  dynamicLayout.setOnClickListener {
-                   val bundle = bundleOf("dynamicId" to dynamicId)
-                   dynamicDetail.arguments?.putAll(bundle)
-                     dynamicDetail.show(framentManage,"DynamicAdapter")
-
-                 headUrl.setOnClickListener {  }
-                 like.setOnClickListener {  }
+                     val bundle = bundleOf("dynamicId" to dynamicId)
+                       dynamicDetail.arguments?.putAll(bundle)
+                      dynamicDetail.show(framentManage,"DynamicAdapter")
                  }
+
+
+                 headUrl.setOnClickListener {
+
+                     FriendFragment(_viewModel = viewModel).show(framentManage,"DynamicAdapter")
+                 }
+                 like.setOnClickListener {  }
+
             }
         }
 
@@ -55,7 +65,10 @@ class DynamicAdapter(val viewModel: PersonDynamicViewModel,
                 executePendingBindings()
             }
         }
+
+
     }
+
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val dynamic = getItem(position)

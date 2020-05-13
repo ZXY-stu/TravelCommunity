@@ -25,6 +25,8 @@ class HomePageVideo(override val layoutId: Int = R.layout.videoplayerview
                     , override val needLogin: Boolean = false)
     :BaseFragment<VideoplayerviewBinding>() {
 
+
+    override val dark: Boolean = false
     private  val _viewModel: PersonDynamicViewModel by viewModels{
         InjectorUtils.personDynamicViewModelFactory(requireContext())
     }
@@ -58,9 +60,6 @@ class HomePageVideo(override val layoutId: Int = R.layout.videoplayerview
 
     }
 
-    override fun initImmersionBar() {
-
-    }
 
 
     private  fun subscribeUi(adapter: HomePageVideoAdapter){

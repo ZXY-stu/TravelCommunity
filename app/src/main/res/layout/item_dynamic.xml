@@ -13,10 +13,8 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:elevation="@dimen/cardElevation"
-        android:layout_marginStart= "2dp"
-        android:layout_marginEnd="2dp"
-        android:layout_marginTop="2dp"
+        app:cardElevation="1px"
+         android:layout_margin="2dp"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="@dimen/cardCorner">
 
@@ -49,8 +47,7 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
                 android:text="@{personDynamic.textContent}"
-                 android:textAppearance="@style/UserCommentsText"
-                android:textSize="@dimen/action_padding"
+                android:textAppearance="@style/UserCommentsText"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/imageUrl"
@@ -73,8 +70,8 @@
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/headUrl"
                     imageFromUrl="@{personDynamic.headPortraitUrl}"
-                    android:layout_width="@dimen/head_size"
-                    android:layout_height="@dimen/head_size"
+                    android:layout_width="@dimen/action_pic_size"
+                    android:layout_height="@dimen/action_pic_size"
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/action_padding"
                     android:src="@drawable/abc" />
@@ -84,7 +81,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/action_padding"
+                    android:gravity="start"
+                    android:layout_marginStart="@dimen/userPage_textMargin"
                     android:layout_weight="1"
                     android:hint="昵称"
                     android:text="@{personDynamic.userNickName}"

@@ -39,11 +39,11 @@ class PersonDynamicRepository private constructor(
 
     suspend fun toAddDynamic(permissionArgs:HashMap<String,Any>,contentsArgs:HashMap<String,RequestBody>) = launch {
         _network.toAddDynamic(permissionArgs,contentsArgs)
-        i++
+   /*     i++
         MutableLiveData(ApiResponse(data = PersonDynamic(videoUrl = permissionArgs["imageFiles"].toString(),
             textContent = permissionArgs["textContent"].toString(),id = i),errorCode = 1,
             errorMsg = ""
-        ))
+        ))*/
     }
 
     suspend fun toDeleteDynamic(dynamicId:Int) = launch {

@@ -30,7 +30,7 @@ import java.util.*
 data class CommentsMsg(
     @PrimaryKey val id:Int = 0, //评论id
     @ColumnInfo(name = "dynamic_id")   val dynamicId:Int = 1, //所属动态
-    @ColumnInfo(name = "user_id")      val user_id:Int = 1, //评论人id
+    @ColumnInfo(name = "user_id")      val userId:Int = 1, //评论人id
 
     val commentGroupId:Int = 0, // 评论组id    0表示属于 评论作者组  其它值表示 该条评论属于commentGroupId这条评论组
     // 通过commentGroupId 可以统计该条评论的被评论数  0时可以统计该条动态的被评论数

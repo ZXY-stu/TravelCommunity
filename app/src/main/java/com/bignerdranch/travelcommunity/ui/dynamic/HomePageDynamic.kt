@@ -17,6 +17,7 @@ import com.bignerdranch.tclib.LogUtil
 import com.bignerdranch.tclib.LogUtil.eee
 import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.base.BaseFragment
+import com.bignerdranch.travelcommunity.base.BaseViewModel
 import com.bignerdranch.travelcommunity.databinding.DynamicRecycleviewBinding
 import com.bignerdranch.travelcommunity.ui.adapters.DynamicAdapter
 
@@ -25,6 +26,7 @@ class HomePageDynamic(override val layoutId: Int = R.layout.dynamic_recycleview
                     , override val needLogin: Boolean = false)
     :BaseFragment<DynamicRecycleviewBinding>() {
 
+    override val dark: Boolean = false
     private  val _viewModel: PersonDynamicViewModel by viewModels{
         InjectorUtils.personDynamicViewModelFactory(requireContext())
     }
@@ -36,8 +38,6 @@ class HomePageDynamic(override val layoutId: Int = R.layout.dynamic_recycleview
     ): View? {
         // Inflate the layout for this fragment
         super.onCreateView(inflater, container, savedInstanceState)
-
-        eee("onCreateView  HomePageVideo")
         val pageAdapter  = DynamicAdapter(_viewModel,requireActivity().supportFragmentManager)
 
         binding.viewModel = _viewModel
@@ -58,10 +58,11 @@ class HomePageDynamic(override val layoutId: Int = R.layout.dynamic_recycleview
 
     }
 
-    override fun initImmersionBar() {
 
+    override fun onResume() {
+        super.onResume()
+        eee("HomePageDynamic ${   BaseViewModel.isParentHaveSetFont}")
     }
-
 
     private  fun subscribeUi(adapter: DynamicAdapter){
 

@@ -168,7 +168,7 @@ class UserViewModel internal constructor(private val userRepository: UserReposit
             }
         }
 
-        fun getUserId() = localUser.value?.userId?:-1
+
 
 }
 

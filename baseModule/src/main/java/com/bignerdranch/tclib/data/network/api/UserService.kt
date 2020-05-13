@@ -20,7 +20,7 @@ interface UserService {
 
     // 登陆和注册 返回ApiResponse<User>
     //用户登录
-    @GET("api/user/login")
+    @GET("api/login")
     fun login(@Query("account")account:String,@Query("password") password:String):LiveData<ApiResponse<User>>
 
     //注册用户   返回ApiResponse<User>

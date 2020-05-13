@@ -47,6 +47,9 @@
         <action
             android:id="@+id/action_HomePageFragment_to_publish2"
             app:destination="@id/publish" />
+        <action
+            android:id="@+id/action_HomePageFragment_to_dynamicDetails2"
+            app:destination="@id/dynamicDetails" />
 
 
     </fragment>
@@ -73,6 +76,14 @@
         />
 
     <include app:graph="@navigation/publish" />
+
+    <fragment
+        android:id="@+id/dynamicDetails"
+        android:name="com.bignerdranch.travelcommunity.ui.dynamic.DynamicDetails"
+        android:label="DynamicDetails"
+        tools:layout="@layout/dynamic_style_userpage"
+        />
+
 
 
 </navigation>
