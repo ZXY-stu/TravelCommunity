@@ -33,7 +33,7 @@ class UserPageVideo(override val layoutId: Int = R.layout.fragment_user_video
                     , override val needLogin: Boolean = false)
     : BaseFragment<FragmentUserVideoBinding>(){
     private val currentVideoIndex = 0
-    override val dark: Boolean = false
+
 
     private val _viewModel:PersonDynamicViewModel by viewModels {
         InjectorUtils.personDynamicViewModelFactory(requireContext())
@@ -82,42 +82,45 @@ class UserPageVideo(override val layoutId: Int = R.layout.fragment_user_video
       val myAdapter = VideoAdapter()
 
       binding.viewModel = _viewModel
-      with(binding.userVideoView) {
-           //     setHasFixedSize(true)
-                adapter = myAdapter
+     binding.userVideoView.adapter = myAdapter
 
-               // addOnScrollListener(HomePageViewListener().setViewModel(_viewModel))
 
-      }
-       subscribeUi(myAdapter, binding)
+
+
     }
 
-     private  fun subscribeUi(adapter: VideoAdapter,
-                              binding: FragmentUserVideoBinding){
-       _viewModel.personDynamics.observe(viewLifecycleOwner) {
-            LogUtil.e("Size"+it.size)
-             //  adapter.submitList(_viewModel.toVideoSimpleData(it))
-           }
-           _viewModel.loading.observe(viewLifecycleOwner){
-                 if(it){
-                     LogUtil.e("来饿了")
-
-                 //    _viewModel.loadingMore()
-                  //   _viewModel.loading.value = false
-                 }
-           }
-
-         _viewModel.wait.observe(viewLifecycleOwner){
-             LogUtil.e("来了呀1111111111111111111111")
-         }
-     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
             _viewModel.loadingMore()
     }
 
+    override fun subscribeUi() {
+        _viewModel.personDynamics.observe(viewLifecycleOwner) {
+            LogUtil.e("Size"+it.size)
+            //  adapter.submitList(_viewModel.toVideoSimpleData(it))
+        }
+        _viewModel.loading.observe(viewLifecycleOwner){
+            if(it){
+                LogUtil.e("来饿了")
 
+                //    _viewModel.loadingMore()
+                //   _viewModel.loading.value = false
+            }
+        }
+
+        _viewModel.wait.observe(viewLifecycleOwner){
+            LogUtil.e("来了呀1111111111111111111111")
+        }
+    }
+
+    override fun subscribeListener() {
+
+    }
+
+    override fun subscribeObserver() {
+
+    }
 
 
 }

@@ -37,7 +37,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/abc" />
+                />
 
             <TextView
                 android:id="@+id/commentContent"
@@ -86,7 +86,7 @@
                     android:layout_weight="1"
                     android:hint="昵称"
                     android:text="@{personDynamic.userNickName}"
-                    android:textAppearance="@style/action_text" />
+                    android:textAppearance="@style/action_text_black" />
 
                 <TextView
                     android:id="@+id/like"
@@ -105,7 +105,7 @@
                     android:layout_marginEnd="@dimen/action_padding"
                     android:hint="10w"
                     android:text="@{personDynamic.likesCount}"
-                    android:textAppearance="@style/action_text" />
+                    android:textAppearance="@style/action_text_black" />
             </LinearLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

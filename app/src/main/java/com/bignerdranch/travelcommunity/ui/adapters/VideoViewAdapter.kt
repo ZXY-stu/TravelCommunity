@@ -59,7 +59,7 @@ Diff()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return VideoViewHolder(
-            ItemRecyclerviewVideoLayoutBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+            ItemRecyclerviewVideoLayoutBinding.inflate(LayoutInflater.from(context),parent,false))
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -74,7 +74,6 @@ Diff()
 
         private val playerLayout: ConstraintLayout = binding.layoutControl
         val  tcPlayer = binding.adapterSuperVideo
-        val cover  = binding.videoCover
         val progressBar  = binding.progressBar
         val like = binding.like
         val comments = binding.comments
@@ -85,7 +84,7 @@ Diff()
         private var url: String? = null
         private var netChange = false
         private lateinit  var personDynamic: PersonDynamic
-        private  val commentsDialog = CommentsDialog(_viewModel)
+
 
 
 
@@ -133,23 +132,15 @@ Diff()
 
 
             headProfile.setOnClickListener {
-                 onDestroy()
                 val friendFragment1 =  FriendFragment(_viewModel = _viewModel)
                 friendFragment1.setFriendId(personDynamic.userId)
+                _viewModel.toQueryFriendById(personDynamic.userId)
                 friendFragment1.show(fragmentManager,"")
             }
 
             comments.setOnClickListener {
-             //   show("去评论")
-
-                commentsDialog.arguments = bundleOf(
-                    "currentPage" to currentPage,
-                    "dynamicId" to personDynamic.id,
-                    "authorUserId" to personDynamic.userId
-
-                )
-
-                commentsDialog.show(fragmentManager.beginTransaction(),"commentsDialog")
+                CommentsDialog(_viewModel = _viewModel,dynamicId = personDynamic.id)
+                    .show(fragmentManager.beginTransaction(),"commentsDialog")
             }
 
             share.setOnClickListener {
@@ -186,6 +177,8 @@ Diff()
 
 
 
+
+
         fun play(progress: Int) {
             tcPlayer.toStart(progress)
         }
@@ -215,9 +208,11 @@ Diff()
             mPosition = position
             this.personDynamic  = personDynamic
             binding.personDynamic = personDynamic
-            url = personDynamic.videoUrl
+            url = ""+personDynamic.videoUrl
             tcPlayer.url = url
+            eee("name ${personDynamic.userNickName}"+url)
             tcPlayer.toPrepare(url)
+
             binding.executePendingBindings()
         }
 

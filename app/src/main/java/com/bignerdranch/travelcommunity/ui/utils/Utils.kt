@@ -8,6 +8,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.bignerdranch.tclib.LogUtil
+import com.bignerdranch.tclib.utils.StringUtils
 import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.ui.dynamic.OPEN_ALBUM
 import com.bignerdranch.travelcommunity.util.MediaFileUtil
@@ -21,6 +22,8 @@ import com.zhihu.matisse.internal.entity.CaptureStrategy
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import java.io.File
+import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * @author zhongxinyu
@@ -63,6 +66,7 @@ object Utils {
     }
 
 
+
      //转化请求Map
     fun  getUploadRequestMap(uris:List<Uri>?, context: Context, textContent:String):HashMap<String, RequestBody>{
         val requestMap = HashMap<String, RequestBody>()
@@ -72,22 +76,32 @@ object Utils {
                 val path = PathUtils.getPath(context, uri)
                 LogUtil.e(path)
                 val file = File(path)
-               val type =  if(MediaFileUtil.isAudioFileType(path)){
-                    "AudioFile"
-               }else if(MediaFileUtil.isImageFileType(path)){
-                   "imageFile"
-               }else if(MediaFileUtil.isVideoFileType(path)){
-                   "videoFile"
-               }else "unKnow"
-
-                requestMap.put("imgs" + "\";filename=\"" + file.name, RequestBody.create(MediaType.parse("multipart/form-data"), file))
-                i++
+               val type = if(MediaFileUtil.isVideoFileType(path)) "video"
+               else  "imgs"
+                requestMap.put(type + "\";filename=\"" + file.name, toRequestBodyFile(file))
             }
         }
-        val text = RequestBody.create(MediaType.parse("multipart/form-data"),""+textContent)
-        requestMap["textContent"] = text
+         requestMap["textContent"] = toRequestBodyText(textContent)
+         requestMap["submitsTime"] = toRequestBodyText(StringUtils.getDateTime())
         return requestMap
     }
+
+    //获取图片请求Map
+    fun  getImageRequestMap(uris:List<Uri>?, context: Context):HashMap<String, RequestBody>{
+        val requestMap = HashMap<String, RequestBody>()
+        if(uris!=null) {
+            for (uri in uris) {
+                val file = File(PathUtils.getPath(context, uri))
+                requestMap.put("imgs" + "\";filename=\"" + file.name, toRequestBodyFile(file))
+            }
+        }
+        return requestMap
+    }
+
+
+    fun toRequestBodyText(value:String) = RequestBody.create(MediaType.parse("text/plain"),value)
+
+    fun toRequestBodyFile(file: File) = RequestBody.create(MediaType.parse("multipart/form-data"),file)
 }
 
 

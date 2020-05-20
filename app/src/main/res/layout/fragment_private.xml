@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        app:menu="@menu/user_menu"
+        app:menu="@menu/private_menu"
         />
 
 </LinearLayout>

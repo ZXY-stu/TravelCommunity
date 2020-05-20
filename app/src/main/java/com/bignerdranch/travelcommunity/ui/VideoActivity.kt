@@ -73,7 +73,7 @@ class VideoActivity : Activity(), SurfaceHolder.Callback {
     }
 
     private fun initView() {
-        surface = findViewById<View>(R.id.surfaceView) as SurfaceView
+     // surface = findViewById<View>(R.id.surfaceView) as SurfaceView
         surfaceHolder = surface!!.holder // SurfaceHolder是SurfaceView的控制接口
         surfaceHolder?.addCallback(this) // 因为这个类实现了SurfaceHolder.Callback接口，所以回调参数直接this
     }

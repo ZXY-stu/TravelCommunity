@@ -49,12 +49,24 @@
         android:networkSecurityConfig="@xml/network_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:configChanges="orientation|keyboardHidden|screenSize"
         android:theme="@style/Com.TravelCommunity.Light"
         tools:targetApi="n"
         android:allowBackup="true">
 
 
+        <!--适配华为（huawei）刘海屏-->
+        <meta-data
+            android:name="android.notch_support"
+            android:value="true"/>
+        <!--适配小米（xiaomi）刘海屏-->
+        <meta-data
+            android:name="notch.config"
+            android:value="portrait|landscape" />
+
+        <meta-data
+            android:name="android.max_aspect"
+            android:value="2.4" />
+        <!--meta-data android:name = "android.max_aspect" android:value = "2.5" /-->
         <activity android:name=".ui.VideoActivity">
 
 
@@ -62,7 +74,10 @@
         <receiver android:name=".base.NetworkConnectChangedReceiver">
         </receiver>
         <!--  -->
+        <!--    android:configChanges="orientation|screenSize"    缺少这一句将导致屏幕旋转时，崩溃 -->
         <activity android:name=".ui.HomePageActivity"
+            android:configChanges="orientation|screenSize"
+            android:resizeableActivity="true"
             >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

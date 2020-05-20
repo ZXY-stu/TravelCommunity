@@ -29,7 +29,6 @@ class NoticeLoginFragment : BaseFragment<FragmentNoticeLoginBinding>() {
 
     override val layoutId: Int = R.layout.fragment_notice_login
     override val needLogin = false
-    override val dark: Boolean = false
    private val _viewModel by activityViewModels<UserViewModel> {
        InjectorUtils.userViewModelFactory(requireContext())
    }
@@ -48,5 +47,17 @@ class NoticeLoginFragment : BaseFragment<FragmentNoticeLoginBinding>() {
              LoginFragment().show(requireActivity().supportFragmentManager,"NoticeLoginFragment")
          }
         return binding.root
+    }
+
+    override fun subscribeUi() {
+
+    }
+
+    override fun subscribeListener() {
+
+    }
+
+    override fun subscribeObserver() {
+
     }
 }

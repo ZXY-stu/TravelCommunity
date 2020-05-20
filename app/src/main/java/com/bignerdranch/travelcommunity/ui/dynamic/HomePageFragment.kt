@@ -1,32 +1,30 @@
 package com.bignerdranch.travelcommunity.ui.dynamic
 
+import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.observe
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
-
+import com.bignerdranch.tclib.LogUtil
+import com.bignerdranch.tclib.LogUtil.eee
 import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.base.BaseFragment
 import com.bignerdranch.travelcommunity.databinding.FragmentVideoViewPageBinding
+import com.bignerdranch.travelcommunity.tcvideoplayer.TCPlayer
+import com.bignerdranch.travelcommunity.ui.RecyclerViewForViewPage2
 import com.bignerdranch.travelcommunity.ui.adapters.PageViewAdapter
+import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel
 import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel.Companion.MY_FOCUSE
 import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel.Companion.SYSTEM_RECOMMAND
 import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel.Companion.toQueryWhat
-import com.bignerdranch.tclib.LogUtil
-import com.bignerdranch.tclib.LogUtil.eee
-import com.bignerdranch.travelcommunity.base.BaseDialogFragment
-import com.bignerdranch.travelcommunity.base.BaseViewModel
-import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel
+import com.bignerdranch.travelcommunity.ui.user.NoticeLoginDialog
 import com.bignerdranch.travelcommunity.util.InjectorUtils
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.gyf.immersionbar.ImmersionBar
 
 
 /**
@@ -41,9 +39,11 @@ class HomePageFragment: BaseFragment<FragmentVideoViewPageBinding>() {
 
     override val layoutId: Int = R.layout.fragment_video_view_page
     override val needLogin: Boolean = false
-    override val dark: Boolean = true
-     var lastView:View? = null
-    var hasCreated = false
+    private lateinit var tabLayout:TabLayout
+    private lateinit var viewPager:ViewPager2
+    private lateinit var fragment1:HomePageDynamic
+    private lateinit var fragment2:HomePageDynamic
+    private lateinit var tcPlayer:TCPlayer
 
      private val _viewModel by activityViewModels<PersonDynamicViewModel> {
          InjectorUtils.personDynamicViewModelFactory(requireContext())
@@ -54,34 +54,70 @@ class HomePageFragment: BaseFragment<FragmentVideoViewPageBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-
-
-             super.onCreateView(inflater, container, savedInstanceState)
-             subscribeViewPage()   //初始化viewPage
-             lastView = binding.root
-
-      //  _viewModel.attachPublishPage(toPublishPage)
-
-        return  lastView
+         super.onCreateView(inflater, container, savedInstanceState)
+        return binding.root
     }
 
 
-    override fun onResume() {
-        super.onResume()
-        eee("HomePageFragment ${BaseViewModel.isParentHaveSetFont}")
+    private fun initVideoView(){
+        binding.video.visibility = View.VISIBLE
+        binding.video.addView(tcPlayer)
+        tcPlayer?.play("http://ips.ifeng.com/video19.ifeng.com/video09/2014/06/16/1989823-102-086-0009.mp4")
     }
 
-    private  fun subscribeViewPage(){
-        val tabLayout = binding.tabs
-        val viewPager = binding.viewPager
+    private fun init(){
+        tcPlayer = TCPlayer(requireActivity())
+        tcPlayer
+            .setDoubleClickListener {  }
+            .onPrepared { tcPlayer?.start() }
+            .onComplete { tcPlayer?.play() }
+            .setNetChangeListener(true)
+            .setLive(false)
+            .setSupportGesture(false)
+            .setShowTopControl(false)
+            .setFullScreenOnly(false)
+    }
 
-        viewPager.adapter = PageViewAdapter(this).build(mapOf(
-            SYSTEM_RECOMMAND to { HomePageVideoFragment() },
-            MY_FOCUSE to { HomePageDynamic() }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+       if(newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
+         /*   binding.viewPageCoordinatorLayout.fitsSystemWindows = true
+           binding.userToolbar.visibility = View.VISIBLE
+           binding.appBarLayout.visibility = View.VISIBLE
+           binding.appBarLayout.fitsSystemWindows = true
+           binding.tabs.visibility = View.VISIBLE*/
+       }
+        else //binding.viewPageCoordinatorLayout.visibility = View.GONE
+       {
+        /*  binding.userToolbar.visibility = View.GONE
+           binding.appBarLayout.visibility = View.GONE
+           binding.appBarLayout.fitsSystemWindows = false
+           binding.tabs.visibility = View.GONE*/
+       }
+        super.onConfigurationChanged(newConfig)
+    }
+
+    override  fun subscribeUi(){
+        tabLayout = binding.tabs
+        viewPager = binding.viewPager
+        fragment1 = HomePageDynamic().setScorllXListener(object :RecyclerViewForViewPage2.EnableScorllXListener{
+            override fun enable(flag: Boolean) {
+                   viewPager.isUserInputEnabled = flag
+            }
+        })
+
+        fragment2 = HomePageDynamic().setScorllXListener(object :RecyclerViewForViewPage2.EnableScorllXListener{
+            override fun enable(flag: Boolean) {
+                viewPager.isUserInputEnabled = flag
+            }
+        })
+
+
+
+            viewPager.adapter = PageViewAdapter(this).build(mapOf(
+            SYSTEM_RECOMMAND to { fragment1 },
+            MY_FOCUSE to { fragment2 }
         ) as MutableMap<Int, () -> Fragment>)
-
-
         // Set the icon and text for each tab
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = getTabTitle(position)
@@ -89,9 +125,13 @@ class HomePageFragment: BaseFragment<FragmentVideoViewPageBinding>() {
 
 
 
+
         viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+
+                eee("distX $position  distY $position")
                 when(position) {
                     MY_FOCUSE -> {
                         toQueryWhat = MY_FOCUSE
@@ -103,24 +143,7 @@ class HomePageFragment: BaseFragment<FragmentVideoViewPageBinding>() {
                     }
                 }
             }
-
-
         })
-
-
-       // viewPager.setCurrentItem(SYSTEM_RECOMMAND)
-
-
-    }
-
-
-    private fun getTabIcon(position: Int): Int {
-        LogUtil.e(""+position)
-        return when (position) {
-            MY_FOCUSE -> R.drawable.garden_tab_selector
-            SYSTEM_RECOMMAND -> R.drawable.plant_list_tab_selector
-            else -> throw IndexOutOfBoundsException()
-        }
     }
 
     private fun getTabTitle(position: Int): String? {
@@ -133,6 +156,14 @@ class HomePageFragment: BaseFragment<FragmentVideoViewPageBinding>() {
             }
             else -> null
         }
+    }
+
+    override fun subscribeListener() {
+
+    }
+
+    override fun subscribeObserver() {
+
     }
 }
 

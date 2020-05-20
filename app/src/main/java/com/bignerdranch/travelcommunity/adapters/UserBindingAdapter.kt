@@ -1,5 +1,6 @@
 package com.bignerdranch.travelcommunity.adapters
 
+import android.net.Uri
 import android.os.Build
 import android.text.Html
 import android.util.Log
@@ -91,9 +92,23 @@ object UserBindingAdapter{
                 .load(imageUrl)
                 .dontAnimate()
                 .into(view)
-            Log.w("MainAc",imageUrl)
-            LogUtil.e("${view.javaClass} + $imageUrl")
+            eee("imageUrl"+imageUrl)
+           // Log.w("MainAc",imageUrl)
+            //LogUtil.e("${view.javaClass} + $imageUrl")
         }
+    }
+
+
+    @BindingAdapter("imageFromUri")
+    @JvmStatic fun bindImageUri(view: ImageView, imageUrl: Uri?) {
+            Glide.with(view.context)
+                .load(imageUrl)
+                .dontAnimate()
+                .into(view)
+            eee("imageUrl"+imageUrl)
+            // Log.w("MainAc",imageUrl)
+            //LogUtil.e("${view.javaClass} + $imageUrl")
+
     }
 
     @BindingAdapter("imageUrl")
@@ -119,9 +134,9 @@ object UserBindingAdapter{
 
     @BindingAdapter("calcSex")
     @JvmStatic fun calcSex(view: ImageView,sex:String?){
-        when(sex){
-            "m" -> view.setImageResource(R.drawable.man)
-            "w" -> view.setImageResource(R.drawable.woman)
+        when(sex?.contains("w")){
+            false -> view.setImageResource(R.drawable.man)
+            true -> view.setImageResource(R.drawable.woman)
         }
     }
 
@@ -154,6 +169,30 @@ object UserBindingAdapter{
 
           }
       }
+
+
+    @JvmStatic
+    @BindingAdapter("bottomAction")
+    fun bottomAction(view:ImageView,isUser:Boolean){
+        if(isUser) view.setImageResource(R.drawable.delete_1)
+        else view.setImageResource(R.drawable.share_1)
+    }
+
+    @JvmStatic
+    @BindingAdapter("topAction")
+    fun topAction(view:ImageView,isUser:Boolean){
+        eee("isUser$isUser")
+        if(isUser) {
+            val lay = view.layoutParams
+            lay.width = view.resources.getDimensionPixelSize(R.dimen.action_pic_size)
+            lay.height = view.resources.getDimensionPixelSize(R.dimen.action_pic_size)
+            view.layoutParams = lay
+            view.setImageResource(R.drawable.share_1)
+
+        }
+        else view.setImageResource(R.drawable.focus)
+    }
+
 
 
 

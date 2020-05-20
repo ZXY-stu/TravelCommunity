@@ -1,13 +1,9 @@
 package com.bignerdranch.travelcommunity.ui.adapters
 
-import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.bignerdranch.travelcommunity.ui.BaseRecyclerViewHolder
 import java.util.*
-
+/*
 abstract class BaseRecyclerViewAdapter<T> :
     RecyclerView.Adapter<BaseRecyclerViewHolder>() {
 
@@ -80,4 +76,4 @@ abstract class BaseRecyclerViewAdapter<T> :
      */
     protected abstract fun bindData(holder: BaseRecyclerViewHolder?, position: Int)
 
-}
+}*/

@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     >
-<group android:checkableBehavior="single"
-    >
       <item android:id="@+id/user_info"
           android:icon="@drawable/userinfo"
           android:title="@string/userinfo"
@@ -10,6 +8,7 @@
     <item android:id="@+id/user_code"
         android:icon="@drawable/code"
         android:title="@string/our_code"
+
         />
     <item android:id="@+id/user_wallet"
         android:icon="@drawable/wallet"
@@ -30,5 +29,4 @@
         android:title="@string/logout"
         />
 
-</group>
 </menu>

@@ -1,5 +1,6 @@
 package com.bignerdranch.tclib.data.network
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import com.bignerdranch.tclib.LogUtil
 import com.bignerdranch.tclib.data.db.entity.CommentsMsg
@@ -13,6 +14,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.lang.reflect.Type
+import java.util.*
+import kotlin.collections.HashMap
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
@@ -23,20 +26,21 @@ import kotlin.coroutines.suspendCoroutine
  * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
  **/
 
-class Network private constructor(){
+class Network private constructor(context: Context){
 
 
-     //initial Services
+    //initial Retrofit
+     init {
+       ServiceCreator.buildRetrofit(context)
+     }
+    //initial Services
      private val userService =  ServiceCreator.create(UserService::class.java)
      private val personDynamicService = ServiceCreator.create(PersonDynamicService::class.java)
 
       //userService
-      fun toLogin(account:String,password:String):LiveData<ApiResponse<User>> {
-          println("asdadasdada")
-        return   userService.login(account, password)
-      }
+       fun toLogin(account:String,password:String) = userService.login(account, password)
 
-        fun toRegister(register: User) = userService.register(register)
+
         fun toRegister(account: String,password: String) = userService.register(account, password)
         fun toLogout(account:String) = userService.logout(account)
         fun toQueryFriend(userInfo:String) = userService.queryUsers(userInfo)
@@ -44,13 +48,14 @@ class Network private constructor(){
         fun toQueryFriendList(userId: Int) = userService.getFriendList(userId)
         fun toDeleteFriend(userId: Int) = userService.deleteFriend(userId)
         fun  toAddUserWithBack(requestArgs: HashMap<String, Any>) = userService.addUserWithBack(requestArgs)
-        fun toUpdateUser(user:User,content:HashMap<String, RequestBody>) =  userService.updateUser(user,content)
+        fun toUpdateUser(contentsArgs:HashMap<String, RequestBody>) =  userService.updateUser(contentsArgs)
 
 
           //PersonDynamicService
-          suspend fun toAddDynamic(permissionArgs:HashMap<String,Any>,contentsArgs:HashMap<String,RequestBody>) = personDynamicService.addDynamic(contentsArgs)
+          suspend fun toAddDynamic(permissionArgs:HashMap<String,Any>,contentsArgs:HashMap<String,RequestBody>) =
+              personDynamicService.addDynamic(permissionArgs,contentsArgs)
           fun toDeleteDynamic(dynamicId: Int) = personDynamicService.deleteDynamic(dynamicId)
-           fun toQueryDynamics(queryDynamicArgs:HashMap<String,Any>) = personDynamicService.queryDynamics(queryDynamicArgs)
+         suspend  fun toQueryDynamics(queryDynamicArgs:HashMap<String,Any>) = personDynamicService.queryDynamics(queryDynamicArgs)
           fun toAddLike(likeArgs:HashMap<String,Any>) = personDynamicService.addLike(likeArgs)
           fun toDeleteLike(likeArgs:HashMap<String,Any>) = personDynamicService.deleteLike(likeArgs)
           fun toQueryLike(queryLikeArgs:HashMap<String,Any>) = personDynamicService.queryLike(queryLikeArgs)
@@ -60,12 +65,7 @@ class Network private constructor(){
           fun toDeleteComment(commentsId:Int) = personDynamicService.deleteComment(commentsId)
 
 
-    fun  <T> fromToJson( json:String,listType:Type):T?{
-        val gson =  Gson()
-        var t:T? = null
-        t = gson.fromJson(json,listType)
-        return t
-    }
+
 
           private suspend fun <T> Call<T>.await(): T {
               return suspendCoroutine { continuation ->
@@ -85,15 +85,13 @@ class Network private constructor(){
                   })
               }
           }
-
+//Cookie: JSESSIONID=231CE0F6D2BA3E8899B025BB8CB0C229
 
           companion object{
           @Volatile  private var network:Network? = null
-          fun getInstance():Network{
-
-
+          fun getInstance(context:Context):Network{
               return network?: synchronized(this){
-                  network?: Network()
+                  network?: Network(context)
               }
           }
 

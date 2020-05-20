@@ -1,6 +1,7 @@
 package com.bignerdranch.tclib.data.repository
 
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.bignerdranch.tclib.data.db.daos.CommentsMsgDao
@@ -8,6 +9,7 @@ import com.bignerdranch.tclib.data.db.daos.LikeDao
 import com.bignerdranch.tclib.data.db.daos.PersonDynamicDao
 import com.bignerdranch.tclib.data.db.daos.UserDao
 import com.bignerdranch.tclib.data.db.entity.CommentsMsg
+import com.bignerdranch.tclib.data.db.entity.EntityId
 import com.bignerdranch.tclib.data.db.entity.Like
 import com.bignerdranch.tclib.data.db.entity.PersonDynamic
 import com.bignerdranch.tclib.data.network.model.ApiResponse
@@ -25,8 +27,9 @@ class PersonDynamicRepository private constructor(
     private val personDynamicDao: PersonDynamicDao,
     private val commentsMsgDao: CommentsMsgDao,
     private val likeDao: LikeDao,
-    private val userDao: UserDao
-):BaseRepository(personDynamicDao,commentsMsgDao, likeDao,userDao){
+    private val userDao: UserDao,
+    private val context: Context
+):BaseRepository(personDynamicDao,commentsMsgDao, likeDao,userDao,context){
 
     private var i = 0
     private suspend fun <T> launch(block:suspend ()->T):T = withContext(Dispatchers.IO){ block() }
@@ -47,14 +50,19 @@ class PersonDynamicRepository private constructor(
     }
 
     suspend fun toDeleteDynamic(dynamicId:Int) = launch {
+        toDeletePersonDynamicLocalById(dynamicId)
         _network.toDeleteDynamic(dynamicId)
     }
 
    fun toQueryPersonDynamicLocal()  = personDynamicDao.getPersonDynamics()
-
+    fun toQueryUserPersonDynamic(userId:Int) = personDynamicDao.getPersonDynamicsById(userId)
 
     suspend fun toDeletePersonDynamicLocal(personDynamic: PersonDynamic) = launch {
         personDynamicDao.deletePersonDynamic(personDynamic)
+    }
+
+    suspend fun toDeletePersonDynamicLocalById(id:Int) = launch {
+        personDynamicDao.deletePersonDynamicById(EntityId(id))
     }
 
     suspend fun  toInsertDynamicLocal(personDynamic: PersonDynamic) = launch {
@@ -73,7 +81,7 @@ class PersonDynamicRepository private constructor(
 
     suspend  fun  toAddComments(commentsMsg:CommentsMsg) = launch {
         _network.toAddComments(commentsMsg)
-        MutableLiveData(ApiResponse(data = commentsMsg, errorCode = 1, errorMsg = ""))
+       // MutableLiveData(ApiResponse(data = commentsMsg, errorCode = 0, errorMsg = ""))
     }
 
     suspend  fun toDeleteComments(msgId:Int) = launch {
@@ -90,6 +98,7 @@ class PersonDynamicRepository private constructor(
 
     suspend fun toInsertCommentLocal(commentsMsg: CommentsMsg) = launch {
         commentsMsgDao.insertMsg(commentsMsg)
+     //   MutableLiveData(commentsMsg)
     }
 
     suspend  fun toDeleteCommentLocal(commentsMsg: CommentsMsg) = launch {
@@ -135,14 +144,16 @@ class PersonDynamicRepository private constructor(
             personDynamicDao: PersonDynamicDao,
             commentsMsgDao: CommentsMsgDao,
             likeDao: LikeDao,
-            userDao: UserDao
+            userDao: UserDao,
+            context: Context
         ): PersonDynamicRepository {
             return instance ?: synchronized(this) {
                 instance ?: PersonDynamicRepository(
                     personDynamicDao,
                     commentsMsgDao,
                     likeDao,
-                    userDao
+                    userDao,
+                    context
                 ).also { instance = it }
             }
         }

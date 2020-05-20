@@ -1,35 +1,32 @@
 package com.bignerdranch.travelcommunity.ui.adapters
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bignerdranch.tclib.data.db.entity.Base
 
 /**
  * @author zhongxinyu
  * @date 2020/5/12
  * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
  **/
-/*
-class BaseAdapter<T> :ListAdapter<T,RecyclerView.ViewHolder>(Diff()){
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-       return
-    }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+abstract class BaseAdapter<R:ViewDataBinding,T:Base> :ListAdapter<T,RecyclerView.ViewHolder>(Diff<T>()){
+    abstract val itemLayoutId:Int
 
-    }
-
-
-    inner class Diff():DiffUtil.ItemCallback<T>(){
+    class Diff<T:Base>:DiffUtil.ItemCallback<T>(){
         override fun areItemsTheSame(oldItem: T, newItem: T): Boolean {
-            return  oldItem == newItem
+            return  oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: T, newItem: T): Boolean {
-            return  true
+            return oldItem.equals(newItem)
         }
 
     }
 
-}*/
+}

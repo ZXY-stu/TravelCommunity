@@ -34,11 +34,12 @@ class AlertDialogFragment : DialogFragment() {
         builder.setNegativeButton("取消") { dialogInterface, i ->
             dismiss()
         }
+
         val alertDialog = builder.create()
 
         val window = alertDialog.window
         window!!.setBackgroundDrawableResource(R.color.white)
-        window.decorView.setPadding(0, 0, 0, 0)
+        window.decorView.setPadding(0, 0, 0, 30)
         val wlp = window.attributes
         wlp.gravity = Gravity.BOTTOM
         wlp.width = WindowManager.LayoutParams.MATCH_PARENT

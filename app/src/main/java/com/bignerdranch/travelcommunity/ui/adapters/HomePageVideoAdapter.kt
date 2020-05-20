@@ -11,7 +11,7 @@ import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.databinding.FragmentVideoPlayerpageBinding
 import com.bignerdranch.tclib.LogUtil
 import com.bignerdranch.tclib.data.db.entity.PersonDynamic
-import com.bignerdranch.travelcommunity.databinding.DynamicStyleUserpageBinding
+import com.bignerdranch.travelcommunity.databinding.DynamicImagestyleUserpageBinding
 import com.bignerdranch.travelcommunity.ui.utils.VideoPageSnapHelper
 import com.bignerdranch.travelcommunity.util.ToastUtil
 
@@ -27,7 +27,7 @@ class HomePageVideoAdapter:ListAdapter<PersonDynamic,RecyclerView.ViewHolder>(Pe
        "https://upload.wikimedia.org/wikipedia/commons/a/ab/Cypripedium_reginae_Orchi_004.jpg"
     )
     private val adapter = VideoAdapter()
-   inner class HomePagevideoViewHolder(private val binding: DynamicStyleUserpageBinding)
+   inner class HomePagevideoViewHolder(private val binding: DynamicImagestyleUserpageBinding)
         :RecyclerView.ViewHolder(binding.root){
 
         init {
@@ -54,7 +54,7 @@ class HomePageVideoAdapter:ListAdapter<PersonDynamic,RecyclerView.ViewHolder>(Pe
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         LogUtil.w("创建")
-         return HomePagevideoViewHolder(DynamicStyleUserpageBinding.inflate(
+         return HomePagevideoViewHolder(DynamicImagestyleUserpageBinding.inflate(
              LayoutInflater.from(parent.context),parent,false))
     }
 

@@ -34,7 +34,7 @@ class PageViewAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
     override fun getItemCount() = _tabFragmentsCreators.size
 
     override fun createFragment(position: Int): Fragment {
-        LogUtil.e("zhixingle $position")
+        LogUtil.eee("zhixingle $position")
         return _tabFragmentsCreators[position]?.invoke() ?: throw IndexOutOfBoundsException()
     }
 

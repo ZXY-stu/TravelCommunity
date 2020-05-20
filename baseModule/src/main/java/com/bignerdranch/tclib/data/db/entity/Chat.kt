@@ -24,7 +24,7 @@ import java.util.*
          onUpdate = ForeignKey.CASCADE
          )],indices = [Index(value = ["id"]), Index(value = ["userId"])])
 data class Chat(
-    @PrimaryKey val id:Int = -1,   //聊天记录ID
+    @PrimaryKey override val id:Int = -1,   //聊天记录ID
     val userId:Int = -1, //用户Id
     val friendId:Int = -1, //朋友用户Id
     val content:String = "", //这条对话内容
@@ -32,5 +32,5 @@ data class Chat(
     val videoUrl:String ="",//这条对话的视频内容
     val voiceUrl:String = "", //这条对话的语言内容
     val time: String= StringUtils.getDateTime() //对话时间
-)
+):Base()
 

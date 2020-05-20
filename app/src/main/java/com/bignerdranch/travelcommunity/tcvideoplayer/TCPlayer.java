@@ -109,6 +109,7 @@ public class TCPlayer  extends ConstraintLayout {
 	private AudioManager audioManager;
 	private int mMaxVolume;
 	private boolean playerSupport;
+	private boolean haveBottomControl = false;
 	public String url;
 	private Query $;
 	private int STATUS_ERROR = -1;
@@ -174,7 +175,7 @@ public class TCPlayer  extends ConstraintLayout {
 				show(defaultTimeout);
 			} else if (v.getId() == R.id.app_video_finish) {
 				if (!fullScreenOnly && !portrait) {
-					activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+					activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 				} else {
 					activity.finish();
 				}
@@ -302,7 +303,7 @@ public class TCPlayer  extends ConstraintLayout {
 			if (isShowCenterControl) {
 				$.id(R.id.view_jky_player_center_control).visible();
 			}
-		//	showBottomControl(true);
+			showBottomControl(true);
 			if (!fullScreenOnly) {
 				$.id(R.id.view_jky_player_fullscreen).visible();
 			}
@@ -729,10 +730,13 @@ public class TCPlayer  extends ConstraintLayout {
 	 * @param portrait
      */
 	private void doOnConfigurationChanged(final boolean portrait) {
+
+		LogUtil.INSTANCE.eee("wozai doOnConfigurationChanged");
 		if (videoView != null && !fullScreenOnly) {
 			handler.post(new Runnable() {
 				@Override
 				public void run() {
+
 					setFullScreen(!portrait);
 					if (portrait) {
 						int screenWidth = DeviceUtils.deviceWidth(activity);
@@ -856,6 +860,7 @@ public class TCPlayer  extends ConstraintLayout {
 
 
 	public void play(){
+		LogUtil.INSTANCE.eee(url);
 		play(url,0);
 	}
 
@@ -1100,7 +1105,7 @@ public class TCPlayer  extends ConstraintLayout {
 		//LogUtil.INSTANCE.eee("position" + position +"duration"+duration);
 			if (duration > 0) {
 				long pos = 100L*position / duration;
-
+               if(onProgressChangedListener!=null)
 				onProgressChangedListener.progressPosition((int) (pos));
 			}
 		//onProgressChangedListener.progressPosition((int) percent);
@@ -1291,6 +1296,11 @@ public class TCPlayer  extends ConstraintLayout {
 		}
 	}
 
+	public TCPlayer setBottomControl(Boolean haveBottomControl){
+		this.haveBottomControl = haveBottomControl;
+		return this;
+	}
+
 	public TCPlayer setDoubleClickListener(OnDoubleClickListener doubleClickListener){
        this.onDoubleClickListener = doubleClickListener;
 	   return this;
@@ -1329,7 +1339,7 @@ public class TCPlayer  extends ConstraintLayout {
 		/**
 		 * 滑动
 		 */
-	/*	@Override
+		@Override
 		public boolean onScroll(MotionEvent e1, MotionEvent e2,
                                 float distanceX, float distanceY) {
 			if(!isSupportGesture && portrait){
@@ -1358,22 +1368,28 @@ public class TCPlayer  extends ConstraintLayout {
 			}
 			return super.onScroll(e1, e2, distanceX, distanceY);
 		}
-*/
+
+
+
 		@Override
 		public boolean onSingleTapUp(MotionEvent e) {
 			if (!isPrepare) {// 视频没有初始化点击屏幕不起作用
 				return false;
 			}
-			if (isPlaying()) {
-				//hide(false);
-				pause();
-				//
+			if (isPlaying()){
+			  if(haveBottomControl)	pause();
 			} else {
-
-				//toStart(0);
+			if(haveBottomControl)
 				start();
-				//show(defaultTimeout);
 			}
+			if(isShowing){
+				hide(false);
+			   isShowing = false;
+			}else{
+				show(defaultTimeout);
+				isShowing = true;
+			}
+
 			return true;
 		}
 	}
@@ -1511,16 +1527,22 @@ public class TCPlayer  extends ConstraintLayout {
 		 * 就算只用户主动切换大小，也是去是activity转向来实现的
 		 */
 		if (getScreenOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {// 转小屏
-			activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+			activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_PORTRAIT);
+			LogUtil.INSTANCE.eee("小屏");
 			if(isShowTopControl){
 				showTopControl(false);
 			}
 		} else {// 转全屏
-			activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+			activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			LogUtil.INSTANCE.eee("转全屏");
 			showTopControl(true);
+			LogUtil.INSTANCE.eee("showTopControl");
 		}
+		LogUtil.INSTANCE.eee("updateFullScreenButton");
 		updateFullScreenButton();
 	}
+
+
 
 	public interface OnErrorListener {
 		void onError(int what, int extra);
@@ -1532,6 +1554,12 @@ public class TCPlayer  extends ConstraintLayout {
 
 	public interface OnPreparedListener {
 		void onPrepared();
+	}
+
+
+	public TCPlayer setHost(String host){
+		this.url = host + this.url;
+		return this;
 	}
 
 	public TCPlayer onError(OnErrorListener onErrorListener) {

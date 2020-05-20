@@ -13,29 +13,17 @@
     android:background="@color/black"
     android:layout_height="match_parent">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/headPortraitUrl"
-        imageFromUrl="@{userData.headPortraitUrl}"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="29dp"
-        android:src="@mipmap/abc"
+        android:scaleType="centerCrop"
+        android:background="@color/white"
+        android:src="@drawable/abc"
+        imageFromUrl="@{userData.headPortraitUrl}"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/myNickName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@{userData.nickName}"
-        android:textAppearance="@style/UserDescriptionText"
-        app:layout_constraintBottom_toBottomOf="@+id/headPortraitUrl"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.34"
-        app:layout_constraintStart_toEndOf="@+id/headPortraitUrl"
-        app:layout_constraintTop_toTopOf="@+id/headPortraitUrl" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

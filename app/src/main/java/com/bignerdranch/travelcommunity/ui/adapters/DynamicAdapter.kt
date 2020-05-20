@@ -1,25 +1,22 @@
 package com.bignerdranch.travelcommunity.ui.adapters
 
-import android.content.res.Resources
+import android.app.Activity
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentManager
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bignerdranch.travelcommunity.R
-import com.bignerdranch.travelcommunity.databinding.FragmentVideoPlayerpageBinding
 import com.bignerdranch.tclib.LogUtil
 import com.bignerdranch.tclib.data.db.entity.PersonDynamic
-import com.bignerdranch.travelcommunity.databinding.DynamicStyleUserpageBinding
+import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.databinding.ItemDynamicBinding
-import com.bignerdranch.travelcommunity.ui.dynamic.DynamicDetails
+import com.bignerdranch.travelcommunity.ui.dynamic.ImageDynamicFragment
+import com.bignerdranch.travelcommunity.ui.dynamic.VideoDynamicFragment
 import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel
 import com.bignerdranch.travelcommunity.ui.user.FriendFragment
-import com.bignerdranch.travelcommunity.ui.utils.VideoPageSnapHelper
-import com.bignerdranch.travelcommunity.util.ToastUtil
+import com.bignerdranch.travelcommunity.ui.user.NoticeLoginDialog
 
 /**
  * @author zhongxinyu
@@ -27,33 +24,50 @@ import com.bignerdranch.travelcommunity.util.ToastUtil
  * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
  **/
 class DynamicAdapter(val viewModel: PersonDynamicViewModel,
-                     val framentManage:FragmentManager
+                     val framentManage:FragmentManager,
+                     val context: Context
 ):ListAdapter<PersonDynamic,RecyclerView.ViewHolder>(PersonDynamicDiff()) {
 
-
-
-
-    val dynamicDetail = DynamicDetails(_viewModel = viewModel)
-
-
-
+    private val TAG = "DynamicAdapter"
     inner class  DynamicViewHolder(private val binding: ItemDynamicBinding)
         :RecyclerView.ViewHolder(binding.root){
-         var dynamicId = -1
+         var   mPersonDynamic:PersonDynamic? = null
+        var isLike = false
         init {
             with(binding){
                  dynamicLayout.setOnClickListener {
-                     val bundle = bundleOf("dynamicId" to dynamicId)
-                       dynamicDetail.arguments?.putAll(bundle)
-                      dynamicDetail.show(framentManage,"DynamicAdapter")
+                     var showVideo = false
+                     mPersonDynamic?.videoUrl?.let {
+                         if(it.length>4){
+                             VideoDynamicFragment(mContext = context,personDynamic = mPersonDynamic!!).show(framentManage,TAG)
+                             showVideo = true
+                         }
+                     }
+                   if(!showVideo) ImageDynamicFragment(_viewModel = viewModel,mPersonDynamic = mPersonDynamic!!,
+                       activity = context as Activity).show(framentManage,TAG)
                  }
 
 
                  headUrl.setOnClickListener {
-
-                     FriendFragment(_viewModel = viewModel).show(framentManage,"DynamicAdapter")
+                     val friendFragment1 =  FriendFragment(_viewModel = viewModel)
+                     friendFragment1.setFriendId(mPersonDynamic!!.userId)
+                     viewModel.toQueryFriendById(mPersonDynamic!!.userId)
+                     friendFragment1.show(framentManage,TAG)
                  }
-                 like.setOnClickListener {  }
+
+                 like.setOnClickListener {
+                     checkLogin {
+                         if (!isLike) {
+                             like.setBackgroundResource(R.drawable.like_active)
+                             viewModel.toAddLike(mPersonDynamic!!.id, 0)
+                             isLike = true
+                         } else {
+                             isLike = false
+                             like.setBackgroundResource(R.drawable.like)
+                             viewModel.toDeleteLike(mPersonDynamic!!.id, 0)
+                         }
+                     }
+                 }
 
             }
         }
@@ -61,12 +75,22 @@ class DynamicAdapter(val viewModel: PersonDynamicViewModel,
         fun bind(item:PersonDynamic){
             with(binding){
                 personDynamic = item
-                dynamicId = item.id
+               mPersonDynamic = item
                 executePendingBindings()
             }
         }
 
 
+    }
+
+
+    fun checkLogin(doWorkOk:()->Unit){
+        if(viewModel.isLogin.value == false){
+            NoticeLoginDialog().show(framentManage,"CommentsAdapter")
+
+        }else{
+            doWorkOk()
+        }
     }
 
 

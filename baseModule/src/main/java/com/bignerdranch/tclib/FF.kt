@@ -20,12 +20,18 @@ import kotlinx.coroutines.withContext
 
 
 
-fun main() = runBlocking{
+fun main() =  runBlocking {
+          val querys = HashMap<String,Any>()
+          querys.put("userId",1)
 
-    print(get(null))
-    print(get("你不是"))
-//    print("net to ${data.data}")
-}
+        //  val net = Network.getInstance()
+        //  val res = net.toQueryDynamics(querys)
+    //http://lyndon.fun:8080/api/user/dynamic?userId=1&pageNumber=1&queryId=0&textContent=1231234123
+    // &userNickName=%E5%BB%96%E4%BA%9A%E5%8D%97&headPortraitUrl=url&submitsTime=2019-11-11%
+         // print(res)
+      }
+
+
 
 
 fun get(x:String?):String?{

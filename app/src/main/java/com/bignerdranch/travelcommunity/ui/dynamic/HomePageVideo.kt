@@ -17,40 +17,24 @@ import com.bignerdranch.tclib.LogUtil
 import com.bignerdranch.tclib.LogUtil.eee
 import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.base.BaseFragment
-import com.bignerdranch.travelcommunity.ui.adapters.VideoAdapter
-import kotlinx.android.synthetic.main.dynamic_style_userpage.view.*
+
 
 
 class HomePageVideo(override val layoutId: Int = R.layout.videoplayerview
                     , override val needLogin: Boolean = false)
     :BaseFragment<VideoplayerviewBinding>() {
 
-
-    override val dark: Boolean = false
     private  val _viewModel: PersonDynamicViewModel by viewModels{
         InjectorUtils.personDynamicViewModelFactory(requireContext())
     }
 
+    private lateinit var adapter:HomePageVideoAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         super.onCreateView(inflater, container, savedInstanceState)
-
-       eee("onCreateView  HomePageVideo")
-        val pageAdapter  = HomePageVideoAdapter()
-
-        binding.viewModel = _viewModel
-      //  _viewModel.attachPublishPage(toPublishPage)
-        with(binding.homeVideoView) {
-            adapter = pageAdapter
-
-            subscribeUi(pageAdapter)
-            addOnScrollListener(HomePageViewListener().setViewModel(_viewModel))
-        }
-        binding.executePendingBindings()
         return binding.root
     }
 
@@ -62,8 +46,18 @@ class HomePageVideo(override val layoutId: Int = R.layout.videoplayerview
 
 
 
-    private  fun subscribeUi(adapter: HomePageVideoAdapter){
 
+    override fun subscribeUi() {
+        adapter  = HomePageVideoAdapter()
+        binding.viewModel = _viewModel
+        binding.homeVideoView.adapter = adapter
+    }
+
+    override fun subscribeListener() {
+
+    }
+
+    override fun subscribeObserver() {
         _viewModel.personDynamics.observe(viewLifecycleOwner){
             LogUtil.e("size2020 ${it.size}")
             adapter.submitList(it)
@@ -71,20 +65,19 @@ class HomePageVideo(override val layoutId: Int = R.layout.videoplayerview
         }
 
         _viewModel.wait.observe(viewLifecycleOwner){
-           LogUtil.e("wait....")
+            LogUtil.e("wait....")
         }
 
-       _viewModel.loading.observe(viewLifecycleOwner){
+        _viewModel.loading.observe(viewLifecycleOwner){
             if(it){
                 with(_viewModel){
-                 _viewModel.loadingMore()
+                    _viewModel.loadingMore()
                     LogUtil.e("正在...")
-               // toAddHomeVideoPage()
-                loading.value = false
-              }
+                    // toAddHomeVideoPage()
+                    loading.value = false
+                }
             }
         }
-
 
     }
 }

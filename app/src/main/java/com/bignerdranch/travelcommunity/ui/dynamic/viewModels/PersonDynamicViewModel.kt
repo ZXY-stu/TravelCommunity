@@ -37,7 +37,7 @@ class PersonDynamicViewModel internal constructor(
 
      init {
 
-      pers.add(PersonDynamic(id = 1 ,userId = 1,videoUrl = "http://ips.ifeng.com/video19.ifeng.com/video09/2014/06/16/1989823-102-086-0009.mp4",
+    /*  pers.add(PersonDynamic(id = 1 ,userId = 1,videoUrl = "http://ips.ifeng.com/video19.ifeng.com/video09/2014/06/16/1989823-102-086-0009.mp4",
              imageUrls = images[0],headPortraitUrl = images[0],userNickName = "RIO微醺",likesCount = "100w",textContent =
           "原来爱情是：\n" +
                   "\n" +
@@ -75,25 +75,35 @@ class PersonDynamicViewModel internal constructor(
              "上天给了你太多才华，\n" +
                      "\n" +
                      "就注定不会给你太平坦的路。"))
-
+*/
        runBlocking {
-           personDynamicRepository.toInsertDynamicAllLocal(pers)
-        //   personDynamicRepository.toInsertCommentLocal(CommentsMsg())
+         //  personDynamicRepository.toInsertDynamicAllLocal(pers)
+          personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 0,id = 1,msg = "威威问问威威问问威威问问威威问问"))
+           personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 0,id = 2,msg = "威威问问威威问问威威问问威威问问"))
+           personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 0,id = 3,msg = "威威问问威威问问威威问问威威问问"))
+           personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 1,id = 4,msg = "威威问问威威问问威威问问威威问问"))
+           personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 0,id = 5,msg = "威威问问威威问问威威问问威威问问"))
+           personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 0,id = 6,msg = "威威问问威威问问威威问问威威问问"))
+           personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 1,id = 3,msg = "威威问问威威问问威威问问威威问问"))
+           personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 2,id = 4,msg = "威威问问威威问问威威问问威威问问"))
+           personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 3,id = 5,msg = "威威问问威威问问威威问问威威问问"))
+           personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 4,id = 6,msg = "威威问问威威问问威威问问威威问问"))
        }
      }
 
     val personDynamics = personDynamicRepository.toQueryPersonDynamicLocal()
+    val userPersonDynamic = personDynamicRepository.toQueryUserPersonDynamic(userId = getUserId())
     val commentsMsgLocal = personDynamicRepository.toQueryCommentsMsgLocal()
     val likesLocal = personDynamicRepository.toQueryLikeLocal()
 
 
     val waitAddComment= executeRequest(toAddComments) {
-            personDynamicRepository.toAddComments(currentCommentsMsg)
+            personDynamicRepository.toAddComments(currentCommentsMsg!!)
     }
 
     val addCommentsResult = waitResponseResult(waitAddComment) {
         eee("addCommentsResult"+it)
-        personDynamicRepository.toInsertCommentLocal(it)
+      // personDynamicRepository.toInsertCommentLocal(it)
     }
 
     val waitAddDynamic=  executeRequest(toAddDynamic) {
@@ -109,16 +119,14 @@ class PersonDynamicViewModel internal constructor(
          *
          * contentArgs  内容列表
          * textContent  动态的文本内容
-         * imageFiles   动态的图片文件 最多9张
-         * videoFile   动态的视频文件
+         * imageUrl   动态的图片文件 最多9张
+         * videoUrl   动态的视频文件
          * */
          personDynamicRepository.toAddDynamic(permissionArgs,contentsArgs)
     }
 
     val addDynamicResult = waitResponseResult(waitAddDynamic){
         eee("得到了dynamic")
-        contentsArgs.clear()
-        permissionArgs.clear()
         personDynamicRepository.toInsertDynamicLocal(it)
     }
 
@@ -128,10 +136,12 @@ class PersonDynamicViewModel internal constructor(
         // userId
         // stat 0动态 1 评论
          personDynamicRepository.toAddLike(requestArgs)
+
     }
 
     val addLikeResult = waitResponseResult(waitAddLike){
-        personDynamicRepository.toInsertLikeLocal(it)
+
+      //  personDynamicRepository.toInsertLikeLocal(it)
     }
 
 
@@ -187,54 +197,54 @@ class PersonDynamicViewModel internal constructor(
         personDynamicRepository.toInsertLikesLocal(it)
     }
 
-    /* 查询动态 requestArgs
-     * userAccount 用户账户  不为空，则查询所有好友动态
-     * friendAccount 朋友账号  不为空 则查询好友所有的动态
-     * pageNumber 当前页数
-     * */
+
     val waitQueryDynamic = executeRequest(toQueryDynamic){
         personDynamicRepository.toQueryPersonDynamics(requestArgs)
     }
 
     val queryDynamicResult = waitResponseResult(waitQueryDynamic){
-        personDynamicRepository.toInsertDynamicAllLocal(it)
+        if(it.isNotEmpty()){
+         eee(""+it)
+            personDynamicRepository.toInsertDynamicAllLocal(it)
+
+       }
     }
 
       init {
           addLikeResult.observeForever {
-              executeResult(it)
+              executeResult(it,"点赞")
           }
 
           addDynamicResult.observeForever {
-              executeResult(it)
+              executeResult(it,"上传")
           }
 
           addCommentsResult.observeForever {
-              executeResult(it)
+              executeResult(it,"评论")
           }
 
           deleteLikeResult.observeForever {
-              executeResult(it)
+              executeResult(it,"取消点赞")
           }
 
           deleteDynamicResult.observeForever {
-              executeResult(it)
+              executeResult(it,"动态删除")
           }
 
           deleteCommentsResult.observeForever {
-              executeResult(it)
+              executeResult(it,"评论删除")
           }
 
           queryLikeResult.observeForever {
-              executeResult(it)
+              executeResult(it,"查询")
           }
 
           queryCommentsResult.observeForever {
-              executeResult(it)
+              executeResult(it,"查询")
           }
 
           queryDynamicResult.observeForever {
-              executeResult(it)
+              executeResult(it,"查询")
           }
 
 
@@ -295,7 +305,7 @@ class PersonDynamicViewModel internal constructor(
        pers.add(
            PersonDynamic(
                l,l, "123", "${l}", "想当小渣男，还是小暖男呢", "", ""
-               , images[l%5], ""+l,""+l, ""+Date(System.currentTimeMillis()), "",
+               , images[l%5], ""+l,""+l, ""+Date(System.currentTimeMillis()),
                ""+i, ""+i,  i
            )
        )
@@ -364,8 +374,8 @@ class PersonDynamicViewModel internal constructor(
     fun toVideoSimpleData(value:List<PersonDynamic>):List<SimpleVideoData>{
        return  value.map {
             SimpleVideoData(dynamicId = it.id,
-                            videoUrl = it.videoUrl,
-                            imageUrls = it.imageUrls,
+                            videoUrl = ""+it.videoUrl,
+                            imageUrls = ""+it.imageUrls,
                             likeCount = it.likesCount)
         }
     }
@@ -377,6 +387,8 @@ class PersonDynamicViewModel internal constructor(
         const val  MY_FOCUSE = 0    //我的关注内容
         const val SYSTEM_RECOMMAND = 1  //系统推荐内容
         const val USER_DYNAMIC = 2   //用户信息+动态页
+        const val USER_WORK = 3  //用户的作品
+        const val USER_LIKE = 4 //用户的喜欢
        /*
        *  MY_FOCUSE 表示自动查询我关注的好友动态
        *  SYSTEM_RECOMMAND 表示系统自动推荐比较有火的动态

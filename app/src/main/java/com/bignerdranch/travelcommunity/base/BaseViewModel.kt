@@ -1,7 +1,5 @@
 package com.bignerdranch.travelcommunity.base
 
-import android.content.Context
-import android.net.Uri
 import android.os.Looper
 import android.text.TextUtils
 import androidx.databinding.Observable
@@ -13,13 +11,13 @@ import com.bignerdranch.tclib.data.db.entity.CommentsMsg
 import com.bignerdranch.tclib.data.db.entity.User
 import com.bignerdranch.tclib.data.network.model.ApiResponse
 import com.bignerdranch.tclib.data.repository.BaseRepository
+import com.bignerdranch.travelcommunity.ui.dynamic.PrivateFragment.Companion.OPEN
 import com.bignerdranch.travelcommunity.util.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import okhttp3.RequestBody
 import java.util.*
 import kotlin.collections.HashMap
-import kotlin.properties.Delegates
 
 /**
  * @author zhongxinyu
@@ -45,21 +43,33 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
     val account = MutableLiveData<String>()   //账号
     val password = MutableLiveData<String>()   //密码
     val code = MutableLiveData<String>()   //验证码
-    val permissionId = MutableLiveData<Int>(0)   //动态权限Id
+
 
 
     var _friendId  = -1  //朋友ID
     var _dynamicId  = -1    //动态Id
     var _commentsId  = -1   //评论Id
     var _likeId  = -1       //点赞ID
-    private var userId = 1; //当前登录用户默认ID
-    private val userOperationList = ArrayList<Int>()   //用户
+    var _groupId = 0        //用户组Id
+    var isRequireUser = 0   //是否为发起人
+    var memo = ""           //备注
 
-    val localUser = baseRepository._userDao.getUser(userId)
-    val currentUser = baseRepository._userDao.getUser(_friendId)
+    var dynamicPrivateModel = OPEN   //动态权限，默认开放
+
+
+     var localUserId = 1; //当前登录用户默认ID
+
+     val userOperationList = ArrayList<Int>()   //用户
+
+    protected var editorUser: User? = null
+
+    val localUser = baseRepository._userDao.getUser(localUserId)  //本地用户
+
+
+    val currentUser = baseRepository._userDao.getUser(_friendId)  //当前查询用户
 
     val isLogin = Transformations.switchMap(localUser){
-            user ->  LogUtil.e("创建了_baseViewmodel")
+            user ->  LogUtil.eee("创建了_baseViewmodel $user")
         MutableLiveData<Boolean>(user != null)
     }
     companion object {
@@ -67,16 +77,18 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
         var isParentHaveSetFont = false  //状态栏字体颜色状态
     }
     init {
-      /*  runBlocking {
-            baseRepository._userDao.insertUser(User(userId = 1, headPortraitUrl = images[1],nickName = "ssadasd"))
+
+      // liveDataMap.put("toQueryDynamics",get())
+       runBlocking {
+          /*  baseRepository._userDao.insertUser(User(userId = 1, headPortraitUrl = images[1],nickName = "ssadasd"))
 
             baseRepository._userDao.insertUser(User(userId = 2,
                headPortraitUrl = images[2],nickName = "1asd",account = "zxczxczxczc"))
             baseRepository._userDao.insertUser(User(userId = 3,nickName = "wsadsadasd",account = "22222",
                     headPortraitUrl = images[3]))
             baseRepository._userDao.insertUser(User(userId = 4,nickName = "ezx",account = "zxczxssssczxczc", headPortraitUrl = images[4]
-            ))
-        }*/
+            ))*/
+        }
 
         isLogin.observeForever{
            userIsLogin = it
@@ -87,7 +99,7 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
 
     lateinit var friendCommentsMsg: CommentsMsg
 
-    lateinit var currentCommentsMsg:CommentsMsg
+     var currentCommentsMsg:CommentsMsg? = null
 
     /*动作的触发标志*/
     val refreshTrigger = MutableLiveData<Boolean>()  //是否触发刷新
@@ -117,7 +129,7 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
 
     var _userInfo = ""  //要查询的用户账号或者昵称
 
-
+    val toOpenAlbum    =  get()         //打开相册
     val toStopVideo    =  get()
     val toPublishPage  =  get()         //去发布页面
     val toUserPage     =  get()         //去朋友用户页
@@ -148,9 +160,10 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
     val toQueryLikes =    get()         //查询点赞
     val toQueryDynamic =  get()         //查询动态
     val toQueryComments = get()         //查询评论
-    val toQueryFriend =   get()         //查询好友
+    val toQueryFriendById=   get()         //查询好友
     val toQueryChat =     get()         //查询聊天记录
     val toQueryFriendList = get()     //查询好友列表
+    val toQueryFriendByUserInfo = get()
 
     fun toLogin() {
         if(checkError())
@@ -168,6 +181,49 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
     fun toUpdateUser(){
         set(toUpdateUser)
     }
+
+    fun toOpenAlbum(){
+        set(toOpenAlbum)
+    }
+
+    fun toUpdateNickName(){
+        editorUser = localUser.value
+        editorUser?.nickName = ""+textContent.value
+        set(toUpdateUser)
+    }
+
+    fun toUpDateIntroduce(){
+        editorUser = localUser.value
+        editorUser?.introduce = ""+textContent.value
+        set(toUpdateUser)
+    }
+
+    fun toUpDateSex(sex:String){
+        editorUser = localUser.value
+        editorUser?.sex = ""+sex
+        set(toUpdateUser)
+    }
+
+    fun toUpDateAddress(){
+        editorUser = localUser.value
+       // editorUser?.add = ""+textContent.value
+        //set(toUpdateUser)
+    }
+
+    fun toUpdateHeadUrl(url:String){
+        editorUser = localUser.value
+        editorUser?.headPortraitUrl = ""+url
+        set(toUpdateUser)
+    }
+
+    fun toUpdateBackGroundUrl(url:String){
+      //  editorUser = localUser.value
+      //  editorUser?.headPortraitUrl = ""+url
+      //  set(toUpdateUser)
+    }
+
+
+
 
     fun toFindPassword() =  set(toFindPassword)
 
@@ -192,7 +248,27 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
         set(toChatPage)
     }
 
-    fun toQueryDynamics() = set(toQueryDynamic)
+    /* 查询动态
+       *  name = userId 用户id
+       *  name = queryId 查询类型
+       *  queryId = 0 系统自动推荐用户动态
+       *  queryId = 1 查询userId用户好友的动态
+       *  queryId = 2 查询userId用户发表过的动态
+       *  pageNumber 当前页数
+       *  返回最新的10条动态
+       * */
+
+    fun setMap(key:String){
+        //liveDataMap.get(key)?.value = true
+    }
+
+    fun toQueryDynamics(queryId:Int,pageNumber:Int){
+        requestArgs.put("userId", currentUser.value?.userId?:-1)
+        requestArgs.put("queryId",queryId)
+        requestArgs.put("pageNumb" +
+                "er",pageNumber)
+        set(toQueryDynamic)
+    }
 
     fun toQueryLikes(dynamicId: Int) {
          _dynamicId = dynamicId
@@ -216,9 +292,14 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
          set(toQueryChat)
      }
 
-     fun toQueryFriend() {
-        set(toQueryFriend)
+     fun toQueryFriendByUserInfo() {
+        set(toQueryFriendByUserInfo)
      }
+
+    fun toQueryFriendById(friendId:Int) {
+        _friendId = friendId
+        set(toQueryFriendById)
+    }
 
     fun toDeleteFriend(friendId: Int) {
          _friendId = friendId
@@ -264,38 +345,55 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
 *  1 表示仅关注的人可见
 *  2 表示自定义，需通过查询权限表获取访问权限
 *  3 表示私密，仅自己可见
-*  userList     需要处理权限的用户列表，处理后，存入UserRelation
-*
+*  userList     需要处理权限的用户列表，处理后，存入UserDynamicPermission
 * contentArgs  动态内容列表
 * textContent  动态的文本内容
-* imageFiles   动态的图片文件 最多9张
-* videoFile   动态的视频文件
+* imgs   动态的图片文件 最多9张
+* video   动态的视频文件
+* userNickName 用户昵称
+* headPortraitUrl 用户头像
+* submitsTime 发布时间
 * */
     fun toAddDynamic() {
         permissionArgs["userId"] = getUserId()
         permissionArgs["userList"] = userOperationList
-        permissionArgs["permissionId"] = permissionId.value!!
-        toAddDynamic.value = true
+        permissionArgs["permissionId"] = ""+dynamicPrivateModel
+        permissionArgs["userNickName"] = ""+localUser.value?.nickName
+        permissionArgs["headPortraitUrl"] = ""+localUser.value?.headPortraitUrl
+            toAddDynamic.value = true
     }
-
+    //  添加好友
+    // 也表示关注好友
+    // friendId  对方用户
+    // groupId  分组id
+    // isRequireUser  是否为发起人 0是 1否
+    // memo  添加好友备注内容
+    // 若被添加的user的privateMode为0  表示对外开放，申请直接通过
+    // 若被添加的user的privateMode为1  表示私密，服务器需通知对方用户，对方确认之后，才可添加 暂时可以不实现这个功能
+    // 更新AddFriendRecord表
     fun toAddFriend(friendId: Int?) {
         if(friendId!=null) {
             _friendId = friendId
+            requestArgs["friendId"] = friendId
+            requestArgs["groupId"] =  _groupId
+            requestArgs["isRequireUser"] = isRequireUser
+            requestArgs["memo"] = memo
             set(toAddFriend)
         }
     }
 
     fun toAddComments() {
-        eee("toSetFriendCommentsInfo $friendCommentsMsg")
-        currentCommentsMsg = CommentsMsg(
+       // eee("toSetFriendCommentsInfo $friendCommentsMsg ${textContent.value}")
+                currentCommentsMsg = CommentsMsg(
             id = System.currentTimeMillis().toInt(),
                                         dynamicId = friendCommentsMsg.dynamicId,
-                                        userId = localUser.value!!.userId,
+                                        userId =  localUser.value!!.userId,
                                         userNickName = localUser.value!!.nickName,
-                                        userAccount = localUser.value!!.account,
                                         commentGroupId = friendCommentsMsg.commentGroupId,
                                        friendNickName = friendCommentsMsg.userNickName,
                                        msg =  textContent.value.toString())
+        //eee("currentMsg $currentCommentsMsg")
+
         set(toAddComments)
     }
 
@@ -315,9 +413,14 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
         * stat = 1  给评论点赞  id为评论id
         * */
         if(id!=null) {
+            requestArgs.clear()
+
+            eee(""+requestArgs)
             requestArgs["id"] = id
             requestArgs["userId"] = localUser.value?.userId?:0
             requestArgs["stat"] = stat
+
+            eee(""+requestArgs)
             set(toAddLike)
         }
     }
@@ -366,12 +469,12 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
         }
     }
 
-    protected fun executeResult(id:Int) {
+    protected fun executeResult(id:Int,msg:String) {
         Thread {
             Looper.prepare()  //在子线程调用 Looper.prepare()
             when (id) {
-                SUCCESS ->   ToastUtil.show("成功")
-                FAILUER ->  ToastUtil.show("失败")
+                SUCCESS ->   ToastUtil.show(msg+"成功")
+                FAILUER ->  ToastUtil.show(msg+"失败")
                 SERVER_OR_NETWORK_ERROR -> ToastUtil.show("服务器出错！")
             }
             Looper.loop() //在子线程调用 Looper.loop()执行UI操作
@@ -419,12 +522,18 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
     protected fun <T,R> executeRequest(liveData: LiveData<T>, block: suspend (T) -> LiveData<ApiResponse<R>>):LiveData<ApiResponse<R>>{
         return Transformations.switchMap(liveData){
             runBlocking {
+
                 block(it)
+
             }
         }
     }
 
     protected fun <T> waitResponseResult(liveData:LiveData<ApiResponse<T>>, block: suspend (T) -> Unit):LiveData<Int>{
+        contentsArgs.clear()
+        permissionArgs.clear()
+        requestArgs.clear()
+        eee("zhixing")
         return Transformations.map(liveData){
             it?.run {
                 when(errorCode){
@@ -438,12 +547,14 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
                     }
                     else -> FAILUER
                 }
+
             }?: SERVER_OR_NETWORK_ERROR
         }
     }
 
     fun getUserId() = localUser.value?.userId?:-1
-    fun mergeData(data1:String) = data1 + "评论数"
+    fun mergeData_1(data1:String) = data1 + "评论数"
+    fun mergeData_2(data1:String) = "共"+data1 + "条评论"
     override fun addOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) { callbacks.add(callback) }
     override fun removeOnPropertyChangedCallback(callback: Observable.OnPropertyChangedCallback?) { callbacks.remove(callback) }
     fun notifyValueChanged(fieldId:Int){ callbacks.notifyCallbacks(this,fieldId,null) }

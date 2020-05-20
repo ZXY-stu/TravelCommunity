@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<group android:checkableBehavior="single">
+    <item android:id="@+id/open"
+        android:title="公开"
+        />
+
+    <item android:id="@+id/secret"
+        android:title="私密"
+        />
+
+    <item android:id="@+id/only_choose"
+        android:title="选中可见"
+        />
+
+    <item android:id="@+id/beside_choose"
+        android:title="选中不可见"
+        />
+
+    <item android:id="@+id/only_friend"
+        android:title="仅关注的人可见"
+        />
+</group>
+</menu>

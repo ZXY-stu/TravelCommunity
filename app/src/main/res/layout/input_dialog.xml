@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
-
+  <variable
+      name="viewModel"
+      type="com.bignerdranch.travelcommunity.base.BaseViewModel"
+      />
 
     </data>
     <LinearLayout
@@ -19,12 +22,11 @@
             android:layout_weight="1"
             android:layout_gravity="center"
             android:padding="5dp"
+            android:text="@={viewModel.textContent}"
             android:background="@drawable/bg_edittext_normal"
             android:textSize="15sp"
             android:hint="  留下你的评论呗..."
            />
-
-
 
 
         <TextView
@@ -34,6 +36,7 @@
             android:layout_marginStart="@dimen/action_padding"
             android:layout_marginEnd="@dimen/action_padding"
             android:layout_gravity="center"
+            android:onClick="@{()->viewModel.toAddComments()}"
             android:textAppearance="@style/UserCommentsText"
             android:text="发送"
             />

@@ -34,9 +34,13 @@ class UserViewModel internal constructor(private val userRepository: UserReposit
 
     private val userLoginResult = waitResponseResult(waitUserLogin){
         with(it){
-            val user = User(1,nickName,account,age,birthday, headPortraitUrl, backgroundImageUrl,
+         /*   val user = User(1,nickName,account,age,birthday, headPortraitUrl, backgroundImageUrl,
                 phoneNumber, password, address, identifyNumber, sex, hobby, introduce,
-                stat, lastLoginTime, isMember, privateModel, likeTotal, fansTotal, focusTotal)
+                stat, lastLoginTime, isMember, privateModel, likeTotal, fansTotal, focusTotal)*/
+      eee(""+it)
+               val user = User(1,nickName,account,age,birthday, headPortraitUrl,
+               phoneNumber, password, identifyNumber, sex, hobby, introduce,
+               stat, lastLoginTime, isMember, privateModel)
             userRepository.toInsertUserLocal(user)
         }
     }
@@ -50,9 +54,13 @@ class UserViewModel internal constructor(private val userRepository: UserReposit
 
     private val userRegisterResult =  waitResponseResult(waitUserRegister){
         with(it){
-            val user = User(1,nickName,account,age,birthday, headPortraitUrl, backgroundImageUrl,
+           /* val user = User(1,nickName,account,age,birthday, headPortraitUrl, backgroundImageUrl,
                 phoneNumber, password, address, identifyNumber, sex, hobby, introduce,
-                stat, lastLoginTime, isMember, privateModel, likeTotal, fansTotal, focusTotal)
+                stat, lastLoginTime, isMember, privateModel, likeTotal, fansTotal, focusTotal)*/
+
+            val user = User(1,nickName,account,age,birthday, headPortraitUrl,
+                phoneNumber, password, identifyNumber, sex, hobby, introduce,
+                stat, lastLoginTime, isMember, privateModel)
             userRepository.toInsertUserLocal(user)
         }
     }
@@ -67,7 +75,7 @@ class UserViewModel internal constructor(private val userRepository: UserReposit
     }
 
     //搜索好友
-    private val waitQueryFriend = executeRequest(toQueryFriend){
+    private val waitQueryFriend = executeRequest(toQueryFriendByUserInfo){
         userRepository.toQueryFriend(_userInfo)
     }
 
@@ -76,7 +84,7 @@ class UserViewModel internal constructor(private val userRepository: UserReposit
     }
 
     //查询好友信息
-    private val waitQueryFriendInfo = executeRequest(toQueryFriend){
+    private val waitQueryFriendInfo = executeRequest(toQueryFriendById){
         userRepository.toQueryFriend(_friendId)
     }
 
@@ -112,8 +120,13 @@ class UserViewModel internal constructor(private val userRepository: UserReposit
     }
 
     //更新用户基本信息
+    // contentsArgs
+    // name = backgroundImageUrl  用户背景图片
+    // name = headPortraitUrl  用户头像
+    // user实体类  用户其它文字信息
     private val waitUpdateUser = executeRequest(toUpdateUser){
-        userRepository.toUpdateUserInfo(localUser.value!!,contentsArgs)
+        userRepository.toInsertUserLocal(editorUser!!)
+        userRepository.toUpdateUserInfo(contentsArgs)
     }
 
     private val updateUserResult = waitResponseResult(waitUpdateUser){
@@ -121,44 +134,49 @@ class UserViewModel internal constructor(private val userRepository: UserReposit
     }
 
 
+
+    fun getWrapUser(){
+
+    }
+
         init {
 
 
 
             deleteFriendResult.observeForever {
-                executeResult(it)
+                executeResult(it,"取消关注")
             }
 
             addFriendResult.observeForever {
-                executeResult(it)
+                executeResult(it,"关注")
             }
 
             queryFriendListResult.observeForever {
-                executeResult(it)
+                executeResult(it,"")
             }
 
             queryFriendResult.observeForever {
-                executeResult(it)
+                executeResult(it,"")
             }
 
             queryFriendInfoResult.observeForever {
-                executeResult(it)
+                executeResult(it,"")
             }
 
             userRegisterResult.observeForever {
-                executeResult(it)
+                executeResult(it,"")
             }
 
             userLoginResult.observeForever {
-                executeResult(it)
+                executeResult(it,"")
             }
 
             userLogoutResult.observeForever {
-                executeResult(it)
+                executeResult(it,"")
             }
 
             updateUserResult.observeForever {
-                executeResult(it)
+                executeResult(it,"")
             }
         }
 

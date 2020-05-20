@@ -34,7 +34,6 @@ class MessageFragment( override val needLogin: Boolean = false,
                        override val layoutId: Int = R.layout.fragment_message)
     : BaseFragment<FragmentMessageBinding>() {
 
-    override val dark: Boolean = true
     private val _viewModel by activityViewModels<UserViewModel> {
         InjectorUtils.userViewModelFactory(requireContext())
     }
@@ -46,7 +45,7 @@ class MessageFragment( override val needLogin: Boolean = false,
     ): View? {
             super.onCreateView(inflater, container, savedInstanceState)
              eee("onCreateView")
-           return   inflater.inflate(layoutId,container,false)
+           return   binding.root
     }
 
 
@@ -67,6 +66,18 @@ class MessageFragment( override val needLogin: Boolean = false,
 
     override fun onResume() {
         super.onResume()
+    }
+
+    override fun subscribeUi() {
+
+    }
+
+    override fun subscribeListener() {
+
+    }
+
+    override fun subscribeObserver() {
+
     }
 
 

@@ -1,6 +1,7 @@
 package com.bignerdranch.travelcommunity.ui.utils
 
 import android.app.Activity
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -52,7 +53,7 @@ import java.io.File
  }
 
 
-private fun getBitMapFromUri(uri:Uri,context: Context) = context.contentResolver.openFileDescriptor(uri,"r")
+ fun getBitMapFromUri(uri:Uri,context: Context) = context.contentResolver.openFileDescriptor(uri,"r")
     ?.use {
         BitmapFactory.decodeFileDescriptor(it.fileDescriptor)
     }
@@ -86,6 +87,14 @@ private fun rotateBitMap(bitmap: Bitmap, degree: Int): Bitmap {
     return  rotatedBitmap
 }
 
+fun getUriFromDrawableRes(context:Context,id:Int):Uri {
+    val resources = context.resources
+    val path = ContentResolver.SCHEME_ANDROID_RESOURCE + "://"+
+            resources.getResourcePackageName(id) + "/"+
+            resources.getResourceTypeName(id) + "/"+
+            resources.getResourceEntryName(id);
+    return Uri.parse(path);
+}
 
 
         /**

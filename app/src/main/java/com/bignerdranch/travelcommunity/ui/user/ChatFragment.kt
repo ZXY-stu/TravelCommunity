@@ -15,7 +15,7 @@ class ChatFragment(override val layoutId: Int = R.layout.fragment_chat,
                    override val needLogin: Boolean = true) : BaseFragment<FragmentChatBinding>() {
 
 
-    override val dark: Boolean = false
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -23,6 +23,17 @@ class ChatFragment(override val layoutId: Int = R.layout.fragment_chat,
         super.onCreateView(inflater, container, savedInstanceState)
 
         return inflater.inflate(R.layout.fragment_chat, container, false)
+    }
+
+    override fun subscribeUi() {
+
+    }
+
+    override fun subscribeListener() {
+
+    }
+
+    override fun subscribeObserver() {
     }
 
 

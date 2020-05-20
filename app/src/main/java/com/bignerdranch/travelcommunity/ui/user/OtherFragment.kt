@@ -14,7 +14,6 @@ import com.bignerdranch.travelcommunity.util.InjectorUtils
 class OtherFragment(override val layoutId: Int = R.layout.fragment_other,
                     override val needLogin: Boolean = true)
     : BaseFragment<FragmentOtherBinding>() {
-    override val dark: Boolean = false
     private val _viewModel by activityViewModels<UserViewModel> {
         InjectorUtils.userViewModelFactory(requireContext())
     }

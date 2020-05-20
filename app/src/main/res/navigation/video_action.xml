@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/videoFragment"
-        android:name="com.bignerdranch.travelcommunity.ui.dynamic.HomePageVideoFragment"
+        android:name="com.bignerdranch.travelcommunity.ui.dynamic.VideoDynamicFragment"
         android:label="VideoFragment"
         tools:layout="@layout/homepage_video_fragment">
 

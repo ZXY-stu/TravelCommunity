@@ -18,11 +18,11 @@ object InjectorUtils{
 
 
    private fun getUserRepository(context: Context): UserRepository {
-       return UserRepository.getInstance(TCDataBases.getInstance(context).userDao())
+       return UserRepository.getInstance(TCDataBases.getInstance(context).userDao(),context)
     }
 
     private fun getBaseRepository(context: Context): BaseRepository {
-        return BaseRepository.getInstance(TCDataBases.getInstance(context).userDao())
+        return BaseRepository.getInstance(TCDataBases.getInstance(context).userDao(),context)
     }
 
     private fun getPersonDynamicRepository(context: Context): PersonDynamicRepository {
@@ -31,7 +31,8 @@ object InjectorUtils{
             instance.personDynamicDao(),
             instance.commentsMsgDao(),
             instance.likeDao(),
-            instance.userDao()
+            instance.userDao(),
+            context
         )
     }
 

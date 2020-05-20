@@ -1,12 +1,13 @@
 package com.bignerdranch.tclib.utils;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 public class StringUtils {
 	private static final String DEFAULT_DATE_PATTERN = "yyyy-MM-dd";
-	private static final String DEFAULT_DATETIME_PATTERN = "yyyy-MM-dd hh:mm";
+	private static final String DEFAULT_DATETIME_PATTERN = "yyyy-MM-dd HH:mm:ss";
 	public final static String EMPTY = "";
 
 	/**
@@ -20,6 +21,16 @@ public class StringUtils {
 		SimpleDateFormat format = new SimpleDateFormat(pattern);
 		return format.format(date);
 	}
+/*	public static Date formatToDate() throws ParseException {
+		SimpleDateFormat formatter = new SimpleDateFormat("YYYY-MM-DD'T'HH:mm:ss.sssZ");
+		Date date = formatter.parse("2019-01-25T01:30:00.000+0000");
+		return date;
+	}*/
+
+
+
+
+
 
 	/**
 	 * 格式化日期字符串
@@ -49,6 +60,8 @@ public class StringUtils {
 		return formatDate(new Date(), DEFAULT_DATETIME_PATTERN);
 	}
 
+
+
 	/**
 	 * 格式化日期时间字符串
 	 * 
@@ -70,6 +83,8 @@ public class StringUtils {
 		}
 		return result.toString();
 	}
+
+
 
 	public static boolean isEmpty(String str) {
 		return str == null || str.length() == 0;

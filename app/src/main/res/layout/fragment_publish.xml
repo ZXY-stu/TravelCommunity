@@ -35,27 +35,21 @@
         android:layout_height="wrap_content"
         />
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/userPage_layout_margin"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         >
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="350dp"
-            android:layout_height="160dp"
-            android:layout_weight="1"
-            >
-
 
             <EditText
                 android:id="@+id/edit_textContent"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="39dp"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="20dp"
                 android:hint="@string/publish_note"
                 android:textAppearance="@style/UserDescriptionText"
-                app:layout_constraintBottom_toTopOf="@+id/but1"
                 android:scrollbars="vertical"
                 style="@style/publish_editText_style"
                 android:lines="3"
@@ -64,91 +58,32 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
-                android:id="@+id/but1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/topic"
-                app:layout_constraintBottom_toBottomOf="@+id/but2"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/but2"
-                app:layout_constraintVertical_bias="0.0" />
+             <androidx.recyclerview.widget.RecyclerView
+                 android:id="@+id/dynamic_"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                 app:spanCount="3"
+                 tools:listitem="@layout/item_picture"
+                 />
 
-            <Button
-                android:id="@+id/but2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="40dp"
-                android:text="@string/atFriend"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/edit_textContent"
-                app:layout_constraintVertical_bias="0.526" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-
-            android:layout_weight="2"
-            >
-
-            <ImageView
-                android:id="@+id/cover_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/abc"
-                android:background="@color/gray"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <LinearLayout
-                android:id="@+id/nothing"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:background="@color/gray"
-                android:alpha="0.5"
-                app:layout_constraintBottom_toBottomOf="@+id/cover_img"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/cover_img"
-                app:layout_constraintVertical_bias="0.759"
-                android:orientation="horizontal" />
-
-            <TextView
-                android:id="@+id/choose_cover"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="选封面"
-                android:textAppearance="@style/UserDescriptionText"
-                android:textColor="@drawable/click_color"
-                app:layout_constraintBottom_toBottomOf="@+id/cover_img"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/cover_img"
-                app:layout_constraintVertical_bias="0.759"
-              >
-
-            </TextView>
-
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
-
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray"
+            android:layout_marginTop="@dimen/userPage_layout_margin"
+            android:layout_marginStart="@dimen/userPage_layout_margin"
+            android:layout_marginEnd="@dimen/userPage_layout_margin"
+            />
         <LinearLayout
             android:id="@+id/set_permission"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/gray"
-            android:layout_margin="@dimen/userPage_layout_margin"
+            android:layout_marginStart="@dimen/userPage_layout_margin"
+            android:layout_marginEnd="@dimen/userPage_layout_margin"
+            android:layout_marginBottom="@dimen/userPage_layout_margin"
             >
             <ImageView
                 android:layout_width="wrap_content"
@@ -162,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="@dimen/userPage_textMargin"
-                android:textAppearance="@style/UserCommentsText"
+                android:textAppearance="@style/publish_action_text"
                 android:text="谁可以看"
                 />
 
@@ -170,7 +105,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/userPage_textMargin"
-                android:textAppearance="@style/UserCommentsText"
+                android:textAppearance="@style/publish_action_text"
                 android:text="公开"
                 />
 
@@ -178,16 +113,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/userPage_textMargin"
-                android:src="@drawable/go"
+                android:src="@drawable/back"
+                android:layout_gravity="center"
                 />
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray"
+            android:layout_marginStart="@dimen/userPage_layout_margin"
+            android:layout_marginEnd="@dimen/userPage_layout_margin"
+            />
         <LinearLayout
             android:id="@+id/set_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/gray"
-            android:layout_margin="@dimen/userPage_layout_margin"
+            android:layout_marginStart="@dimen/userPage_layout_margin"
+            android:layout_marginEnd="@dimen/userPage_layout_margin"
+            android:layout_marginBottom="@dimen/userPage_layout_margin"
             >
             <ImageView
                 android:layout_width="wrap_content"
@@ -201,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_margin="@dimen/userPage_textMargin"
-                android:textAppearance="@style/UserCommentsText"
+                android:textAppearance="@style/publish_action_text"
                 android:text="所在位置"
                 />
 
@@ -209,7 +153,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/userPage_textMargin"
-                android:src="@drawable/go"
+                android:src="@drawable/back"
+                android:layout_gravity="center"
                 />
         </LinearLayout>
 

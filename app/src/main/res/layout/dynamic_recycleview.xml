@@ -6,6 +6,13 @@
         <variable
             name="viewModel"
             type="com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel" />
+       <variable
+           name="pageNumber"
+           type="int" />
+
+        <variable
+            name="queryId"
+            type="int" />
         <variable
             name="personDynamic"
             type="com.bignerdranch.tclib.data.db.entity.PersonDynamic" />
@@ -16,7 +23,13 @@
         android:background="@color/backgroud_color"
         >
 
-        <androidx.recyclerview.widget.RecyclerView
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            onDownPullRefresh="@{()->viewModel.toQueryDynamics(pageNumber,queryId)}"
+            >
+
+        <com.bignerdranch.travelcommunity.ui.RecyclerViewForViewPage2
             android:id="@+id/dynamic_recycleview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -25,7 +38,13 @@
             app:spanCount="2"
             tools:listitem="@layout/item_dynamic"
             />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
+
+        <RelativeLayout
+            android:id="@+id/play"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

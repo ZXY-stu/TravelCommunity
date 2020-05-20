@@ -8,6 +8,7 @@ package com.bignerdranch.travelcommunity.base
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.ActivityInfo
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -51,6 +52,10 @@ abstract class BaseActivity<T:ViewDataBinding> : AppCompatActivity()
       override fun onDestroy() {
           super.onDestroy()
 
+      }
+
+      override fun onConfigurationChanged(newConfig: Configuration) {
+          super.onConfigurationChanged(newConfig)
       }
 
 

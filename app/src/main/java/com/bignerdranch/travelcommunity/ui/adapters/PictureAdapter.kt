@@ -1,14 +1,18 @@
 package com.bignerdranch.travelcommunity.ui.adapters
 
+import android.graphics.Matrix
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.adapters.ViewBindingAdapter.setClickListener
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bignerdranch.tclib.data.db.entity.PersonDynamic
 import com.bignerdranch.tclib.data.db.entity.SimpleVideoData
+import com.bignerdranch.travelcommunity.adapters.Coverters
 import com.bignerdranch.travelcommunity.databinding.ImageitemBinding
 import com.bignerdranch.travelcommunity.databinding.VideoCardBinding
+import com.bignerdranch.travelcommunity.ui.utils.ImageEditor
 
 /**
  * @author zhongxinyu
@@ -16,12 +20,7 @@ import com.bignerdranch.travelcommunity.databinding.VideoCardBinding
  * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
  **/
 
-class PictureAdapter: ListAdapter<String,RecyclerView.ViewHolder>(VideoDiffCallback()) {
-
-    companion object ViewType{
-        private const val REFRESH_VIEW = 1
-        private const val VIDEO_VIEW = 2
-    }
+class PictureAdapter(): ListAdapter<String,RecyclerView.ViewHolder>(VideoDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return   VideoViewHolder(ImageitemBinding.inflate(
@@ -63,17 +62,20 @@ class PictureAdapter: ListAdapter<String,RecyclerView.ViewHolder>(VideoDiffCallb
         }
     }*/
 
-    class VideoViewHolder(private  val binding:ImageitemBinding)
+     inner  class VideoViewHolder(private  val binding:ImageitemBinding)
         : RecyclerView.ViewHolder(binding.root) {
+         val l = Matrix()
         init {
 
             with(binding) {
 
             }
         }
+
         fun  bind(item:String){
             binding.apply {
                 url = item
+
                 executePendingBindings()
             }
         }

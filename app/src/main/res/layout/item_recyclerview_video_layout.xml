@@ -14,9 +14,13 @@
     android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="10dp"
-    app:cardUseCompatPadding="true"
+    app:cardCornerRadius="2dp"
     >
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layoutControl"
@@ -26,16 +30,12 @@
 
             <com.bignerdranch.travelcommunity.tcvideoplayer.TCPlayer
                 android:id="@+id/adapter_super_video"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" >
 
-                <ImageView
-                android:id="@+id/video_cover"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
+
 
             </com.bignerdranch.travelcommunity.tcvideoplayer.TCPlayer>
 
@@ -175,14 +175,17 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/transparent"
+        app:navigationIcon="@drawable/back_white"
+        >
+    </androidx.appcompat.widget.Toolbar>
 
 
-<RelativeLayout
-    android:id="@+id/adapter_player_control"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"/>
-
-
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
     </androidx.cardview.widget.CardView>
 
 

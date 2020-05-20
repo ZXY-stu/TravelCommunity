@@ -1,5 +1,6 @@
 package com.bignerdranch.travelcommunity.ui.dynamic
 
+import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
@@ -22,6 +23,7 @@ import com.bignerdranch.tclib.LogUtil.eee
 import com.bignerdranch.tclib.data.db.entity.PersonDynamic
 import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.TCApplication.Companion.getProxy
+import com.bignerdranch.travelcommunity.base.BaseDialogFragment
 import com.bignerdranch.travelcommunity.base.BaseFragment
 import com.bignerdranch.travelcommunity.databinding.HomepageVideoFragmentBinding
 import com.bignerdranch.travelcommunity.tcvideoplayer.TCPlayer
@@ -35,7 +37,11 @@ import com.bignerdranch.travelcommunity.util.InjectorUtils
 import com.bignerdranch.travelcommunity.videocache.CacheListener
 import java.io.File
 
-class HomePageVideoFragment : BaseFragment<HomepageVideoFragmentBinding>(),CacheListener{
+ class VideoDynamicFragment(
+    override val themeResId: Int = R.style.DialogFullScreen_Right,
+    val personDynamic: PersonDynamic,
+    val mContext: Context)
+    : BaseDialogFragment<HomepageVideoFragmentBinding>(),CacheListener{
     private val dataList: MutableList<PersonDynamic> = ArrayList()
     private var videoRecyclerView: RecyclerView? = null
     private var mLayoutManager: LinearLayoutManager? = null
@@ -46,17 +52,18 @@ class HomePageVideoFragment : BaseFragment<HomepageVideoFragmentBinding>(),Cache
 
     private val fullScreen: RelativeLayout? = null
     private var postion = -1
-    private  var currentVideoUrl:List<String>? = null
+    private  var currentVideoUrl = ArrayList<String>()
     private var tcPlayer: TCPlayer? = null
     private var lastView:View? = null    //保存上一次View，避免重复创建
     private var hasCreated = false      //保存上一次存储状态
     private val proxy = getProxy()
+    private val pers = ArrayList<PersonDynamic>()
+    private var pageNumber = 0
 
     private val _viewModel by viewModels<PersonDynamicViewModel> {
         InjectorUtils.personDynamicViewModelFactory(requireContext())
     }
 
-    override val dark: Boolean = false
     override val layoutId: Int = R.layout.homepage_video_fragment
     override val needLogin: Boolean = false
 
@@ -65,13 +72,13 @@ class HomePageVideoFragment : BaseFragment<HomepageVideoFragmentBinding>(),Cache
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        currentVideoUrl.clear()
+        _viewModel.toQueryDynamics(0,pageNumber)
+        pers.add(personDynamic)
 
         if(lastView == null) {
             super.onCreateView(inflater, container, savedInstanceState)
-         binding = HomepageVideoFragmentBinding.inflate(inflater, container, false)
-         subscribeObserver()
-         binding.executePendingBindings()
+
          lastView = binding.root
      }
         return lastView
@@ -85,7 +92,7 @@ class HomePageVideoFragment : BaseFragment<HomepageVideoFragmentBinding>(),Cache
       if(!hasCreated) {
           super.onViewCreated(view, savedInstanceState)
           eee("onViewCreated")
-          initViews(view)
+          initViews()
          hasCreated = true
 
       }
@@ -94,6 +101,43 @@ class HomePageVideoFragment : BaseFragment<HomepageVideoFragmentBinding>(),Cache
 
 
     override fun onConfigurationChanged(newConfig: Configuration) {
+        eee("odfsfsdfsfsnConfigurationChanged")
+      /*  if (tcPlayer != null) {
+            /**
+             * 在activity中监听到横竖屏变化时调用播放器的监听方法来实现播放器大小切换
+             */
+            tcPlayer?.onConfigurationChanged(newConfig)
+            // 竖屏
+            if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                showActionBar()
+                fullScreen.visibility = View.GONE
+                fullScreen.removeAllViews()
+
+                val frameLayout = binding.videoPlayer
+                frameLayout.addView(tcPlayer)
+
+                val mShowFlags = (View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
+                fullScreen.systemUiVisibility = mShowFlags
+            } else {      // 横屏
+                val viewGroup = tcPlayer?.parent as ViewGroup
+                hideActionBar()
+                viewGroup.removeAllViews()
+                fullScreen.addView(tcPlayer)
+                fullScreen.setBackgroundColor(R.color.black)
+                fullScreen.visibility = View.VISIBLE
+                val mHideFlags = (View.SYSTEM_UI_FLAG_LOW_PROFILE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        or View.SYSTEM_UI_FLAG_FULLSCREEN
+                        or View.SYSTEM_UI_FLAG_IMMERSIVE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
+                fullScreen.setSystemUiVisibility(mHideFlags)
+            }
+        } else {
+            fullScreen.visibility = View.GONE
+        }*/
         super.onConfigurationChanged(newConfig)
     }
 
@@ -108,11 +152,11 @@ class HomePageVideoFragment : BaseFragment<HomepageVideoFragmentBinding>(),Cache
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    protected fun initViews(contentView: View?) {
+    protected fun initViews() {
         videoRecyclerView =  binding.videoRecyclerView
         videoViewAdapater =
             VideoViewAdapter(
-                requireContext(),
+               mContext,
                 requireActivity().supportFragmentManager,
                 _viewModel
             )
@@ -128,21 +172,22 @@ class HomePageVideoFragment : BaseFragment<HomepageVideoFragmentBinding>(),Cache
                    playVideo(position, playProgress)
                }
            }
-        initListeners()
+
     }
 
     private fun playVideo(position: Int, playProgress: Int) {
         findView(position)?.play(playProgress)
     }
 
-    private  fun subscribeObserver(){
+    override  fun subscribeObserver(){
 
-       _viewModel.personDynamics.observe(viewLifecycleOwner) {
-             dynamics->
-             eee("it${dynamics.size}")
-              currentVideoUrl = dynamics.map { it.videoUrl }
-              videoViewAdapater?.submitList(transferToUrl(dynamics))
-         }
+       videoViewAdapater?.submitList(pers)
+       _viewModel.personDynamics.observe(viewLifecycleOwner) { dynamics ->
+           if (dynamics.size >= 1) {
+               // = dynamics.map { it.videoUrl }
+               videoViewAdapater?.submitList(transferToUrl(dynamics))
+           }
+       }
 
         eee(""+_viewModel.personDynamics.value)
     }
@@ -164,6 +209,8 @@ class HomePageVideoFragment : BaseFragment<HomepageVideoFragmentBinding>(),Cache
         }
     }
 
+
+
     private fun currentProgress(position: Int):Int{
         val view = binding.videoRecyclerView.findViewHolderForAdapterPosition(position)
         if (view != null) {
@@ -171,9 +218,7 @@ class HomePageVideoFragment : BaseFragment<HomepageVideoFragmentBinding>(),Cache
         } else return 0
     }
 
-    protected fun initListeners() {
 
-    }
 
     /**
      * 隐藏ActionBar
@@ -200,19 +245,27 @@ class HomePageVideoFragment : BaseFragment<HomepageVideoFragmentBinding>(),Cache
         dataList.add(PersonDynamic(videoUrl = "https://media.w3.org/2010/05/sintel/trailer.mp4"))
         dataList.add(PersonDynamic(videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"))
 
-        currentVideoUrl = dataList.map { it.videoUrl }
+       // currentVideoUrl = dataList.map { it.videoUrl }
     }
 
 
     private fun transferToUrl(personDynamics: List<PersonDynamic>) = personDynamics.map {
-            val  url =  if(it.videoUrl.contentEquals("http"))
-                         proxy.getProxyUrl(it.videoUrl)  else it.videoUrl
-            // proxy.registerCacheListener(this,url)
+            var  url = ""
+            it.videoUrl?.let {
+                if (it.contentEquals("http")) {
+                    url = proxy.getProxyUrl(it)
+                    proxy.registerCacheListener(this, url)
+                } else {
+                    url = "http://lyndon.fun:81/"+it
+                }
+            }
+        currentVideoUrl?.add(url)
+            //
              with(it) {
                 PersonDynamic(
                     id, userId,  userNickName, textContent,
                     headPortraitUrl, url, imageUrls, likesCount, commentsCount, submitsTime,
-                    location, fullWatchCount, backWatchCount, heatDegree, privateModel)
+                    fullWatchCount, backWatchCount, heatDegree, privateModel)
             }
    }
 
@@ -230,7 +283,7 @@ class HomePageVideoFragment : BaseFragment<HomepageVideoFragmentBinding>(),Cache
     override fun onResume() {
         super.onResume()
         eee("HomePageVideoFragment")
-        if(currentVideoUrl != null) {
+        if(currentVideoUrl.isNotEmpty()) {
             proxy.tryLoad(currentVideoUrl?.get(currentPosition))
             playVideo(currentPosition, playProgress)
         }
@@ -249,5 +302,13 @@ class HomePageVideoFragment : BaseFragment<HomepageVideoFragmentBinding>(),Cache
        eee("per $percentsAvailable" )
     }
 
+     override fun subscribeUi() {
 
-}
+     }
+
+     override fun subscribeListener() {
+
+     }
+
+
+ }

@@ -12,7 +12,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-
     tools:context=".ui.HomePageActivity"
    >
 
@@ -22,7 +21,6 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-
          >
 
     </androidx.fragment.app.FragmentContainerView>
@@ -50,6 +48,12 @@
             />
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
+    <FrameLayout
+        android:id="@+id/activityPlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        />
 
 
 </LinearLayout>

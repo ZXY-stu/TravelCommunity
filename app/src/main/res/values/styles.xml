@@ -118,15 +118,22 @@
     <style name="UserPageText" parent="TextAppearance.AppCompat.Body1">
 
         <item name="android:textColor"> @color/divider </item>
-        <item name="android:textStyle">bold</item>
+
 
     </style>
 
-    <style name="action_text" parent="TextAppearance.MaterialComponents.Body2">
+    <style name="action_text_black" parent="TextAppearance.MaterialComponents.Body2">
 
         <item name="android:textColor">#7E7E7E</item>
        <item name="android:textSize">@dimen/action_text</item>
     </style>
+
+    <style name="action_text_white" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/action_text</item>
+    </style>
+
+
 
     <style name="UserCommentsText"  parent="TextAppearance.MaterialComponents.Body2">
         <item name="android:textColor"> @color/black</item>
@@ -140,6 +147,18 @@
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="TitleText"  parent="TextAppearance.MaterialComponents.Body2">
+
+        <item name="android:textColor">@color/divider</item>
+        <item name="android:textSize">@dimen/TabText</item>
+    </style>
+
+
+    <style name="publish_action_text"  parent="TextAppearance.MaterialComponents.Body2">
+
+        <item name="android:textColor">@color/divider</item>
+        <item name="android:textSize">15dp</item>
+    </style>
     <dimen name="commentsText">13dp</dimen>
     <dimen name="TabText">16dp</dimen>
     <dimen name="action_text">8sp</dimen>
@@ -165,7 +184,7 @@
         <!--文本的颜色-->
         <item name="android:textColorHint">@color/gray</item>
         <item name="android:background">@null</item>
-        <item name="android:textColor">@color/white</item>
+        <item name="android:textColor">@color/divider</item>
         <!--被选中时下划线的颜色-->
        <item name="android:textCursorDrawable">@drawable/cursor_color</item>
     </style>

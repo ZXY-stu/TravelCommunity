@@ -2,6 +2,7 @@ package com.bignerdranch.tclib.data.repository
 
 
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.bignerdranch.tclib.data.db.daos.UserDao
 import com.bignerdranch.tclib.data.db.entity.*
@@ -19,7 +20,9 @@ import kotlin.collections.HashMap
  * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
  **/
 
-class UserRepository(private val userDao: UserDao):BaseRepository(userDao){
+class UserRepository(private val userDao: UserDao
+                     ,private val context: Context
+):BaseRepository(userDao,context){
 
 
       suspend fun toUserLogin(account:String,password:String) = withContext(Dispatchers.IO) {
@@ -29,13 +32,10 @@ class UserRepository(private val userDao: UserDao):BaseRepository(userDao){
 
 
 
-      suspend fun toUserRegister(user: User) = withContext(Dispatchers.IO){
-          _network.toRegister(user)
-      }
+
 
      suspend fun toUserRegister(account: String,password: String) = withContext(Dispatchers.IO) {
-         val user =   User(account=account,password = password)
-         _network.toRegister(user)
+         _network.toRegister(account,password)
      }
 
     suspend fun toInsertUserLocal(user:User) = withContext(Dispatchers.IO){
@@ -57,7 +57,7 @@ class UserRepository(private val userDao: UserDao):BaseRepository(userDao){
 
     suspend fun toQueryFriend(userId:Int) = withContext(Dispatchers.IO){     //查找用户
         _network.toQueryFriend(userId)
-        MutableLiveData(ApiResponse(data = User(userId,"杀猪"),errorMsg = "",errorCode = 1))
+      // MutableLiveData(ApiResponse(data = User(userId,"杀猪"),errorMsg = "",errorCode = 1))
     }
 
     suspend fun toInsertChatLocal(chat: Chat) = withContext(Dispatchers.IO){
@@ -75,8 +75,8 @@ class UserRepository(private val userDao: UserDao):BaseRepository(userDao){
         _network.toQueryFriendList(userId)
     }
 
-    suspend fun toUpdateUserInfo(user:User,contentArgs:HashMap<String,RequestBody>) = withContext(Dispatchers.IO){
-        _network.toUpdateUser(user,contentArgs)
+    suspend fun toUpdateUserInfo(contentArgs:HashMap<String,RequestBody>) = withContext(Dispatchers.IO){
+        _network.toUpdateUser(contentArgs)
     }
 
     suspend fun toDeleteFriend(userId:Int) = withContext(Dispatchers.IO){
@@ -130,9 +130,9 @@ class UserRepository(private val userDao: UserDao):BaseRepository(userDao){
 
        companion object{
           @Volatile private  var instance:UserRepository? = null
-          fun getInstance(userDao: UserDao):UserRepository{
+          fun getInstance(userDao: UserDao,context: Context):UserRepository{
               return instance ?: synchronized(this){
-                  instance ?:UserRepository(userDao).also{ instance = it }
+                  instance ?:UserRepository(userDao,context).also{ instance = it }
               }
           }
      }

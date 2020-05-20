@@ -26,10 +26,6 @@ class LoginFragment(override val needLogin: Boolean = false,
     private val _viewModel by viewModels<UserViewModel> {
         InjectorUtils.userViewModelFactory(requireContext())
     }
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        subscribeObserve()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,15 +38,12 @@ class LoginFragment(override val needLogin: Boolean = false,
 
 
 
-    private  fun subscribeObserve(){
+    override  fun subscribeObserver(){
         binding.viewModel = _viewModel
-
-       // _viewModel.attachLoading(loadingState)
-       // _viewModel.attachClose(close)
-
         _viewModel.isLogin.observe(viewLifecycleOwner){
             if(it) {
-                dialog?.dismiss()
+              // dismiss()
+               clearAndToHome(requireContext())
              /*   if (returnToHome)
                     clearAndToHome(requireContext())
                 else
@@ -69,20 +62,6 @@ class LoginFragment(override val needLogin: Boolean = false,
             }
         }
 
-
-   /*
-       _viewModel.user.observe(viewLifecycleOwner){
-                user ->
-            //成功登录后，把user保持至本地
-            if(user!=null) {
-
-                _viewModel.insertUser(user)
-                LogUtil.e("插入中")
-            }else{
-                LogUtil.e("null")
-            }
-        }
-*/
         with(binding.toolbar.publicToolbar) {
             setNavigationOnClickListener {
                 clearAndToHome(requireContext())
@@ -95,6 +74,14 @@ class LoginFragment(override val needLogin: Boolean = false,
     fun setReturnToHome(isTo:Boolean):LoginFragment{
         returnToHome = isTo
         return this
+    }
+
+    override fun subscribeUi() {
+
+    }
+
+    override fun subscribeListener() {
+
     }
 
 

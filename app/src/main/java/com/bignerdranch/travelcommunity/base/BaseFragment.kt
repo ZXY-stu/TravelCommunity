@@ -33,46 +33,29 @@ import com.gyf.immersionbar.components.SimpleImmersionFragment
  **/
 
 abstract  class BaseFragment<T:ViewDataBinding>:Fragment(){
-
-    protected   val baseViewModel by viewModels<BaseViewModel<BaseRepository>> {
+    private val baseViewModel by viewModels<BaseViewModel<BaseRepository>> {
              InjectorUtils.baseViewModelFactory(requireContext())
     }
-
-
     private var hasCreated = false
 
-    abstract val dark:Boolean
     abstract  val layoutId:Int
     abstract val needLogin:Boolean
+
+    open fun subscribeUi(){}
+    open fun subscribeListener(){}
+    open fun subscribeObserver(){}
     lateinit var binding:T
-    //companion object val baseDialogFragment  = PublishFragment()
-    val toPublishPage = MutableLiveData<Boolean>()
+
     var loadingState = MutableLiveData<Boolean>()
     val close = MutableLiveData<Boolean>()
     var show = false
 
     private fun checkLogin(){
-     //   eee("checkLogin")
         if(baseViewModel.isLogin.value == false && needLogin){
-            eee("checkLoginYes")
             findNavController().navigate(R.id.login_and_register)
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    /*  override fun onResume() {
-        val layoutParams =  dialog?.window?.attributes
-        layoutParams?.height = WindowManager.LayoutParams.MATCH_PARENT
-        layoutParams?.width = WindowManager.LayoutParams.MATCH_PARENT
-        dialog?.window?.attributes = layoutParams
-        super.onResume()
-    }
-    *
-    *
-    * */
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -80,10 +63,11 @@ abstract  class BaseFragment<T:ViewDataBinding>:Fragment(){
         savedInstanceState: Bundle?): View? {
            super.onCreateView(inflater, container, savedInstanceState)
             checkLogin()
-
-
             binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
             binding.lifecycleOwner = this
+            subscribeUi()
+            subscribeObserver()
+            subscribeListener()
             binding.executePendingBindings()
             return binding.root
     }
@@ -93,7 +77,7 @@ abstract  class BaseFragment<T:ViewDataBinding>:Fragment(){
         super.onResume()
         when(layoutId) {
             R.layout.fragment_mine -> {
-                setDarkFont(false)
+              //  setDarkFont(false)
                 BaseViewModel.isParentHaveSetFont = true
             }
             else -> {
@@ -104,28 +88,6 @@ abstract  class BaseFragment<T:ViewDataBinding>:Fragment(){
     }
 
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        eee("onPause")
-
-
-    }
-
-
-
-  /*  fun show(){
-        eee("调用show $baseDialogFragment")
-        baseDialogFragment.show(requireActivity().supportFragmentManager,"")
-    }
-
-    fun dismiss(){
-        eee("调用dismiss")
-        baseDialogFragment.dismiss()
-    }*/
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -134,12 +96,7 @@ abstract  class BaseFragment<T:ViewDataBinding>:Fragment(){
              ToastUtil.test("关闭当前Fragment")
         }
 
-
     }
-
-  /*  override fun initImmersionBar() {
-        //ImmersionBar.with(this).statusBarDarkFont(dark).init()
-    }*/
 
     fun setDarkFont(isDarkFont:Boolean){
         ImmersionBar.with(this).statusBarDarkFont(isDarkFont).init()

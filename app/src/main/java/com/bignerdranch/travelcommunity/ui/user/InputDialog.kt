@@ -17,13 +17,15 @@ import java.util.*
  * @date 2020/5/10
  * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
  **/
-class InputDialog(override val layoutId: Int = R.layout.input_dialog,
-                  override val needLogin: Boolean = false,
-                  override val themeResId: Int = R.style.Dialog_Bottom
+ class InputDialog(override val layoutId: Int = R.layout.input_dialog,
+                  override val needLogin: Boolean = true,
+                  override val themeResId: Int = R.style.Dialog_Bottom,
+                   val textContent:String
 ) :BaseDialogFragment<InputDialogBinding>(){
     init {
         windowHeight = 0.1
     }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,14 +35,29 @@ class InputDialog(override val layoutId: Int = R.layout.input_dialog,
        return  binding.root
     }
 
-
-
     override fun onResume() {
         super.onResume()
-        binding.editTextContent.setFocusable(true);
-        binding.editTextContent.setFocusableInTouchMode(true);
-        binding.editTextContent.requestFocus();
-        openInputMethod()
+
+       with(binding.editTextContent){
+           setFocusable(true);
+          setFocusableInTouchMode(true);
+           requestFocus();
+           hint = "回复 @$textContent"
+
+       }
+
+    }
+
+    override fun subscribeUi() {
+
+    }
+
+    override fun subscribeListener() {
+
+    }
+
+    override fun subscribeObserver() {
+
     }
 
 }

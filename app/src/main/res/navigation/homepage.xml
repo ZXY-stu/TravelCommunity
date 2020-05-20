@@ -79,7 +79,7 @@
 
     <fragment
         android:id="@+id/dynamicDetails"
-        android:name="com.bignerdranch.travelcommunity.ui.dynamic.DynamicDetails"
+        android:name="com.bignerdranch.travelcommunity.ui.dynamic.ImageDynamicFragment"
         android:label="DynamicDetails"
         tools:layout="@layout/dynamic_style_userpage"
         />

@@ -1,11 +1,14 @@
 package com.bignerdranch.travelcommunity.ui.user
 
 import android.app.Activity
-import android.graphics.Color
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
@@ -23,37 +26,45 @@ import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewM
 import com.bignerdranch.travelcommunity.util.InjectorUtils
 import com.bignerdranch.tclib.LogUtil
 import com.bignerdranch.tclib.LogUtil.eee
+import com.bignerdranch.travelcommunity.base.AlertDialogFragment
 import com.bignerdranch.travelcommunity.base.BaseViewModel
 import com.bignerdranch.travelcommunity.ui.dynamic.HomePageDynamic
-import com.bignerdranch.travelcommunity.ui.dynamic.HomePageVideoFragment
-import com.bignerdranch.travelcommunity.ui.utils.StatusBarUtil
+import com.bignerdranch.travelcommunity.ui.dynamic.ImageEditorDialog
+import com.bignerdranch.travelcommunity.ui.dynamic.OPEN_ALBUM
+import com.bignerdranch.travelcommunity.ui.dynamic.VideoDynamicFragment
+import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel.Companion.USER_DYNAMIC
+import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel.Companion.USER_LIKE
+import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel.Companion.USER_WORK
+import com.bignerdranch.travelcommunity.ui.listener.AppBarStateChangeListener
+import com.bignerdranch.travelcommunity.ui.user.userProfile.UserInfoEditorDialog
+import com.bignerdranch.travelcommunity.ui.user.userProfile.UserInfoEditorFragment
+import com.bignerdranch.travelcommunity.ui.utils.PermissionAsk
+import com.bignerdranch.travelcommunity.ui.utils.Utils
+import com.bignerdranch.travelcommunity.ui.utils.openAlbum
 import com.bignerdranch.travelcommunity.util.DataCleanManager
 import com.bignerdranch.travelcommunity.util.ToastUtil
-import com.google.android.material.appbar.CollapsingToolbarLayout
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.gyf.immersionbar.ImmersionBar
+import com.zhihu.matisse.Matisse
+import kotlinx.android.synthetic.main.user_head_layout.view.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [UserFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+const val HEAD = 0
+const val BACKGROUND = 1
 class UserFragment() : BaseFragment<FragmentMineBinding>() {
 
     private val _viewModel by activityViewModels<UserViewModel> {
         InjectorUtils.userViewModelFactory(requireContext())
     }
+
     override val needLogin: Boolean = true
     override val layoutId: Int  = R.layout.fragment_mine
-    override val dark: Boolean = false
     private lateinit var headView:UserHeadLayoutBinding
+    private val fileList = ArrayList<Uri>()
+
+    private lateinit var  userInfoEditorFragment: UserInfoEditorFragment
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,58 +75,116 @@ class UserFragment() : BaseFragment<FragmentMineBinding>() {
         val viewPager = binding.userViewPager
         val tabLayout = binding.userTabs
 
-
-        subscribeObserve(inflater)    //订阅观察者
         subscribeViewPage(viewPager,tabLayout)  //处理viewPage
-        subscribeUi() //
         setItemClickAction(binding.menuNav)   //处理菜单事件
 
         return    binding.root
     }
 
-    private fun subscribeUi(){
+    override fun subscribeUi(){
+        userInfoEditorFragment = UserInfoEditorFragment(_viewModel).setOnItemClickListener(
+            object :UserInfoEditorFragment.OnItemClickListener{
+                override fun itemClick(type: Int) {
+                    PermissionAsk.checkPermission(requireActivity(),
+               android.Manifest.permission.READ_EXTERNAL_STORAGE, HEAD){
+               openAlbum(HEAD)
+           }
+                }
 
+            })
+          binding.userAppbar.addOnOffsetChangedListener(object : AppBarStateChangeListener() {
+              override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
+                   when(state){
+                       State.COLLAPSED->{
+                           binding.topNickName.setTextColor(requireActivity().resources.getColor(R.color.black))
+                       }
+                       State.EXPANDED->{
+                           binding.topNickName.setTextColor(requireActivity().resources.getColor(R.color.white))
+                       }
+                   }
+              }
+          })
+
+        binding.userHeadPortraitUrl.setOnClickListener {
+
+        }
+
+        binding.backgroundImageUrl.setOnClickListener {
+
+        }
+
+        binding.setInformation.setOnClickListener {
+            fileList?.clear()
+         userInfoEditorFragment.show(requireActivity().supportFragmentManager,"")
+        }
+
+        binding.introduce.setOnClickListener {
+            openDialog(UserInfoEditorDialog.EDITOR_INTRODUCE)
+        }
+        binding.nickName.setOnClickListener {
+            openDialog(UserInfoEditorDialog.EDITOR_USER_NICKNAME)
+        }
+        binding.sex.setOnClickListener {
+            openDialog(UserInfoEditorDialog.EDITOR_SEX)
+        }
+
+        headView = UserHeadLayoutBinding.inflate(LayoutInflater.from(requireContext()))
+        binding.menuNav.addHeaderView(headView.root)
     }
-    private  fun subscribeObserve( inflater: LayoutInflater){
+
+    fun openDialog(type:Int){
+        UserInfoEditorDialog(_viewModel = _viewModel,type = type).show(requireActivity().supportFragmentManager
+            ,"UserFragment")
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when(requestCode){
+            HEAD-> {
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    fileList.addAll(Matisse.obtainResult(data))
+                    binding.userHeadPortraitUrl.setImageURI(fileList[0])
+                    _viewModel.toUpdateHeadUrl(fileList[0].toString())
+                }
+            }
+            BACKGROUND->{
+                if (resultCode == Activity.RESULT_OK && data != null) {
+                    fileList.addAll(Matisse.obtainResult(data))
+                    binding.backgroundImageUrl.setImageURI(fileList[0])
+                    _viewModel.toUpdateBackGroundUrl(fileList[0].toString())
+                }
+            }
+
+        }
+    }
+
+    private fun openAlbum(requestCode:Int){
+        Utils.build(this).openAlbum(requestCode)
+    }
+
+    override fun subscribeObserver() {
+        super.subscribeObserver()
         binding.viewModel = _viewModel
 
 
         _viewModel.localUser.observe(viewLifecycleOwner){
-            user->
-           //user_head_layout 未设置
-          user?.let {
+                user->
+            //user_head_layout 未设置
+            user?.let {
 
-              binding.user = user
-          }
+                binding.user = user
+                headView.userData = user
+            }
 
-         }
+        }
 
 
-
-        /*_viewModel.isLogin.observe(viewLifecycleOwner){
-           subscribeLogin(it)
-        }*/
 
         _viewModel.toOpenUserMenu.observe(viewLifecycleOwner){
-             binding.userPageMenu.openDrawer(GravityCompat.END)
-        }
-
-
-
-
-
-
-    }
-
-    private fun subscribeLogin(isLogin:Boolean) {
-        if (!isLogin) {
-            findNavController().navigate(R.id.login_and_register)
+            binding.userPageMenu.openDrawer(GravityCompat.END)
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
@@ -126,13 +195,12 @@ class UserFragment() : BaseFragment<FragmentMineBinding>() {
 
 
 
-
-
     private fun subscribeViewPage(viewPager: ViewPager2,tabLayout:TabLayout){
         viewPager.adapter = PageViewAdapter(this).build(
             mapOf(
-                MY_FOCUSE to { HomePageDynamic() },
-                SYSTEM_RECOMMAND to { HomePageVideoFragment() }
+                0 to { UserPageDynamic() },
+                1 to {HomePageDynamic()},
+                2 to {UserPageDynamic()}
             ) as MutableMap<Int, () -> Fragment>
         )
 
@@ -159,40 +227,25 @@ class UserFragment() : BaseFragment<FragmentMineBinding>() {
               }
               true
           }
-
-
-    }
-
-    override fun onPause() {
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-      eee("UserFragment ${   BaseViewModel.isParentHaveSetFont}")
     }
 
 
-    private fun getTabIcon(position: Int): Int {
-        LogUtil.e(""+position)
-        return when (position) {
-            PersonDynamicViewModel.MY_FOCUSE -> R.drawable.garden_tab_selector
-            PersonDynamicViewModel.SYSTEM_RECOMMAND -> R.drawable.plant_list_tab_selector
-            else -> throw IndexOutOfBoundsException()
-        }
-    }
 
     private fun getTabTitle(position: Int): String? {
-        return when (position) {
-            MY_FOCUSE ->{
-                PersonDynamicViewModel.toQueryWhat = PersonDynamicViewModel.MY_FOCUSE
-                getString(R.string.MyFocus)
+            return when (position) {
+                0 ->{
+                    PersonDynamicViewModel.toQueryWhat = PersonDynamicViewModel.USER_WORK
+                    getString(R.string.work)
+                }
+               1 -> {
+                    PersonDynamicViewModel.toQueryWhat = PersonDynamicViewModel.USER_DYNAMIC
+                    getString(R.string.dynamic)
+                }
+               2 ->{
+                    PersonDynamicViewModel.toQueryWhat = PersonDynamicViewModel.USER_LIKE
+                    getString(R.string.like)
+                }
+                else -> null
             }
-            SYSTEM_RECOMMAND -> {
-                PersonDynamicViewModel.toQueryWhat = PersonDynamicViewModel.SYSTEM_RECOMMAND
-                getString(R.string.Recommand)
-            }
-            else -> null
-        }
     }
 }
