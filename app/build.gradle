@@ -73,10 +73,10 @@ dependencies {
     implementation "androidx.room:room-ktx:$rootProject.roomVersion"
     annotationProcessor "androidx.room:room-compiler:$rootProject.roomVersion"*/
 
-  /*  kapt "com.github.bumptech.glide:compiler:$rootProject.glideVersion"
-    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
-*/
-    implementation 'com.github.bumptech.glide:glide:3.7.0'
+    implementation 'com.github.bumptech.glide:glide:4.4.0'
+    kapt 'com.github.bumptech.glide:compiler:4.4.0'
+
+   // implementation 'com.github.bumptech.glide:glide:3.7.0'
     implementation "androidx.appcompat:appcompat:$rootProject.appCompatVersion"
     implementation "androidx.constraintlayout:constraintlayout:$rootProject.constraintLayoutVersion"
     implementation "androidx.core:core-ktx:$rootProject.ktxVersion"
@@ -118,7 +118,7 @@ dependencies {
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'com.daimajia.slider:library:1.1.5@aar'
 
-
+    implementation "org.greenrobot:eventbus:$rootProject.eventBus_version"
     // Testing-only dependencies
   //  testImplementation 'junit:junit:'+rootProject.junitVersion
     testImplementation 'org.robolectric:robolectric:4.3'

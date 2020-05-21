@@ -27,11 +27,11 @@ interface UserService {
 
     //注册用户   注册后，服务器自动登陆  返回登陆后的User
     @FormUrlEncoded
-    @POST("api/user/register")
-    fun register(@Field("account") account: String,@Field("password") password: String):LiveData<ApiResponse<User>>
+    @POST("api/register")
+    fun register(@FieldMap contentsArgs: HashMap<String, Any>):LiveData<ApiResponse<User>>
 
     //用户注销
-    @DELETE("api/user/logout")
+    @DELETE("logout")
     fun logout(@Query("account") account:String):LiveData<ApiResponse<Any>>
 
     //更新用户基本信息，包括头像，兴趣，爱好 职业等等

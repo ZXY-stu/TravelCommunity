@@ -8,6 +8,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.bignerdranch.tclib.LogUtil
+import com.bignerdranch.tclib.LogUtil.eee
 import com.bignerdranch.tclib.utils.StringUtils
 import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.ui.dynamic.OPEN_ALBUM
@@ -71,6 +72,7 @@ object Utils {
     fun  getUploadRequestMap(uris:List<Uri>?, context: Context, textContent:String):HashMap<String, RequestBody>{
         val requestMap = HashMap<String, RequestBody>()
         var i=0
+         eee("uri" + uris)
         if(uris!=null) {
             for (uri in uris) {
                 val path = PathUtils.getPath(context, uri)

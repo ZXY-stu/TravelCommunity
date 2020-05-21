@@ -68,8 +68,12 @@ const val   takePhoto = 1
         when(requestCode){
             OPEN_ALBUM ->{
                 if(resultCode == Activity.RESULT_OK && data !=null){
-                    if(fileList.size>0) fileList.removeAt(fileList.lastIndex)
+                    if(fileList.size>0){
+                        fileList.removeAt(fileList.lastIndex)
+
+                    }
                     fileList.addAll(Matisse.obtainResult(data))
+                    eee("fileList$fileList")
                     if(fileList.size<9 && !fileList[0].toString().contains("video"))
                     fileList.add(getUriFromDrawableRes(requireContext(),R.drawable.add_dynamic))
                     adapter.submitList(fileList)
@@ -140,7 +144,8 @@ const val   takePhoto = 1
                  visibility = View.VISIBLE
                  text = "发布"
                  setOnClickListener {
-                     _dynamicViewModel.contentsArgs.putAll(Utils.getUploadRequestMap(fileList.subList(0,fileList.lastIndex),requireContext(),commentsContent))
+                     if(fileList.size>1) fileList.removeAt(fileList.lastIndex)
+                     _dynamicViewModel.contentsArgs.putAll(Utils.getUploadRequestMap(fileList,requireContext(),commentsContent))
                      _dynamicViewModel.toAddDynamic()
                      dismiss()
                  }

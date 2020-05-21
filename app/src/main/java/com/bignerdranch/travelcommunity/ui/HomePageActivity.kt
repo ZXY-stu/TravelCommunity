@@ -30,6 +30,7 @@ import com.bignerdranch.tclib.LogUtil
 import com.bignerdranch.tclib.LogUtil.eee
 import com.bignerdranch.tclib.utils.DeviceUtils
 import com.bignerdranch.travelcommunity.base.Check
+import com.bignerdranch.travelcommunity.base.Message
 import com.bignerdranch.travelcommunity.tcvideoplayer.TCPlayer
 import com.bignerdranch.travelcommunity.ui.dynamic.LocationFragment
 import com.bignerdranch.travelcommunity.ui.dynamic.OPEN_ALBUM
@@ -39,6 +40,9 @@ import com.bignerdranch.travelcommunity.ui.utils.AndroidWorkaround
 import com.zhihu.matisse.Matisse
 import com.zhihu.matisse.MimeType
 import com.zhihu.matisse.engine.impl.GlideEngine
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 
 class HomePageActivity() : BaseActivity<ActivityHomePageBinding>() {
@@ -46,7 +50,8 @@ class HomePageActivity() : BaseActivity<ActivityHomePageBinding>() {
     override val layoutId: Int = R.layout.activity_home_page
     private var currentNavController: LiveData<NavController>? = null
     private val  baseDialogFragment = PublishFragment()
-    private lateinit var tcPlayer:TCPlayer
+    private var type = Message.SHOW_BOTTOM_VIEW
+    private var screenType = -1
 
     private  val viewModel  by viewModels<PersonDynamicViewModel>{
        InjectorUtils.personDynamicViewModelFactory(this)
@@ -81,7 +86,9 @@ class HomePageActivity() : BaseActivity<ActivityHomePageBinding>() {
 
             setupBottomNavigationBar(this)
             //设置底部导航栏颜色
-          setContainerHeight()
+          setContainerHeight(type)
+
+
 
          //   window.navigationBarColor = ContextCompat.getColor(this, R.color.white);
 
@@ -90,10 +97,47 @@ class HomePageActivity() : BaseActivity<ActivityHomePageBinding>() {
          viewModel.toPublishPage.observeForever {
               if(it){
                   eee("show $it")
+                //  sendMsg("hello fragment")
                  baseDialogFragment.show(supportFragmentManager,"HomePageActivity")
             }
           }
+
         } // Else, need to wait for onRestoreInstanceState
+    }
+
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onReceiveMessage(msg:Message){
+        when(msg.type){
+           Message.HIDE_BOTTOM_VIEW ->{
+                type = Message.HIDE_BOTTOM_VIEW
+               setContainerHeight(type)
+               binding.bottomNav.visibility = View.GONE
+           }
+            Message.SHOW_BOTTOM_VIEW ->{
+                type = Message.SHOW_BOTTOM_VIEW
+                setContainerHeight(type)
+                binding.bottomNav.visibility = View.VISIBLE
+            }
+        }
+    }
+
+    fun sendMsg(msg: Message){
+        EventBus.getDefault().post(msg)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
     }
 
     override fun onResume() {
@@ -102,7 +146,9 @@ class HomePageActivity() : BaseActivity<ActivityHomePageBinding>() {
        // window.navigationBarColor = ContextCompat.getColor(this, R.color.white);
         //initVideoView()
           //ImageEditor(this).show(supportFragmentManager,"")
-        setContainerHeight()
+
+        setContainerHeight(type)
+
     }
 
 
@@ -151,17 +197,32 @@ class HomePageActivity() : BaseActivity<ActivityHomePageBinding>() {
         return currentNavController?.value?.navigateUp() ?: false
     }
 
-    fun setContainerHeight() {
+    fun setContainerHeight(type:Int) {
         val view = binding.navHostContainer.layoutParams
         if (Check.isSystemUiVisible(window)?.get(1)!!) {
 
-            view.height = DeviceUtils.deviceHeight(applicationContext)
-            eee("have"+view.height)
+            screenType = Message.NOT_FULL_SCREEN
+            eee("发送 NOT_FULL_SCREEN")
 
+            when(type) {
+             Message.SHOW_BOTTOM_VIEW -> view.height = DeviceUtils.deviceHeight(applicationContext)
+             Message.HIDE_BOTTOM_VIEW ->  view.height = WindowManager.LayoutParams.MATCH_PARENT
+           }
         }else{
-            view.height = DeviceUtils.deviceHeight(applicationContext) + Check.getNavigationHeight(this)
-            eee("not have"+view.height)
+            eee("发送 FULL_SCREEN")
+            screenType = Message.FULL_SCREEN
+            when(type) {
+                Message.SHOW_BOTTOM_VIEW -> view.height = DeviceUtils.deviceHeight(applicationContext) + Check.getNavigationHeight(this)
+                Message.HIDE_BOTTOM_VIEW ->  view.height = WindowManager.LayoutParams.MATCH_PARENT
+            }
         }
+        sendMsg(Message("HomePageActivity",screenType))
+        binding.navHostContainer.layoutParams = view
+    }
+
+    fun resetContainerHeight(){
+        val view = binding.navHostContainer.layoutParams
+        view.height = WindowManager.LayoutParams.MATCH_PARENT
         binding.navHostContainer.layoutParams = view
     }
 

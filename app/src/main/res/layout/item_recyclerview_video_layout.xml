@@ -15,10 +15,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="2dp"
+    android:layout_margin="3dp"
     >
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    >
 
 
 
@@ -31,7 +33,7 @@
             <com.bignerdranch.travelcommunity.tcvideoplayer.TCPlayer
                 android:id="@+id/adapter_super_video"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" >
 
@@ -150,6 +152,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/userPage_textMargin"
                         android:hint="09.30"
+                        android:textColor="@color/gray"
                         android:text="@{personDynamic.submitsTime}" />
                 </LinearLayout>
 
@@ -159,15 +162,17 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/userPage_textMargin"
                     android:hint="这事儿过于神奇！！这事儿过于神奇！这事儿过于神奇！这事儿过于神奇！这事儿过于神奇！"
-                    android:text="@{personDynamic.textContent}" />
+                    android:text="@{personDynamic.textContent}"
+                    android:textAppearance="@style/VideoTextContent"
+                    />
 
                 <ProgressBar
                     android:id="@+id/progressBar"
                     style="@style/MyProgressBar"
                     android:progress="1"
-                    android:layout_marginTop="@dimen/userPage_textMargin"
                     android:background="@color/transparent"
                     android:layout_width="match_parent"
+                    android:layout_marginBottom="2dp"
                     android:layout_height="1dp" />
 
             </LinearLayout>
@@ -175,14 +180,21 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+
+
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/statusBar"
         android:background="@color/transparent"
         app:navigationIcon="@drawable/back_white"
-        >
-    </androidx.appcompat.widget.Toolbar>
+        android:layout_marginTop="@dimen/statusBar"
+        />
+
+
+
+
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

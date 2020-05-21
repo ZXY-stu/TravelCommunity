@@ -47,9 +47,10 @@
         <action
             android:id="@+id/action_HomePageFragment_to_publish2"
             app:destination="@id/publish" />
+
         <action
-            android:id="@+id/action_HomePageFragment_to_dynamicDetails2"
-            app:destination="@id/dynamicDetails" />
+            android:id="@+id/action_HomePageFragment_to_videoDynamicFragment"
+            app:destination="@id/videoDynamicFragment" />
 
 
     </fragment>
@@ -78,12 +79,14 @@
     <include app:graph="@navigation/publish" />
 
     <fragment
-        android:id="@+id/dynamicDetails"
+        android:id="@+id/imageDynamicFragment"
         android:name="com.bignerdranch.travelcommunity.ui.dynamic.ImageDynamicFragment"
-        android:label="DynamicDetails"
-        tools:layout="@layout/dynamic_style_userpage"
-        />
+        android:label="ImageDynamicFragment" />
 
+    <fragment
+        android:id="@+id/videoDynamicFragment"
+        android:name="com.bignerdranch.travelcommunity.ui.dynamic.VideoDynamicFragment"
+        android:label="VideoDynamicFragment" />
 
 
 </navigation>

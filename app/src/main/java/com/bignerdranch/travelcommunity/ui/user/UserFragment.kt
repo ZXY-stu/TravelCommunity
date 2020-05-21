@@ -2,12 +2,15 @@ package com.bignerdranch.travelcommunity.ui.user
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Matrix
 import android.net.Uri
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.*
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.core.view.GravityCompat
+import androidx.core.view.drawToBitmap
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
@@ -38,6 +41,7 @@ import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewM
 import com.bignerdranch.travelcommunity.ui.listener.AppBarStateChangeListener
 import com.bignerdranch.travelcommunity.ui.user.userProfile.UserInfoEditorDialog
 import com.bignerdranch.travelcommunity.ui.user.userProfile.UserInfoEditorFragment
+import com.bignerdranch.travelcommunity.ui.utils.ImageEditor
 import com.bignerdranch.travelcommunity.ui.utils.PermissionAsk
 import com.bignerdranch.travelcommunity.ui.utils.Utils
 import com.bignerdranch.travelcommunity.ui.utils.openAlbum
@@ -62,8 +66,9 @@ class UserFragment() : BaseFragment<FragmentMineBinding>() {
     override val needLogin: Boolean = true
     override val layoutId: Int  = R.layout.fragment_mine
     private lateinit var headView:UserHeadLayoutBinding
+    private val   max = Matrix()
+    private var scale = 0.8f
     private val fileList = ArrayList<Uri>()
-
     private lateinit var  userInfoEditorFragment: UserInfoEditorFragment
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -96,14 +101,27 @@ class UserFragment() : BaseFragment<FragmentMineBinding>() {
               override fun onStateChanged(appBarLayout: AppBarLayout?, state: State?) {
                    when(state){
                        State.COLLAPSED->{
+                           setDarkFont(true,false)
                            binding.topNickName.setTextColor(requireActivity().resources.getColor(R.color.black))
                        }
                        State.EXPANDED->{
+                           setDarkFont(false,false)
                            binding.topNickName.setTextColor(requireActivity().resources.getColor(R.color.white))
                        }
                    }
               }
+
+              override fun onOffsetChanged(appBarLayout: AppBarLayout, i: Int) {
+                  super.onOffsetChanged(appBarLayout, i)
+                  val dd =   Math.abs(i).toFloat()/662.0
+                  eee(""+dd)
+
+
+              }
+
           })
+
+
 
         binding.userHeadPortraitUrl.setOnClickListener {
 
@@ -150,7 +168,7 @@ class UserFragment() : BaseFragment<FragmentMineBinding>() {
             BACKGROUND->{
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     fileList.addAll(Matisse.obtainResult(data))
-                    binding.backgroundImageUrl.setImageURI(fileList[0])
+                   // binding.backgroundImageUrl.setImageURI(fileList[0])
                     _viewModel.toUpdateBackGroundUrl(fileList[0].toString())
                 }
             }

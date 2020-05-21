@@ -45,10 +45,10 @@ class MyDynamicAdapter(
                 var showVideo = false
                    mPersonDynamic.videoUrl?.let {
                        if (it.length >= 5) {
-                           VideoDynamicFragment(
+                        /*   VideoDynamicFragment(
                                personDynamic = mPersonDynamic,
                                mContext = mContext
-                           ).show(fragmentManager, TAG)
+                           ).show(fragmentManager, TAG)*/
                            showVideo = true
                        }
                    }

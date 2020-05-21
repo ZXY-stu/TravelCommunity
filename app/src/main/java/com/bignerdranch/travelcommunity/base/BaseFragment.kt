@@ -25,6 +25,9 @@ import com.bignerdranch.travelcommunity.util.ToastUtil
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import com.gyf.immersionbar.ImmersionBar
 import com.gyf.immersionbar.components.SimpleImmersionFragment
+import org.greenrobot.eventbus.EventBus
+import org.greenrobot.eventbus.Subscribe
+import org.greenrobot.eventbus.ThreadMode
 
 /**
  * @author zhongxinyu
@@ -72,16 +75,48 @@ abstract  class BaseFragment<T:ViewDataBinding>:Fragment(){
             return binding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        EventBus.getDefault().register(this)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        EventBus.getDefault().unregister(this)
+    }
+
+    fun sendMsg(msg: Message){
+        EventBus.getDefault().post(msg)
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun onReceiveMessage(msg:Message){
+        when(msg.type){
+            Message.FULL_SCREEN ->  {
+                eee("收到  FULL_SCREEN")
+                BaseViewModel.typeScreen = msg.type
+            }
+            Message.NOT_FULL_SCREEN -> {
+                eee("收到 NOT_FULL_SCREEN")
+                BaseViewModel.typeScreen = msg.type
+            }
+        }
+
+    }
+
 
     override fun onResume() {
         super.onResume()
         when(layoutId) {
             R.layout.fragment_mine -> {
-              //  setDarkFont(false)
+                setDarkFont(false,false)
                 BaseViewModel.isParentHaveSetFont = true
             }
+            R.layout.homepage_video_fragment->{
+                setDarkFont(false,true)
+            }
             else -> {
-               if(! BaseViewModel.isParentHaveSetFont ) setDarkFont(true)
+               if(! BaseViewModel.isParentHaveSetFont ) setDarkFont(true,false)
                else  BaseViewModel.isParentHaveSetFont = false
             }
         }
@@ -98,9 +133,20 @@ abstract  class BaseFragment<T:ViewDataBinding>:Fragment(){
 
     }
 
-    fun setDarkFont(isDarkFont:Boolean){
-        ImmersionBar.with(this).statusBarDarkFont(isDarkFont).init()
+    fun setDarkFont(isDarkFont:Boolean,isDarkNavigator:Boolean){
+
+        if(isDarkNavigator){
+            ImmersionBar.with(this).statusBarDarkFont(isDarkFont)
+                .navigationBarColor(R.color.black)
+                .init()
+        }else{
+            ImmersionBar.with(this).statusBarDarkFont(isDarkFont)
+                .navigationBarColor(R.color.white)
+                .init()
+        }
     }
+
+
 
     fun getDimension(resId:Int) = requireContext().resources.getDimension(resId)
     fun getDimensionPixelSize(resId:Int) = requireContext().resources.getDimensionPixelSize(resId)

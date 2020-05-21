@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -36,10 +37,14 @@ class DynamicAdapter(val viewModel: PersonDynamicViewModel,
         init {
             with(binding){
                  dynamicLayout.setOnClickListener {
+                     view->
                      var showVideo = false
                      mPersonDynamic?.videoUrl?.let {
                          if(it.length>4){
-                             VideoDynamicFragment(mContext = context,personDynamic = mPersonDynamic!!).show(framentManage,TAG)
+                            // VideoDynamicFragment(mContext = context,personDynamic = mPersonDynamic!!).show(framentManage,TAG)
+                          //
+
+                              view.findNavController().navigate(R.id.action_HomePageFragment_to_videoDynamicFragment)
                              showVideo = true
                          }
                      }

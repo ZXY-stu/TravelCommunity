@@ -60,9 +60,9 @@ class HomePageFragment: BaseFragment<FragmentVideoViewPageBinding>() {
 
 
     private fun initVideoView(){
-        binding.video.visibility = View.VISIBLE
-        binding.video.addView(tcPlayer)
-        tcPlayer?.play("http://ips.ifeng.com/video19.ifeng.com/video09/2014/06/16/1989823-102-086-0009.mp4")
+        //binding.video.visibility = View.VISIBLE
+    //    binding.video.addView(tcPlayer)
+      //  tcPlayer?.play("http://ips.ifeng.com/video19.ifeng.com/video09/2014/06/16/1989823-102-086-0009.mp4")
     }
 
     private fun init(){
@@ -81,7 +81,7 @@ class HomePageFragment: BaseFragment<FragmentVideoViewPageBinding>() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
        if(newConfig.orientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT) {
-         /*   binding.viewPageCoordinatorLayout.fitsSystemWindows = true
+       /*     binding.viewPageCoordinatorLayout.fitsSystemWindows = true
            binding.userToolbar.visibility = View.VISIBLE
            binding.appBarLayout.visibility = View.VISIBLE
            binding.appBarLayout.fitsSystemWindows = true
@@ -89,7 +89,7 @@ class HomePageFragment: BaseFragment<FragmentVideoViewPageBinding>() {
        }
         else //binding.viewPageCoordinatorLayout.visibility = View.GONE
        {
-        /*  binding.userToolbar.visibility = View.GONE
+       /*   binding.userToolbar.visibility = View.GONE
            binding.appBarLayout.visibility = View.GONE
            binding.appBarLayout.fitsSystemWindows = false
            binding.tabs.visibility = View.GONE*/

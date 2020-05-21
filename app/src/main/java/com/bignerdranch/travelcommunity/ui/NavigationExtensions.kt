@@ -271,7 +271,11 @@ private fun obtainNavHostFragment(
     existingFragment?.let { return it }
 
     // Otherwise, create it and return it.
+
     val navHostFragment = NavHostFragment.create(navGraphId)
+
+
+
     fragmentManager.beginTransaction()
         .add(containerId, navHostFragment, fragmentTag)
         .commitNow()

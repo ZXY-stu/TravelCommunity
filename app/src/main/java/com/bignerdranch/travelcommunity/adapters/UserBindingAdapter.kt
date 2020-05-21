@@ -20,6 +20,8 @@ import com.bignerdranch.tclib.LogUtil.eee
 import com.bignerdranch.tclib.data.db.entity.CommentsMsg
 import com.bignerdranch.travelcommunity.util.HtmlTextStyleUtil
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 
 
 /**
@@ -88,9 +90,15 @@ object UserBindingAdapter{
     @BindingAdapter("imageFromUrl")
     @JvmStatic fun bindImageFromUrl(view: ImageView, imageUrl: String?) {
         if (!imageUrl.isNullOrEmpty()) {
+           val option = RequestOptions()
+               .error(R.drawable.close)
+               .placeholder(R.drawable.abc)
+               .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+               .dontAnimate()
+
             Glide.with(view.context)
                 .load(imageUrl)
-                .dontAnimate()
+                .apply(option)
                 .into(view)
             eee("imageUrl"+imageUrl)
            // Log.w("MainAc",imageUrl)
@@ -101,9 +109,16 @@ object UserBindingAdapter{
 
     @BindingAdapter("imageFromUri")
     @JvmStatic fun bindImageUri(view: ImageView, imageUrl: Uri?) {
+
+        val option = RequestOptions()
+            .error(R.drawable.close)
+            .placeholder(R.drawable.abc)
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+            .dontAnimate()
+
             Glide.with(view.context)
                 .load(imageUrl)
-                .dontAnimate()
+                .apply(option)
                 .into(view)
             eee("imageUrl"+imageUrl)
             // Log.w("MainAc",imageUrl)

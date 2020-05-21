@@ -59,10 +59,10 @@ class LocationFragment(
        // binding.play.visibility = View.VISIBLE
       //  binding.play.addView(tcPlayer)
 
-       full = activity.findViewById(R.id.activityPlay)
-       full.visibility = View.VISIBLE
-       full.addView(tcPlayer)
-        tcPlayer?.play("http://ips.ifeng.com/video19.ifeng.com/video09/2014/06/16/1989823-102-086-0009.mp4")
+       //full = activity.findViewById(R.id.activityPlay)
+       //full.visibility = View.VISIBLE
+      // full.addView(tcPlayer)
+       // tcPlayer?.play("http://ips.ifeng.com/video19.ifeng.com/video09/2014/06/16/1989823-102-086-0009.mp4")
     }
 
     private fun init(){

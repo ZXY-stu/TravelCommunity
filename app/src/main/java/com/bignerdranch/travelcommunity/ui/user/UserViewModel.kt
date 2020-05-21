@@ -34,13 +34,13 @@ class UserViewModel internal constructor(private val userRepository: UserReposit
 
     private val userLoginResult = waitResponseResult(waitUserLogin){
         with(it){
-         /*   val user = User(1,nickName,account,age,birthday, headPortraitUrl, backgroundImageUrl,
+            val user = User(1,nickName,account,age,birthday, headPortraitUrl, backgroundImageUrl,
                 phoneNumber, password, address, identifyNumber, sex, hobby, introduce,
-                stat, lastLoginTime, isMember, privateModel, likeTotal, fansTotal, focusTotal)*/
+                stat, lastLoginTime, isMember, privateModel, likeTotal, fansTotal, focusTotal)
       eee(""+it)
-               val user = User(1,nickName,account,age,birthday, headPortraitUrl,
+            /*   val user = User(1,nickName,account,age,birthday, headPortraitUrl,
                phoneNumber, password, identifyNumber, sex, hobby, introduce,
-               stat, lastLoginTime, isMember, privateModel)
+               stat, lastLoginTime, isMember, privateModel)*/
             userRepository.toInsertUserLocal(user)
         }
     }
@@ -54,13 +54,13 @@ class UserViewModel internal constructor(private val userRepository: UserReposit
 
     private val userRegisterResult =  waitResponseResult(waitUserRegister){
         with(it){
-           /* val user = User(1,nickName,account,age,birthday, headPortraitUrl, backgroundImageUrl,
+            val user = User(1,nickName,account,age,birthday, headPortraitUrl, backgroundImageUrl,
                 phoneNumber, password, address, identifyNumber, sex, hobby, introduce,
-                stat, lastLoginTime, isMember, privateModel, likeTotal, fansTotal, focusTotal)*/
-
-            val user = User(1,nickName,account,age,birthday, headPortraitUrl,
+                stat, lastLoginTime, isMember, privateModel, likeTotal, fansTotal, focusTotal)
+                 eee("$it")
+      /*      val user = User(1,nickName,account,age,birthday, headPortraitUrl,
                 phoneNumber, password, identifyNumber, sex, hobby, introduce,
-                stat, lastLoginTime, isMember, privateModel)
+                stat, lastLoginTime, isMember, privateModel)*/
             userRepository.toInsertUserLocal(user)
         }
     }

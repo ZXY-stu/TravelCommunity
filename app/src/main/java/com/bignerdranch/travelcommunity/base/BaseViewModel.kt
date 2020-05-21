@@ -44,7 +44,14 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
     val password = MutableLiveData<String>()   //密码
     val code = MutableLiveData<String>()   //验证码
 
+    val toVideoPage = get()
+    var OK = false
 
+
+    fun toVideoPage(){
+        eee("toVideoPage")
+        set(toVideoPage)
+    }
 
     var _friendId  = -1  //朋友ID
     var _dynamicId  = -1    //动态Id
@@ -75,6 +82,7 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
     companion object {
         var userIsLogin = false
         var isParentHaveSetFont = false  //状态栏字体颜色状态
+        var typeScreen = Message.FULL_SCREEN
     }
     init {
 
@@ -128,6 +136,8 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
 
 
     var _userInfo = ""  //要查询的用户账号或者昵称
+
+
 
     val toOpenAlbum    =  get()         //打开相册
     val toStopVideo    =  get()
@@ -388,7 +398,7 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
             id = System.currentTimeMillis().toInt(),
                                         dynamicId = friendCommentsMsg.dynamicId,
                                         userId =  localUser.value!!.userId,
-                                        userNickName = localUser.value!!.nickName,
+                                        userNickName = ""+localUser.value!!.nickName,
                                         commentGroupId = friendCommentsMsg.commentGroupId,
                                        friendNickName = friendCommentsMsg.userNickName,
                                        msg =  textContent.value.toString())

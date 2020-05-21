@@ -79,13 +79,16 @@
                                 android:layout_height="@dimen/dynamic_image_size"
                                 android:layout_gravity="center"
                                 imageFromUri="@{Coverters.fromStringToUri(user.headPortraitUrl)}"
-                                android:scaleType="centerCrop"
+                                android:scaleType="matrix"
                                 android:src="@drawable/abc"
                                 app:layout_collapseMode="parallax"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintHorizontal_bias="1.0"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent"
+                      />
+
+
 
                             <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/user_operate_group"
@@ -116,7 +119,7 @@
                                     android:id="@+id/set_information"
                                     visibleGone="@{user.userId == viewModel.localUserId}"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="@dimen/toolbar_button_height"
+                                    android:layout_height="40dp"
                                     android:layout_gravity="center"
                                     android:background="@android:color/darker_gray"
                                     android:text="更改资料+"
@@ -131,7 +134,7 @@
                                     android:id="@+id/focus_me"
                                     visibleGone="@{user.userId != viewModel.localUserId}"
                                     android:layout_width="@dimen/toolbar_button_width"
-                                    android:layout_height="@dimen/toolbar_button_height"
+                                    android:layout_height="40dp"
 
                                     android:layout_gravity="center"
                                     android:layout_marginEnd="12dp"
@@ -145,7 +148,7 @@
                                     android:id="@+id/contanct_me"
                                     visibleGone="@{user.userId != viewModel.localUserId}"
                                     android:layout_width="@dimen/toolbar_button_width"
-                                    android:layout_height="@dimen/toolbar_button_height"
+                                    android:layout_height="40dp"
                                     android:layout_gravity="center"
                                     android:layout_marginEnd="25dp"
                                     android:background="@android:color/darker_gray"

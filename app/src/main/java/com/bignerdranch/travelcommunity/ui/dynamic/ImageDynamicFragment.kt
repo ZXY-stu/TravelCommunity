@@ -71,10 +71,11 @@ class ImageDynamicFragment(
               toCommentsList.setOnClickListener {  binding.netScorllView.scrollTo(commentsRecycle.x.toInt(),commentsRecycle.y.toInt()) }
 
               comments1.setOnClickListener {
-
+                  openInputMethod()
                   showCommentsDialog("")
               }
               comments2.setOnClickListener {
+                  openInputMethod()
                   showCommentsDialog("")
               }
 
@@ -196,7 +197,7 @@ class ImageDynamicFragment(
     }
 
     fun showCommentsDialog(text:String){
-        openInputMethod()
+
         InputDialog(textContent = text).show(requireActivity().supportFragmentManager,"")
     }
 }

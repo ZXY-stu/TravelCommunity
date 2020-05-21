@@ -18,6 +18,8 @@ import com.bignerdranch.tclib.data.db.entity.CommentsMsg
 import com.bignerdranch.tclib.data.db.entity.PersonDynamic
 import com.bignerdranch.tclib.utils.DeviceUtils
 import com.bignerdranch.travelcommunity.R
+import com.bignerdranch.travelcommunity.base.BaseViewModel
+import com.bignerdranch.travelcommunity.base.Message
 import com.bignerdranch.travelcommunity.databinding.ItemRecyclerviewVideoLayoutBinding
 import com.bignerdranch.travelcommunity.tcvideoplayer.TCPlayer
 import com.bignerdranch.travelcommunity.tcvideoplayer.TCPlayer.OnNetChangeListener
@@ -90,7 +92,23 @@ Diff()
 
         init {
             val layoutParams = playerLayout.layoutParams
-            layoutParams.height = (DeviceUtils.deviceHeight(context) - context.resources.getDimension(R.dimen.toolbarHeight)*2).toInt()
+
+            when(BaseViewModel.typeScreen) {
+                Message.FULL_SCREEN -> {
+                    eee("FULL_SCREEN")
+                    layoutParams.height =
+                        DeviceUtils.deviceHeight(context) + 2*(context.resources.getDimensionPixelSize(
+                            R.dimen.statusBar
+                        ))
+                }
+                Message.NOT_FULL_SCREEN -> {
+                    eee("NOT_FULL_SCREEN")
+                    layoutParams.height = DeviceUtils.deviceHeight(context) + (context.resources.getDimensionPixelSize(
+                        R.dimen.action_pic_size
+                    ))
+                }
+            }
+
             playerLayout.layoutParams = layoutParams
 
             val  onNetChangeListener =  object : OnNetChangeListener {

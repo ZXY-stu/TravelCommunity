@@ -5,7 +5,6 @@ import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,6 +24,10 @@ import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.TCApplication.Companion.getProxy
 import com.bignerdranch.travelcommunity.base.BaseDialogFragment
 import com.bignerdranch.travelcommunity.base.BaseFragment
+import com.bignerdranch.travelcommunity.base.BaseViewModel
+import com.bignerdranch.travelcommunity.base.Message
+import com.bignerdranch.travelcommunity.base.Message.Companion.HIDE_BOTTOM_VIEW
+import com.bignerdranch.travelcommunity.base.Message.Companion.SHOW_BOTTOM_VIEW
 import com.bignerdranch.travelcommunity.databinding.HomepageVideoFragmentBinding
 import com.bignerdranch.travelcommunity.tcvideoplayer.TCPlayer
 import com.bignerdranch.travelcommunity.ui.adapters.VideoViewAdapter
@@ -37,11 +40,15 @@ import com.bignerdranch.travelcommunity.util.InjectorUtils
 import com.bignerdranch.travelcommunity.videocache.CacheListener
 import java.io.File
 
- class VideoDynamicFragment(
-    override val themeResId: Int = R.style.DialogFullScreen_Right,
-    val personDynamic: PersonDynamic,
-    val mContext: Context)
-    : BaseDialogFragment<HomepageVideoFragmentBinding>(),CacheListener{
+ class VideoDynamicFragment(): BaseFragment<HomepageVideoFragmentBinding>(),CacheListener{
+
+     constructor(personDynamic: PersonDynamic,
+                 mContext: Context):this(){
+         this.personDynamic = personDynamic
+         this.mContext = mContext
+     }
+     private var personDynamic:PersonDynamic? = null
+     private var mContext:Context? = null
     private val dataList: MutableList<PersonDynamic> = ArrayList()
     private var videoRecyclerView: RecyclerView? = null
     private var mLayoutManager: LinearLayoutManager? = null
@@ -50,7 +57,7 @@ import java.io.File
     private var currentPosition = 0
     private var playProgress = 0
 
-    private val fullScreen: RelativeLayout? = null
+    private var fullScreen: RelativeLayout? = null
     private var postion = -1
     private  var currentVideoUrl = ArrayList<String>()
     private var tcPlayer: TCPlayer? = null
@@ -60,7 +67,7 @@ import java.io.File
     private val pers = ArrayList<PersonDynamic>()
     private var pageNumber = 0
 
-    private val _viewModel by viewModels<PersonDynamicViewModel> {
+    private val _viewModel by activityViewModels<PersonDynamicViewModel> {
         InjectorUtils.personDynamicViewModelFactory(requireContext())
     }
 
@@ -74,7 +81,7 @@ import java.io.File
     ): View? {
         currentVideoUrl.clear()
         _viewModel.toQueryDynamics(0,pageNumber)
-        pers.add(personDynamic)
+       // pers.add(personDynamic!!)
 
         if(lastView == null) {
             super.onCreateView(inflater, container, savedInstanceState)
@@ -101,8 +108,10 @@ import java.io.File
 
 
     override fun onConfigurationChanged(newConfig: Configuration) {
-        eee("odfsfsdfsfsnConfigurationChanged")
-      /*  if (tcPlayer != null) {
+
+        if (tcPlayer != null) {
+
+            eee("odfsfsdfsfsnCotcPlayernfigurationChanged")
             /**
              * 在activity中监听到横竖屏变化时调用播放器的监听方法来实现播放器大小切换
              */
@@ -110,34 +119,35 @@ import java.io.File
             // 竖屏
             if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
                 showActionBar()
-                fullScreen.visibility = View.GONE
-                fullScreen.removeAllViews()
+                fullScreen?.visibility = View.GONE
+                fullScreen?.removeAllViews()
+                videoRecyclerView?.visibility = View.VISIBLE
 
-                val frameLayout = binding.videoPlayer
-                frameLayout.addView(tcPlayer)
+               /* val frameLayout = binding.videoPlayer
+                frameLayout.addView(tcPlayer)*/
 
                 val mShowFlags = (View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                         or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
-                fullScreen.systemUiVisibility = mShowFlags
+                fullScreen?.systemUiVisibility = mShowFlags
             } else {      // 横屏
                 val viewGroup = tcPlayer?.parent as ViewGroup
                 hideActionBar()
                 viewGroup.removeAllViews()
-                fullScreen.addView(tcPlayer)
-                fullScreen.setBackgroundColor(R.color.black)
-                fullScreen.visibility = View.VISIBLE
+                fullScreen?.addView(tcPlayer)
+                fullScreen?.visibility = View.VISIBLE
+                videoRecyclerView?.visibility = View.GONE
                 val mHideFlags = (View.SYSTEM_UI_FLAG_LOW_PROFILE
                         or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                         or View.SYSTEM_UI_FLAG_FULLSCREEN
                         or View.SYSTEM_UI_FLAG_IMMERSIVE
                         or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                         or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
-                fullScreen.setSystemUiVisibility(mHideFlags)
+                fullScreen?.setSystemUiVisibility(mHideFlags)
             }
         } else {
-            fullScreen.visibility = View.GONE
-        }*/
+            fullScreen?.visibility = View.GONE
+        }
         super.onConfigurationChanged(newConfig)
     }
 
@@ -153,13 +163,18 @@ import java.io.File
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     protected fun initViews() {
+
+          eee("typeScreen ${BaseViewModel.typeScreen}")
+        fullScreen = binding.fullScreen
+
         videoRecyclerView =  binding.videoRecyclerView
         videoViewAdapater =
             VideoViewAdapter(
-               mContext,
+               requireContext(),
                 requireActivity().supportFragmentManager,
                 _viewModel
             )
+
         videoRecyclerView?.adapter = videoViewAdapater
         VideoPageSnapHelper()
            .attachToRecyclerView(videoRecyclerView)
@@ -173,9 +188,11 @@ import java.io.File
                }
            }
 
+
     }
 
     private fun playVideo(position: Int, playProgress: Int) {
+     tcPlayer = findView(position)?.tcPlayer
         findView(position)?.play(playProgress)
     }
 
@@ -198,6 +215,8 @@ import java.io.File
 
     private  fun destory(position: Int){
         findView(position)?.onDestroy()
+
+
     }
 
     private fun findView(position: Int): VideoViewAdapter.VideoViewHolder? {
@@ -273,6 +292,7 @@ import java.io.File
     override fun onPause() {
         super.onPause()
         eee("onPause $playProgress")
+        sendMsg(Message("", SHOW_BOTTOM_VIEW))
         proxy.stopLoad(currentVideoUrl?.get(currentPosition))
         pause(currentPosition)
         playProgress = currentProgress(currentPosition)
@@ -283,7 +303,11 @@ import java.io.File
     override fun onResume() {
         super.onResume()
         eee("HomePageVideoFragment")
+        sendMsg(Message("", HIDE_BOTTOM_VIEW))
         if(currentVideoUrl.isNotEmpty()) {
+
+           // tcPlayer = findView(currentPosition)?.tcPlayer
+
             proxy.tryLoad(currentVideoUrl?.get(currentPosition))
             playVideo(currentPosition, playProgress)
         }

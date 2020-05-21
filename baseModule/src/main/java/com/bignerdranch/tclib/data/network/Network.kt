@@ -8,6 +8,7 @@ import com.bignerdranch.tclib.data.db.entity.User
 import com.bignerdranch.tclib.data.network.api.PersonDynamicService
 import com.bignerdranch.tclib.data.network.api.UserService
 import com.bignerdranch.tclib.data.network.model.ApiResponse
+import com.bignerdranch.tclib.utils.StringUtils
 import com.google.gson.Gson
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -41,7 +42,15 @@ class Network private constructor(context: Context){
        fun toLogin(account:String,password:String) = userService.login(account, password)
 
 
-        fun toRegister(account: String,password: String) = userService.register(account, password)
+        fun toRegister(account: String,password: String):LiveData<ApiResponse<User>>{
+            val map = HashMap<String,Any>()
+            map["account"] = account
+            map["nickName"] = ""
+            map["phoneNumber"] = ""
+            map["password"] = password
+            map["lastLoginTime"] = StringUtils.getDateTime()
+           return  userService.register(map)
+        }
         fun toLogout(account:String) = userService.logout(account)
         fun toQueryFriend(userInfo:String) = userService.queryUsers(userInfo)
         fun toQueryFriend(userId:Int) = userService.queryUser(userId)
