@@ -39,6 +39,14 @@ class CommentsAdapter(val _viewModel: PersonDynamicViewModel,
     private  lateinit var commentsListener:CommentsLinkListener
     private val friendFragment = FriendFragment(_viewModel = _viewModel)
 
+    /*
+* *  dynamicId  动态id
+    *  commentsId 评论Id
+    *  pageNumber 当前第一层的查询页数
+    *  subPageNumber 当前第二层评论的查询页数
+    *  CommentsGroupId用于分层
+* */
+
     interface CommentsLinkListener{
         fun linkName(name:String)
     }
@@ -112,6 +120,9 @@ class CommentsAdapter(val _viewModel: PersonDynamicViewModel,
               }
         }
    }
+
+
+    inner class LoadMoreViewHolder()
 
 
 

@@ -2,8 +2,6 @@ package com.bignerdranch.travelcommunity.adapters
 
 import android.net.Uri
 import android.os.Build
-import android.text.Html
-import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
@@ -17,10 +15,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.tclib.LogUtil
 import com.bignerdranch.tclib.LogUtil.eee
+import com.bignerdranch.tclib.LogUtil.eeee
 import com.bignerdranch.tclib.data.db.entity.CommentsMsg
+import com.bignerdranch.tclib.data.db.entity.PersonDynamic
 import com.bignerdranch.travelcommunity.util.HtmlTextStyleUtil
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 
 
@@ -75,8 +74,6 @@ object UserBindingAdapter{
                 println("")
                 listener?.onFocusChange(v,hasFocus)
             }
-
-
         }
     }
 
@@ -91,9 +88,7 @@ object UserBindingAdapter{
     @JvmStatic fun bindImageFromUrl(view: ImageView, imageUrl: String?) {
         if (!imageUrl.isNullOrEmpty()) {
            val option = RequestOptions()
-               .error(R.drawable.close)
                .placeholder(R.drawable.abc)
-               .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                .dontAnimate()
 
             Glide.with(view.context)
@@ -107,13 +102,71 @@ object UserBindingAdapter{
     }
 
 
+    @BindingAdapter("imageFromUrlWhen")
+    @JvmStatic fun imageFromUrlWhen(view: ImageView, personDynamic: PersonDynamic) {
+
+        val imageUrl = Coverters.getFristUrlfromString(""+personDynamic.imageUrls)
+        val videoUrl = Coverters.getVideoUrl(""+personDynamic.videoUrl)
+
+       if(videoUrl.length<3) {
+           val option = RequestOptions()
+               .placeholder(R.drawable.abc)
+               .dontAnimate()
+
+           Glide.with(view.context)
+               .load(imageUrl)
+               .apply(option)
+               .into(view)
+           eeee("imageUrl" + videoUrl)
+       }
+
+        eeee("imageUrl" + imageUrl)
+        eeee("video" + videoUrl)
+            // Log.w("MainAc",imageUrl)
+            //LogUtil.e("${view.javaClass} + $imageUrl")
+
+    }
+
+
+    @BindingAdapter("imageFromUrlCircle")
+    @JvmStatic fun imageFromUrlCircle(view: ImageView, imageUrl: String?) {
+        if (!imageUrl.isNullOrEmpty()) {
+            val option = RequestOptions()
+                .placeholder(R.drawable.abc)
+                .circleCrop()
+                .dontAnimate()
+
+
+            Glide.with(view.context)
+                .load(imageUrl)
+                .apply(option)
+                .into(view)
+            eee("imageUrl"+imageUrl)
+            // Log.w("MainAc",imageUrl)
+            //LogUtil.e("${view.javaClass} + $imageUrl")
+        }
+    }
+
+
+
+    @JvmStatic
+    @BindingAdapter("videoThumbnail")
+    fun videoThumbnail(view: ImageView, personDynamic: PersonDynamic){
+        val imageUrl = Coverters.getFristUrlfromString(""+personDynamic.imageUrls)
+        val videoUrl = Coverters.getVideoUrl(personDynamic.videoUrl)
+        if(imageUrl.length>3 && videoUrl.length<3){
+            bindImageFromUrl(view, imageUrl)
+        }else{
+           // FutureTaskServer.renderPageAsync(videoUrl,view)
+        }
+    }
+
+
     @BindingAdapter("imageFromUri")
     @JvmStatic fun bindImageUri(view: ImageView, imageUrl: Uri?) {
 
         val option = RequestOptions()
-            .error(R.drawable.close)
             .placeholder(R.drawable.abc)
-            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
             .dontAnimate()
 
             Glide.with(view.context)
@@ -207,6 +260,7 @@ object UserBindingAdapter{
         }
         else view.setImageResource(R.drawable.focus)
     }
+
 
 
 

@@ -5,42 +5,43 @@ import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.RelativeLayout
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bignerdranch.tclib.LogUtil
-import com.bignerdranch.tclib.LogUtil.ee
 import com.bignerdranch.tclib.LogUtil.eee
+import com.bignerdranch.tclib.LogUtil.eeee
 import com.bignerdranch.tclib.data.db.entity.PersonDynamic
 import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.TCApplication.Companion.getProxy
-import com.bignerdranch.travelcommunity.base.BaseDialogFragment
+import com.bignerdranch.travelcommunity.adapters.Coverters
 import com.bignerdranch.travelcommunity.base.BaseFragment
 import com.bignerdranch.travelcommunity.base.BaseViewModel
 import com.bignerdranch.travelcommunity.base.Message
 import com.bignerdranch.travelcommunity.base.Message.Companion.HIDE_BOTTOM_VIEW
 import com.bignerdranch.travelcommunity.base.Message.Companion.SHOW_BOTTOM_VIEW
 import com.bignerdranch.travelcommunity.databinding.HomepageVideoFragmentBinding
+import com.bignerdranch.travelcommunity.task.TaskServer
 import com.bignerdranch.travelcommunity.tcvideoplayer.TCPlayer
+import com.bignerdranch.travelcommunity.ui.adapters.DynamicAdapter
 import com.bignerdranch.travelcommunity.ui.adapters.VideoViewAdapter
 import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel
 import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel.Companion.toQueryWhat
 import com.bignerdranch.travelcommunity.ui.utils.VideoPageSnapHelper
-import com.bignerdranch.travelcommunity.util.DataCleanManager
 import com.bignerdranch.travelcommunity.util.InjectorUtils
 
 import com.bignerdranch.travelcommunity.videocache.CacheListener
 import java.io.File
 
- class VideoDynamicFragment(): BaseFragment<HomepageVideoFragmentBinding>(),CacheListener{
+class VideoDynamicFragment(): BaseFragment<HomepageVideoFragmentBinding>(),CacheListener{
 
      constructor(personDynamic: PersonDynamic,
                  mContext: Context):this(){
@@ -64,8 +65,9 @@ import java.io.File
     private var lastView:View? = null    //保存上一次View，避免重复创建
     private var hasCreated = false      //保存上一次存储状态
     private val proxy = getProxy()
-    private val pers = ArrayList<PersonDynamic>()
     private var pageNumber = 0
+
+
 
     private val _viewModel by activityViewModels<PersonDynamicViewModel> {
         InjectorUtils.personDynamicViewModelFactory(requireContext())
@@ -80,9 +82,13 @@ import java.io.File
         savedInstanceState: Bundle?
     ): View? {
         currentVideoUrl.clear()
-        _viewModel.toQueryDynamics(0,pageNumber)
-       // pers.add(personDynamic!!)
 
+
+         personDynamic = DynamicAdapter.curPersonDynamic
+
+        eeee("persondyamic $personDynamic")
+
+        _viewModel.toQueryDynamics(0,pageNumber)
         if(lastView == null) {
             super.onCreateView(inflater, container, savedInstanceState)
 
@@ -104,6 +110,7 @@ import java.io.File
 
       }
     }
+
 
 
 
@@ -168,6 +175,19 @@ import java.io.File
         fullScreen = binding.fullScreen
 
         videoRecyclerView =  binding.videoRecyclerView
+
+        mLayoutManager = object : LinearLayoutManager(requireContext()) {
+         override fun calculateExtraLayoutSpace(
+                state: RecyclerView.State,
+                extraLayoutSpace: IntArray
+            ) {
+                 super.calculateExtraLayoutSpace(state, IntArray(300))
+            }
+        }
+
+        videoRecyclerView?.setItemViewCacheSize(5)
+
+        videoRecyclerView?.layoutManager = mLayoutManager
         videoViewAdapater =
             VideoViewAdapter(
                requireContext(),
@@ -175,16 +195,20 @@ import java.io.File
                 _viewModel
             )
 
+
+
         videoRecyclerView?.adapter = videoViewAdapater
         VideoPageSnapHelper()
            .attachToRecyclerView(videoRecyclerView)
            .setScrollPlayListener { position ->
                if (currentPosition != position) {
-                    proxy.stopLoad(currentVideoUrl?.get(currentPosition))
-                    pause(currentPosition)
-                   currentPosition = position
-                   proxy.tryLoad(currentVideoUrl?.get(currentPosition))
-                   playVideo(position, playProgress)
+
+                       proxy.stopLoad(currentVideoUrl?.get(currentPosition))
+                       pause(currentPosition)
+                       currentPosition = position
+                       proxy.tryLoad(currentVideoUrl?.get(currentPosition))
+                       eeee("currentUrl ${currentVideoUrl[currentPosition]}")
+                       playVideo(position, playProgress)
                }
            }
 
@@ -192,17 +216,19 @@ import java.io.File
     }
 
     private fun playVideo(position: Int, playProgress: Int) {
-     tcPlayer = findView(position)?.tcPlayer
         findView(position)?.play(playProgress)
     }
 
     override  fun subscribeObserver(){
 
-       videoViewAdapater?.submitList(pers)
        _viewModel.personDynamics.observe(viewLifecycleOwner) { dynamics ->
-           if (dynamics.size >= 1) {
+           if (dynamics.isNotEmpty()) {
                // = dynamics.map { it.videoUrl }
-               videoViewAdapater?.submitList(transferToUrl(dynamics))
+               val dynamicList= dynamics as MutableList<PersonDynamic>
+
+               dynamicList.remove(personDynamic)
+               dynamicList.add(0,personDynamic!!)
+               videoViewAdapater?.submitList(transferToUrl(dynamicList))
            }
        }
 
@@ -215,8 +241,6 @@ import java.io.File
 
     private  fun destory(position: Int){
         findView(position)?.onDestroy()
-
-
     }
 
     private fun findView(position: Int): VideoViewAdapter.VideoViewHolder? {
@@ -228,6 +252,13 @@ import java.io.File
         }
     }
 
+     private fun destroyAll(){
+         videoViewAdapater?.clearAllView()
+     }
+
+     private fun destroyItem(){
+
+     }
 
 
     private fun currentProgress(position: Int):Int{
@@ -253,33 +284,16 @@ import java.io.File
         if (requireActivity().actionBar != null) requireActivity().actionBar!!.show()
     }
 
-    /**
-     * 添加测试数据
-     * @return
-     */
-    private fun setData() {
-        dataList.clear()
-        dataList.add(PersonDynamic(videoUrl = "http://ips.ifeng.com/video19.ifeng.com/video09/2014/06/16/1989823-102-086-0009.mp4"))
-        dataList.add(PersonDynamic(videoUrl = "http://vjs.zencdn.net/v/oceans.mp4"))
-        dataList.add(PersonDynamic(videoUrl = "https://media.w3.org/2010/05/sintel/trailer.mp4"))
-        dataList.add(PersonDynamic(videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"))
 
-       // currentVideoUrl = dataList.map { it.videoUrl }
+
+    private fun transferToUrl(personDynamics: List<PersonDynamic>) = personDynamics.filter {    //转化为代理视频地址
+        Coverters.getVideoUrl(it.videoUrl).length >3
     }
-
-
-    private fun transferToUrl(personDynamics: List<PersonDynamic>) = personDynamics.map {
-            var  url = ""
-            it.videoUrl?.let {
-                if (it.contentEquals("http")) {
-                    url = proxy.getProxyUrl(it)
-                    proxy.registerCacheListener(this, url)
-                } else {
-                    url = "http://lyndon.fun:81/"+it
-                }
-            }
-        currentVideoUrl?.add(url)
-            //
+        .map {
+                val urls =   Coverters.getVideoUrl(it.videoUrl)
+                val  url = proxy.getProxyUrl(urls)
+                proxy.registerCacheListener(this,url)
+                currentVideoUrl?.add(url)
              with(it) {
                 PersonDynamic(
                     id, userId,  userNickName, textContent,
@@ -291,7 +305,7 @@ import java.io.File
 
     override fun onPause() {
         super.onPause()
-        eee("onPause $playProgress")
+        eeee("onPause $playProgress")
         sendMsg(Message("", SHOW_BOTTOM_VIEW))
         proxy.stopLoad(currentVideoUrl?.get(currentPosition))
         pause(currentPosition)
@@ -302,7 +316,7 @@ import java.io.File
 
     override fun onResume() {
         super.onResume()
-        eee("HomePageVideoFragment")
+        eeee("onResume $playProgress")
         sendMsg(Message("", HIDE_BOTTOM_VIEW))
         if(currentVideoUrl.isNotEmpty()) {
 
@@ -310,15 +324,21 @@ import java.io.File
 
             proxy.tryLoad(currentVideoUrl?.get(currentPosition))
             playVideo(currentPosition, playProgress)
+
+
+
         }
         // 进入开始播放
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        eee("onDestroy")
+        eeee("onDestroy $playProgress")
       //  DataCleanManager.clearAllCache(requireContext())
-        destory(currentPosition)
+
+         TaskServer.execute{
+             destroyAll()
+         }
     }
 
 
@@ -333,6 +353,9 @@ import java.io.File
      override fun subscribeListener() {
 
      }
+
+
+     private val handler = Handler(Looper.getMainLooper())
 
 
  }

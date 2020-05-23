@@ -63,12 +63,39 @@ class Network private constructor(context: Context){
           //PersonDynamicService
           suspend fun toAddDynamic(permissionArgs:HashMap<String,Any>,contentsArgs:HashMap<String,RequestBody>) =
               personDynamicService.addDynamic(permissionArgs,contentsArgs)
+
           fun toDeleteDynamic(dynamicId: Int) = personDynamicService.deleteDynamic(dynamicId)
+
+
          suspend  fun toQueryDynamics(queryDynamicArgs:HashMap<String,Any>) = personDynamicService.queryDynamics(queryDynamicArgs)
           fun toAddLike(likeArgs:HashMap<String,Any>) = personDynamicService.addLike(likeArgs)
           fun toDeleteLike(likeArgs:HashMap<String,Any>) = personDynamicService.deleteLike(likeArgs)
           fun toQueryLike(queryLikeArgs:HashMap<String,Any>) = personDynamicService.queryLike(queryLikeArgs)
-          fun toAddComments(commentsMsg: CommentsMsg) = personDynamicService.addComments(commentsMsg)
+          fun toAddComments(commentsMsg: CommentsMsg):LiveData<ApiResponse<Any>> {
+              val map = HashMap<String,Any>()
+              map["dynamicId"] = commentsMsg.dynamicId
+              map["userId"] = commentsMsg.userId
+              map["userNickName"] = commentsMsg.userNickName
+              map["friendNickName"] = commentsMsg.friendNickName
+              map["msg"] = commentsMsg.msg
+              map["times"] = commentsMsg.times
+              map["commentGroupId"] = commentsMsg.commentGroupId
+              return   personDynamicService.addComments(map)
+          }
+    /*
+      *  @PrimaryKey override val id:Int = 0, //评论id
+@ColumnInfo(name = "dynamic_id")   val dynamicId:Int = 1, //所属动态
+@ColumnInfo(name = "user_id")      val userId:Int = 1, //评论人id
+val userNickName:String = "123",   //评论人的昵称
+val friendNickName:String = "123",  //被评论人的昵称。
+val msg:String ="", //消息内容
+val times: String = StringUtils.getDateTime(),
+val commentGroupId:Int = 0, // 评论组id    0表示属于 评论作者组  其它值表示 该条评论属于commentGroupId这条评论组
+// 通过commentGroupId 可以统计该条评论的被评论数  0时可以统计该条动态的被评论数
+// val userAccount:String = "",//评论人的账户
+val likeCount:String ="",// 点赞统计
+val commentsCount:String=""// 评论统计
+      * */
           fun toDeleteComments(dynamicId:Int) = personDynamicService.deleteComments(dynamicId)
           fun toQueryComments(queryCommentsArgs:HashMap<String,Any>) = personDynamicService.queryComments(queryCommentsArgs)
           fun toDeleteComment(commentsId:Int) = personDynamicService.deleteComment(commentsId)

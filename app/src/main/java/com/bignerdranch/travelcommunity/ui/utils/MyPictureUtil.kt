@@ -121,6 +121,7 @@ fun getVideoThumb(path: String?): Bitmap? {
  * @param videoUrl
  * @return
  */
+/*
 fun getNetVideoBitmap(videoUrl: String?): Bitmap? {
     var bitmap: Bitmap? = null
     val retriever = MediaMetadataRetriever()
@@ -134,4 +135,5 @@ fun getNetVideoBitmap(videoUrl: String?): Bitmap? {
         retriever.release()
     }
     return bitmap
-}
+}*/
+

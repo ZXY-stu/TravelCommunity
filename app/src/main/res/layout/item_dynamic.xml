@@ -26,19 +26,33 @@
             >
 
 
+
+
             <ImageView
                 android:id="@+id/imageUrl"
-                imageFromUrl="@{Coverters.getFristUrlfromString(personDynamic.imageUrls)}"
+                android:src="@drawable/abc"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dynamic_image_size"
                 android:layout_marginBottom="10dp"
                 android:scaleType="centerCrop"
+                imageFromUrlWhen="@{personDynamic}"
                 app:layout_constraintBottom_toTopOf="@+id/commentContent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 />
 
+            <ImageView
+                android:id="@+id/imageView"
+                visibleGone="@{Coverters.getVideoUrl(personDynamic.videoUrl).length() > 3}"
+                android:layout_width="@dimen/head_size"
+                android:layout_height="@dimen/head_size"
+                android:alpha="0.6"
+                app:layout_constraintBottom_toTopOf="@+id/commentContent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/imageUrl"
+                app:layout_constraintTop_toTopOf="@+id/imageUrl"
+                app:srcCompat="@drawable/play" />
             <TextView
                 android:id="@+id/commentContent"
                 android:layout_width="match_parent"

@@ -45,6 +45,7 @@
                             android:orientation="horizontal"
                             android:layout_gravity="center"
                             android:pointerIcon="copy"
+                            android:layout_marginTop="@dimen/toolbarHeight"
                             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"

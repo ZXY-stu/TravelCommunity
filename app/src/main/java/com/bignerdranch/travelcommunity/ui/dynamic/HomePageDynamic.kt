@@ -6,25 +6,34 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.get
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 
 import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel
 import com.bignerdranch.travelcommunity.util.InjectorUtils
 import com.bignerdranch.tclib.LogUtil.eee
+import com.bignerdranch.tclib.data.db.entity.PersonDynamic
 import com.bignerdranch.travelcommunity.R
+import com.bignerdranch.travelcommunity.adapters.Coverters
 import com.bignerdranch.travelcommunity.base.BaseFragment
 import com.bignerdranch.travelcommunity.databinding.DynamicRecycleviewBinding
+import com.bignerdranch.travelcommunity.task.RenderImage
 import com.bignerdranch.travelcommunity.ui.RecyclerViewForViewPage2
 import com.bignerdranch.travelcommunity.ui.adapters.DynamicAdapter
+import com.bignerdranch.travelcommunity.ui.adapters.VideoViewAdapter
 import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel.Companion.toQueryWhat
+import com.bignerdranch.travelcommunity.util.GlideUtil
+import java.util.concurrent.Executors
 
 
- class HomePageDynamic(override val layoutId: Int = R.layout.dynamic_recycleview
+class HomePageDynamic(override val layoutId: Int = R.layout.dynamic_recycleview
                                , override val needLogin: Boolean = false)
     :BaseFragment<DynamicRecycleviewBinding>(),RecyclerViewForViewPage2.EnableScorllXListener {
 
     private  var currentPageNum = 0
+
+    private lateinit var mPersonDynamics:List<PersonDynamic>
 
     private lateinit var adapter:DynamicAdapter
      private lateinit var recycleView:RecyclerViewForViewPage2
@@ -34,6 +43,9 @@ import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewM
     private  val _viewModel: PersonDynamicViewModel by viewModels{
         InjectorUtils.personDynamicViewModelFactory(requireContext())
     }
+
+    private var lastView:View? = null
+    private var hasCreated = false
 
     fun  setScorllXListener(scorllXListener:RecyclerViewForViewPage2.EnableScorllXListener):HomePageDynamic{
         this.scorllXListener = scorllXListener
@@ -53,10 +65,20 @@ import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewM
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        super.onCreateView(inflater, container, savedInstanceState)
-        _viewModel.toQueryDynamics(toQueryWhat,currentPageNum)
 
-        return binding.root
+        _viewModel.toQueryDynamics(toQueryWhat,currentPageNum)
+      if(lastView==null){
+          super.onCreateView(inflater, container, savedInstanceState)
+          lastView = binding.root
+      }
+        return lastView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+       if(!hasCreated) {
+           super.onViewCreated(view, savedInstanceState)
+         hasCreated = true
+       }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -81,6 +103,17 @@ import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewM
         recycleView.adapter = adapter
     }
 
+    private fun addView(position: Int){
+
+    }
+
+    private fun findView(position: Int): DynamicAdapter.DynamicViewHolder? {
+        val view = recycleView.findViewHolderForAdapterPosition(position)
+        return view?.let {
+            it  as DynamicAdapter.DynamicViewHolder
+        }
+    }
+
      override fun subscribeListener() {
 
      }
@@ -89,7 +122,6 @@ import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewM
          _viewModel.personDynamics.observe(viewLifecycleOwner){
 
              adapter.submitList(it)
-
          }
      }
 

@@ -4,6 +4,7 @@ package com.bignerdranch.tclib.data.repository
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.bignerdranch.tclib.LogUtil.eeee
 import com.bignerdranch.tclib.data.db.daos.CommentsMsgDao
 import com.bignerdranch.tclib.data.db.daos.LikeDao
 import com.bignerdranch.tclib.data.db.daos.PersonDynamicDao
@@ -32,11 +33,18 @@ class PersonDynamicRepository private constructor(
 ):BaseRepository(personDynamicDao,commentsMsgDao, likeDao,userDao,context){
 
     private var i = 0
-    private suspend fun <T> launch(block:suspend ()->T):T = withContext(Dispatchers.IO){ block() }
+    private suspend fun <T> launch(block:suspend ()->T):T = withContext(Dispatchers.IO){
+        eeee("Thread "+Thread.currentThread())
+        block()
+    }
+init {
+
+}
 
     /*=================================================================================================*/
     /*动态板块*/
     suspend fun toQueryPersonDynamics(queryDynamicArgs:HashMap<String,Any>) = launch {
+
         _network.toQueryDynamics(queryDynamicArgs)
     }
 
@@ -80,6 +88,7 @@ class PersonDynamicRepository private constructor(
     }
 
     suspend  fun  toAddComments(commentsMsg:CommentsMsg) = launch {
+
         _network.toAddComments(commentsMsg)
        // MutableLiveData(ApiResponse(data = commentsMsg, errorCode = 0, errorMsg = ""))
     }

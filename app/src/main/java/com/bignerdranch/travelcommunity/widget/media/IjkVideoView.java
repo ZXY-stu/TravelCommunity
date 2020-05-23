@@ -250,6 +250,7 @@ public class IjkVideoView extends FrameLayout implements CustomMediaController.M
      */
     public void setVideoPath(String path) {
         setVideoURI(Uri.parse(path));
+        LogUtil.INSTANCE.eeee("setVideoPath");
     }
 
     /**

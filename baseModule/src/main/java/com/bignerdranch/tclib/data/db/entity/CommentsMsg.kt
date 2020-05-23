@@ -30,7 +30,7 @@ import java.util.*
 data class CommentsMsg(
     @PrimaryKey override val id:Int = 0, //评论id
     @ColumnInfo(name = "dynamic_id")   val dynamicId:Int = 1, //所属动态
-    @ColumnInfo(name = "user_id")      val userId:Int = 1, //评论人id
+    @ColumnInfo(name = "user_id")      val userId:Int = 2, //评论人id
     val userNickName:String = "123",   //评论人的昵称
     val friendNickName:String = "123",  //被评论人的昵称。
     val msg:String ="", //消息内容

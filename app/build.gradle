@@ -110,6 +110,8 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.0.1'
     implementation 'com.zhihu.android:matisse:0.5.2-beta2'
 
+    implementation 'jp.wasabeef:glide-transformations:2.0.2'  //图形变换库
+
 
     implementation  'org.slf4j:slf4j-android:1.7.21'
 

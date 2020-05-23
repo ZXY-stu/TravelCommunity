@@ -77,20 +77,23 @@ abstract  class BaseFragment<T:ViewDataBinding>:Fragment(){
 
     override fun onStart() {
         super.onStart()
+        //注册EventBus
         EventBus.getDefault().register(this)
+
     }
 
     override fun onStop() {
         super.onStop()
+        //注销EventBus
         EventBus.getDefault().unregister(this)
     }
 
-    fun sendMsg(msg: Message){
+    fun sendMsg(msg: Message){  //像Activity发送消息
         EventBus.getDefault().post(msg)
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onReceiveMessage(msg:Message){
+    fun onReceiveMessage(msg:Message){  //接受Activity发来的消息
         when(msg.type){
             Message.FULL_SCREEN ->  {
                 eee("收到  FULL_SCREEN")
@@ -101,7 +104,6 @@ abstract  class BaseFragment<T:ViewDataBinding>:Fragment(){
                 BaseViewModel.typeScreen = msg.type
             }
         }
-
     }
 
 

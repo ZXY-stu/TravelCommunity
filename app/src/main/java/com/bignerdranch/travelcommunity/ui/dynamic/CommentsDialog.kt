@@ -29,6 +29,7 @@ import com.bignerdranch.travelcommunity.ui.adapters.CommentsAdapter
 import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel
 import com.bignerdranch.travelcommunity.util.*
 import java.util.*
+import kotlin.collections.HashMap
 
 
 /**
@@ -52,6 +53,9 @@ import java.util.*
     private var currentPosition = 0
     private lateinit var inputMethodManager: InputMethodManager
 
+    private var pageNumber = 0
+    private var subPageNumber = HashMap<Int,Int>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // 预先设置Dialog的一些属性
@@ -65,7 +69,30 @@ import java.util.*
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
+
+        //刷新评论数据
+        refreshData()
+        /*
+* *  dynamicId  动态id
+    *  commentsId 评论Id
+    *  pageNumber 当前第一层的查询页数
+    *  subPageNumber 当前第二层评论的查询页数
+    *  CommentsGroupId用于分层
+* */
+
         return binding.root
+    }
+
+    fun refreshData(){
+        with(_viewModel.requestArgs){
+            clear()
+            this["dynamicId"] = dynamicId
+            this["commentsGroupId"] = 0
+            this["pageNumber"] = pageNumber
+            this["subPageNumber"] = 0
+            this["conmentsId"] = 0
+        }
+        _viewModel.toQueryComments()
     }
 
     override fun onDismiss(dialog: DialogInterface) {
@@ -129,6 +156,8 @@ import java.util.*
             recyclerView.adapter = adapter
             viewModel = _viewModel
         }
+
+
     }
 
     override fun subscribeListener() {

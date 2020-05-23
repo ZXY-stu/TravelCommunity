@@ -24,6 +24,14 @@ object LogUtil {
     }
 
     fun eee(msg: String){
+       // Log.e(TAG,msg)
+    }
+
+    fun eeee(msg:String){
+        Log.e(TAG,msg)
+    }
+
+    fun eeeee(msg:String){
         Log.e(TAG,msg)
     }
 

@@ -113,10 +113,9 @@ fun SelectionCreator.openAlbum(requestCode:Int){
         .maxSelectable(9) // 图片选择的最多数量
         .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
         .captureStrategy(CaptureStrategy(true,"com.bignerdranch.travelcommunity.ui.HomePageActivity"))
-        .capture(true)
         .thumbnailScale(0.85f) // 缩略图的比例
         .theme( R.style.Matisse_Zhihu)
-        .imageEngine(GlideEngine()) // 使用的图片加载引擎
+        .imageEngine(TCGlideEngine()) // 使用自定义图片加载引擎，来解决版本问题
         .forResult(requestCode); // 设置作为标记的请求码
 }
 

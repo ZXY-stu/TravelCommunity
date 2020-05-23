@@ -72,9 +72,9 @@ interface PersonDynamicService {
     fun queryDynamics(@QueryMap queryDynamicArgs: HashMap<String,Any>):LiveData<ApiResponse<List<PersonDynamic>>>
 
     //添加评论
-
+    @FormUrlEncoded
     @POST("api/user/comments")
-    fun addComments(@Body commentsMsg: CommentsMsg):LiveData<ApiResponse<Any>>
+    fun addComments(@FieldMap contentsArgs: HashMap<String, Any>):LiveData<ApiResponse<Any>>
 
     /*评论查询
     *  dynamicId  动态id

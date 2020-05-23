@@ -111,7 +111,7 @@ class HomePageActivity() : BaseActivity<ActivityHomePageBinding>() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun onReceiveMessage(msg:Message){
+    fun onReceiveMessage(msg:Message){   //接收Fragment或者其他组件发来的消息
         when(msg.type){
            Message.HIDE_BOTTOM_VIEW ->{
                 type = Message.HIDE_BOTTOM_VIEW

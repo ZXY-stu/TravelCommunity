@@ -7,6 +7,7 @@ import android.os.Build;
 import androidx.annotation.RequiresApi;
 
 import com.bignerdranch.tclib.LogUtil;
+import com.bignerdranch.travelcommunity.task.TaskServer;
 import com.bignerdranch.travelcommunity.videocache.file.DiskUsage;
 import com.bignerdranch.travelcommunity.videocache.file.FileNameGenerator;
 import com.bignerdranch.travelcommunity.videocache.file.Md5FileNameGenerator;
@@ -185,8 +186,12 @@ public class HttpProxyCacheServer {
     }
 
     public void stopLoad(String url){
-        HttpProxyCacheServerClients client =  clientsMap.get(url);
-        if(client != null) client.stopLoad();
+        final HttpProxyCacheServerClients client =  clientsMap.get(url);
+        if(client != null) {
+          client.stopLoad();
+        }
+
+
     }
 
 

@@ -79,7 +79,7 @@
                                 android:layout_height="@dimen/dynamic_image_size"
                                 android:layout_gravity="center"
                                 imageFromUri="@{Coverters.fromStringToUri(user.headPortraitUrl)}"
-                                android:scaleType="matrix"
+                                android:scaleType="centerCrop"
                                 android:src="@drawable/abc"
                                 app:layout_collapseMode="parallax"
                                 app:layout_constraintEnd_toEndOf="parent"

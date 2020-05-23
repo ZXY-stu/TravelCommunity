@@ -9,6 +9,7 @@ import android.net.wifi.WifiManager
 import android.os.Parcelable
 import android.util.Log
 import com.bignerdranch.tclib.LogUtil
+import com.bignerdranch.tclib.LogUtil.eeee
 
 /**
  * @author zhongxinyu
@@ -16,6 +17,14 @@ import com.bignerdranch.tclib.LogUtil
  * GitHub:https://github.com/ZXY-stu/TravelCommunity.git
  */
 class NetworkConnectChangedReceiver : BroadcastReceiver() {
+
+    private var networkChangeListener:NetworkChangeListener? = null
+
+    fun setNetworkChangeListener(networkChangeListener: NetworkChangeListener):NetworkConnectChangedReceiver{
+        this.networkChangeListener = networkChangeListener
+        return this
+    }
+
     override fun onReceive(context: Context, intent: Intent) { // 这个监听wifi的打开与关闭，与wifi的连接无关
 
         if (WifiManager.WIFI_STATE_CHANGED_ACTION == intent.action) {
@@ -72,20 +81,27 @@ class NetworkConnectChangedReceiver : BroadcastReceiver() {
                     if (activeNetwork.type == ConnectivityManager.TYPE_WIFI) {
                         // connected to wifi
                         Log.e(TAG, "当前WiFi连接可用 ")
+                        eeee("当前WiFi连接可用")
                         haveNetwork = true
+                        networkChangeListener?.onConnected()
+                        networkChangeListener?.onNetWorkChanged(ConnectivityManager.TYPE_WIFI)
                     } else if (activeNetwork.type == ConnectivityManager.TYPE_MOBILE) {
                         // connected to the mobile provider's data plan
-                            LogUtil.e("当前移动网络连接可用")
+                        eeee("前移动网络连接可")
                         haveNetwork = true
+                        networkChangeListener?.onConnected()
+                        networkChangeListener?.onNetWorkChanged(ConnectivityManager.TYPE_MOBILE)
                     }
                 } else {
-                    LogUtil.e("没有网络连接")
+                    eeee("没有网络连接")
                     haveNetwork = false
+                    networkChangeListener?.onDisconnected()
                 }
 
             } else {
-                LogUtil.e("没有网络连接")
+                eeee("没有网络连接")
                 haveNetwork = false
+                networkChangeListener?.onDisconnected()
             }
         }
     }

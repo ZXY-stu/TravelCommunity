@@ -1,5 +1,6 @@
 package com.bignerdranch.travelcommunity.base
 
+import android.graphics.Bitmap
 import android.os.Looper
 import android.text.TextUtils
 import androidx.databinding.Observable
@@ -83,6 +84,10 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
         var userIsLogin = false
         var isParentHaveSetFont = false  //状态栏字体颜色状态
         var typeScreen = Message.FULL_SCREEN
+        var Diff = true
+        var recycle = HashMap<String, Bitmap>()
+        var preVideoSize = 0
+        var perImageSize = 0
     }
     init {
 
@@ -131,6 +136,8 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
 
     var permissionArgs = HashMap<String, Any>()
     var contentsArgs = HashMap<String, RequestBody>()
+
+
 
 
 
@@ -285,9 +292,8 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
         set(toQueryLikes)
     }
 
-    fun toQueryComments(dynamicId: Int) {
-        _dynamicId = dynamicId
-        set(toQueryComments)
+    fun toQueryComments() {
+          set(toQueryComments)
     }
 
     fun toQueryComments(friendId: Int,dynamicId: Int) {
@@ -480,7 +486,7 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
     }
 
     protected fun executeResult(id:Int,msg:String) {
-        Thread {
+       /* Thread {
             Looper.prepare()  //在子线程调用 Looper.prepare()
             when (id) {
                 SUCCESS ->   ToastUtil.show(msg+"成功")
@@ -488,7 +494,7 @@ open class BaseViewModel<T: BaseRepository>(protected val baseRepository: T):Vie
                 SERVER_OR_NETWORK_ERROR -> ToastUtil.show("服务器出错！")
             }
             Looper.loop() //在子线程调用 Looper.loop()执行UI操作
-        }.start()
+        }.start()*/
     }
 
 

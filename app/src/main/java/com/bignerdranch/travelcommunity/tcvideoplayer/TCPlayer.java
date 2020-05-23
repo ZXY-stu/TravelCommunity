@@ -303,7 +303,7 @@ public class TCPlayer  extends ConstraintLayout {
 			if (isShowCenterControl) {
 				$.id(R.id.view_jky_player_center_control).visible();
 			}
-			showBottomControl(true);
+			//showBottomControl(true);
 			if (!fullScreenOnly) {
 				$.id(R.id.view_jky_player_fullscreen).visible();
 			}
@@ -823,8 +823,12 @@ public class TCPlayer  extends ConstraintLayout {
 	 * 在activity中的onDestroy中需要回调
 	 */
 	public void onDestroy() {
+
 		unregisterNetReceiver();// 取消网络变化的监听
 		orientationEventListener.disable();
+		onProgressChangedListener = null;
+		onNetChangeListener = null;
+
 		handler.removeCallbacksAndMessages(null);
 		videoView.stopPlayback();
 	}
@@ -918,6 +922,7 @@ public class TCPlayer  extends ConstraintLayout {
 		   	videoView.setVideoPath(url);
 			LogUtil.INSTANCE.ee("toPrepare");
 		}
+		LogUtil.INSTANCE.eeee("我还在准备..." + Thread.currentThread());
 	}
 
 	/**
@@ -1612,6 +1617,7 @@ public class TCPlayer  extends ConstraintLayout {
 	 */
 	private void registerNetReceiver() {
 		if (netChangeReceiver == null) {
+			LogUtil.INSTANCE.eeee("registerNetReceiver");
 			IntentFilter filter = new IntentFilter(
 					ConnectivityManager.CONNECTIVITY_ACTION);
 			netChangeReceiver = new NetChangeReceiver();
@@ -1624,6 +1630,7 @@ public class TCPlayer  extends ConstraintLayout {
 	 */
 	private void unregisterNetReceiver() {
 		if (netChangeReceiver != null) {
+			LogUtil.INSTANCE.eeee("清理了unregisterNetReceiver");
 			activity.unregisterReceiver(netChangeReceiver);
 			netChangeReceiver = null;
 		}

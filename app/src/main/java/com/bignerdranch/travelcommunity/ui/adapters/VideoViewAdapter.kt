@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bignerdranch.tclib.LogUtil
 import com.bignerdranch.tclib.LogUtil.eee
+import com.bignerdranch.tclib.LogUtil.eeee
 import com.bignerdranch.tclib.data.db.entity.CommentsMsg
 import com.bignerdranch.tclib.data.db.entity.PersonDynamic
 import com.bignerdranch.tclib.utils.DeviceUtils
@@ -21,12 +22,14 @@ import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.base.BaseViewModel
 import com.bignerdranch.travelcommunity.base.Message
 import com.bignerdranch.travelcommunity.databinding.ItemRecyclerviewVideoLayoutBinding
+import com.bignerdranch.travelcommunity.task.TaskServer
 import com.bignerdranch.travelcommunity.tcvideoplayer.TCPlayer
 import com.bignerdranch.travelcommunity.tcvideoplayer.TCPlayer.OnNetChangeListener
 import com.bignerdranch.travelcommunity.ui.dynamic.CommentsDialog
 import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewModel
 import com.bignerdranch.travelcommunity.ui.user.FriendFragment
 import com.bignerdranch.travelcommunity.util.ToastUtil.show
+import java.lang.ref.WeakReference
 
 
 class VideoViewAdapter(val context: Context,
@@ -39,7 +42,8 @@ Diff()
     private var playPosition = 0
     private var progress = 0
     private var currentPage = 0
-
+    private val recycle =  ArrayList<VideoViewHolder>()
+    private var limit = 1
 
 
     fun setPlayPosition(position: Int): VideoViewAdapter {
@@ -60,8 +64,10 @@ Diff()
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return VideoViewHolder(
+       val l = VideoViewHolder(
             ItemRecyclerviewVideoLayoutBinding.inflate(LayoutInflater.from(context),parent,false))
+        recycle.add(l)
+        return l
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -71,11 +77,27 @@ Diff()
 
 
 
+    fun clearAllView() {
+      recycle.forEach {
+          it.onDestroy()
+      }
+      recycle.clear()
+    }
+
+    fun clearItemView(position:Int){
+      if(position > recycle.size) throw ArrayIndexOutOfBoundsException()
+        recycle[position].onDestroy()
+        recycle.removeAt(position)
+    }
+
+
+
+
     inner class VideoViewHolder(private val  binding: ItemRecyclerviewVideoLayoutBinding)
         : RecyclerView.ViewHolder(binding.root){
 
         private val playerLayout: ConstraintLayout = binding.layoutControl
-        val  tcPlayer = binding.adapterSuperVideo
+        var tcPlayer = binding.adapterSuperVideo
         val progressBar  = binding.progressBar
         val like = binding.like
         val comments = binding.comments
@@ -111,8 +133,9 @@ Diff()
 
             playerLayout.layoutParams = layoutParams
 
-            val  onNetChangeListener =  object : OnNetChangeListener {
+            var  onNetChangeListener =  object : OnNetChangeListener {
                 override fun onWifi() {
+                    eeee("onWifi")
                     if (netChange && mPosition == playPosition) {
                         tcPlayer.toPrepare(url)
                         play(progress)
@@ -123,6 +146,7 @@ Diff()
                 override fun onMobile() {
                     if (netChange && mPosition == playPosition) {
                         tcPlayer.toPrepare(url)
+                        eeee("onMobile")
                         play(tcPlayer.currentPosition)
                     }
 
@@ -188,17 +212,17 @@ Diff()
                 .onPrepared { if(mPosition == playPosition) play(progress) }
                 .onComplete { play(0) }
                 .setNetChangeListener(true)
+                .setBottomControl(true)
                 .setLive(false)
                 .setSupportGesture(false).setShowTopControl(false)
 
         }
 
 
-
-
-
         fun play(progress: Int) {
-            tcPlayer.toStart(progress)
+            TaskServer.execute {
+                tcPlayer.toStart(progress)
+            }
         }
 
         fun pause() {
@@ -213,13 +237,21 @@ Diff()
             tcPlayer.onResume()
         }
 
+        fun prepare(){
+                    tcPlayer.toPrepare(url)
+        }
+
         fun currentProgress(): Int {
             return tcPlayer.currentPosition
         }
 
         fun onDestroy() {
             release()
+            eeee("onDestroy")
             tcPlayer.onDestroy()
+            tcPlayer.setDoubleClickListener(null)
+            tcPlayer.setOnNetChangeListener(null)
+
         }
 
         fun update(position: Int,personDynamic: PersonDynamic) {
@@ -229,8 +261,7 @@ Diff()
             url = ""+personDynamic.videoUrl
             tcPlayer.url = url
             eee("name ${personDynamic.userNickName}"+url)
-            tcPlayer.toPrepare(url)
-
+            prepare()
             binding.executePendingBindings()
         }
 
