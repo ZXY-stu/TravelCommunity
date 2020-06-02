@@ -85,11 +85,12 @@ interface PersonDynamicService {
     *  commentsId = 0 时，返回评论作者的最新10条评论，属于第一层
     *  commentsId ！=0 时，返回 CommentsGroupId == commentsId的最新10条评论，属于第二层
     * */
+
     /*
     *   每条评论都会设置对应的CommentsGroupId，
     *   评论作者的评论，CommentsGroupId 就是0
     *   不是评论的作者，CommentsGroupId = 被评论的commentsId
-    *
+
     *   然后，我传给你的实体类保存了它所属的CommentsGroupId ，以及他要评论的人的昵称
     *   你只需要拿到数据后，插入指定的 CommentsGroupId 和 他要评论的人的昵称  所属的那条评论后面就OK了
     *

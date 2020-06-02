@@ -51,26 +51,29 @@ abstract  class BaseDialogFragment<T: ViewDataBinding>: DialogFragment(){
     protected var friendAccount:String=""
     private var deviceHeight  = 0
     private var deviceWidth = 0
-   private lateinit var noticeLoginDialog:NoticeLoginDialog
 
-    private fun checkLogin(){
+
+    private fun checkLogin():Boolean{
 
         if(!BaseViewModel.userIsLogin && needLogin){
             LogUtil.eee("checkLoginYes")
 
-            noticeLoginDialog.show(requireActivity().supportFragmentManager,"BaseDialogFragment")
-             onPause()
+            NoticeLoginDialog().show(requireActivity().supportFragmentManager,"BaseDialogFragment")
+
             eee("checkLoginYes22")
+           return false
         }
+        return true
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
         //设置状态栏字体颜色为深色
-        deviceHeight = DeviceUtils.deviceHeight(requireContext())
-        deviceWidth = DeviceUtils.deviceWidth(requireContext())
-        noticeLoginDialog = NoticeLoginDialog()
-        setStyle(STYLE_NO_TITLE,themeResId)
+
+            super.onCreate(savedInstanceState)
+            deviceHeight = DeviceUtils.deviceHeight(requireContext())
+            deviceWidth = DeviceUtils.deviceWidth(requireContext())
+            setStyle(STYLE_NO_TITLE, themeResId)
 
     }
 
@@ -88,8 +91,9 @@ abstract  class BaseDialogFragment<T: ViewDataBinding>: DialogFragment(){
         checkLogin()
         super.onCreateView(inflater, container, savedInstanceState)
         eee("onCreateView")
-            dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        inputMethodManager = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        inputMethodManager =
+            requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         binding = DataBindingUtil.inflate(inflater, layoutId, container, false)
         binding.lifecycleOwner = this
         subscribeUi()
@@ -98,8 +102,9 @@ abstract  class BaseDialogFragment<T: ViewDataBinding>: DialogFragment(){
         binding.executePendingBindings()
         lastView = binding.root
 
-         return lastView
+        return lastView
     }
+
 
     open fun subscribeUi(){}
     open fun subscribeListener(){}

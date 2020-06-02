@@ -17,12 +17,13 @@ import com.bignerdranch.tclib.LogUtil
 import com.bignerdranch.tclib.LogUtil.eee
 import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.base.BaseFragment
-
+import com.bignerdranch.travelcommunity.generated.callback.OnClickListener
 
 
 class HomePageVideo(override val layoutId: Int = R.layout.videoplayerview
                     , override val needLogin: Boolean = false)
     :BaseFragment<VideoplayerviewBinding>() {
+
 
     private  val _viewModel: PersonDynamicViewModel by viewModels{
         InjectorUtils.personDynamicViewModelFactory(requireContext())
@@ -79,7 +80,11 @@ class HomePageVideo(override val layoutId: Int = R.layout.videoplayerview
             }
         }
 
+
+
     }
+
+
 }
 
 

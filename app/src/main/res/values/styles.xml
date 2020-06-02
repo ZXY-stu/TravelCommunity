@@ -45,6 +45,39 @@
 
 
     <style name="Com.TravelCommunity.Light" parent="Theme.AppCompat.Light.NoActionBar">
+    <!-- Customize your theme here. -->
+    <!--顶部状态栏的背景颜色-->
+    <!--状态栏底色-->
+    <item name="colorPrimary">@color/white</item>
+    <item name="colorPrimaryDark">@color/white</item>
+
+    <!--导航栏上的标题颜色,这里的颜色还可以自己定义喜欢的类型-->
+    <item name="android:textColorPrimary">@color/black</item>
+    <!--Activity窗口的颜色,注意：这个颜色值要通过color属性引进来-->
+    <item name="android:windowBackground">@android:color/white</item>
+    <item name="backgroundColor">@color/white</item>
+    <!--按钮选中或者点击获得焦点后的颜色-->
+    <item name="colorAccent">@color/white</item>
+    <!--和 colorAccent相反，正常状态下按钮的颜色,如果我们的colorPrimary是深色，一般设置这里为白色-->
+    <item name="colorControlNormal">#fff</item>
+    <!--Button按钮正常状态颜色,根据项目来定义-->
+    <item name="colorButtonNormal">@color/gray</item>
+    <!--EditText 输入框中字体的颜色，colorPrimary如果设置深色，一般字体设置为白色-->
+    <item name="editTextColor">@android:color/white</item>
+
+    <!-- 系统默认的actionBar  -->
+    <item name="windowActionBar">false</item>
+    <!-- 取消actionBar的标题 -->
+    <item name="windowNoTitle">true</item>
+    <!-- 允许页面可以拉伸到顶部状态栏并且定义顶部状态栏透明，安卓4.4才有
+      实现沉浸式状态栏时，设置为true  此时无法实现输入法顶起布局
+      此时，布局文件不能设置fitsSystemWindow = true  否则无法实现内容填充状态栏-->
+    <item name="android:windowTranslucentStatus">true</item>
+    <!-- 设置虚拟键透明   若设置为true  则无法实现输入法顶起布局 -->
+    <item name="android:windowTranslucentNavigation">false</item>
+</style>
+
+    <style name="Com.TravelCommunity.Transparent" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <!--顶部状态栏的背景颜色-->
         <!--状态栏底色-->
@@ -54,7 +87,7 @@
         <!--导航栏上的标题颜色,这里的颜色还可以自己定义喜欢的类型-->
         <item name="android:textColorPrimary">@color/black</item>
         <!--Activity窗口的颜色,注意：这个颜色值要通过color属性引进来-->
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
         <item name="backgroundColor">@color/white</item>
         <!--按钮选中或者点击获得焦点后的颜色-->
         <item name="colorAccent">@color/white</item>
@@ -76,8 +109,6 @@
         <!-- 设置虚拟键透明   若设置为true  则无法实现输入法顶起布局 -->
         <item name="android:windowTranslucentNavigation">false</item>
     </style>
-
-
 
     <!--style name="PictureChooseStyle" parent="Theme.AppCompat.NoActionBar">
 

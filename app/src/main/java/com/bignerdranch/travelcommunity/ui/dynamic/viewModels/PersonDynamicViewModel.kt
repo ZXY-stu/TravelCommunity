@@ -79,27 +79,27 @@ class PersonDynamicViewModel internal constructor(
 
        runBlocking {
           // personDynamicRepository.toInsertDynamicAllLocal(pers)
-          personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 0,id = 1,userId = 1,msg = "上天给了你太多才华，就注定不会给你太平坦的路",userNickName = "CCTV",friendNickName = ""))
+          personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 0,id = 1,userId = 1,msg = "上天给了你太多才华，就注定不会给你太平坦的路",likeCount = "100",userNickName = "CCTV",friendNickName = ""))
            personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 1,id = 2,msg = "我没有离开家，\n" +
                    "\n" +
                    "只是把家带去了远方。",userNickName = "方太",friendNickName = "CCTV",likeCount = "10"))
            personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 1,id = 3,msg = "我不是天生强大，我只是天生要强。",
-               userNickName = "蒙牛",friendNickName = "CCTV"))
-           personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 1,id = 4,msg = "爱在日常，才不寻常。",userNickName = "京东 & 宝洁",friendNickName = "蒙牛"))
+               userNickName = "蒙牛",friendNickName = "CCTV",likeCount = "10"))
+           personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 1,id = 4,msg = "爱在日常，才不寻常。",likeCount = "200",userNickName = "京东 & 宝洁",friendNickName = "蒙牛"))
 
-           personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 0,id = 5,msg = "我们的一句随口说说 就是父母的大动干戈。",userNickName = "唯品会",friendNickName = ""))
+           personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 0,likeCount = "1w",id = 5,msg = "我们的一句随口说说 就是父母的大动干戈。",userNickName = "唯品会",friendNickName = ""))
            personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 0,id = 6,msg = "人生没有早知道，\n" +
                    "\n" +
                    "只有当下酒，眼前人。\n" +
                    "\n",userNickName ="江小白" ,friendNickName = ""))
            personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 6,id = 7,msg =  "原来爱情是：\n" +
                    "\n" +
-                   "我正要表白，而你也刚好“正在输入”",userNickName = "RIO微醺",friendNickName = "江小白"))
-           personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 6,id = 8,msg = "一个个太有才了",userNickName = "zzx",friendNickName = "江小白"))
+                   "我正要表白，而你也刚好“正在输入”",userNickName = "RIO微醺",friendNickName = "江小白",likeCount = "35"))
+           personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 6,id = 8,msg = "一个个太有才了",userNickName = "zzx",friendNickName = "江小白",likeCount = "105"))
            personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 6,id = 9,msg =  "我把我种在你身体里\n" +
                    "\n" +
-                   "然后一起躲进时间的褶皱里。",userNickName = "春日诗集",friendNickName = "RIO微醺"))
-           personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 0,id = 10,msg = "我要的只是诗和远方！",userNickName = "唐骏白",friendNickName = ""))
+                   "然后一起躲进时间的褶皱里。",userNickName = "春日诗集",friendNickName = "RIO微醺",likeCount = "120"))
+           personDynamicRepository.toInsertCommentLocal(CommentsMsg(commentGroupId = 0,id = 10,msg = "我要的只是诗和远方！",userNickName = "唐骏白",friendNickName = "",likeCount = "14"))
 
        }
      }

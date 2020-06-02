@@ -5,13 +5,12 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.res.Configuration
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
 import android.widget.RelativeLayout
+import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.RecyclerView
 import com.bignerdranch.tclib.LogUtil.eee
 import com.bignerdranch.tclib.data.db.entity.PersonDynamic
 import com.bignerdranch.tclib.utils.DeviceUtils
@@ -19,6 +18,7 @@ import com.bignerdranch.travelcommunity.R
 import com.bignerdranch.travelcommunity.adapters.Coverters
 import com.bignerdranch.travelcommunity.base.BaseDialogFragment
 import com.bignerdranch.travelcommunity.databinding.DynamicImagestyleUserpageBinding
+import com.bignerdranch.travelcommunity.task.TaskServer
 import com.bignerdranch.travelcommunity.tcvideoplayer.TCPlayer
 import com.bignerdranch.travelcommunity.ui.HomePageActivity
 import com.bignerdranch.travelcommunity.ui.adapters.CommentsAdapter
@@ -27,6 +27,8 @@ import com.bignerdranch.travelcommunity.ui.dynamic.viewModels.PersonDynamicViewM
 import com.bignerdranch.travelcommunity.ui.user.FriendFragment
 import com.bignerdranch.travelcommunity.ui.user.InputDialog
 import com.bignerdranch.travelcommunity.ui.utils.VideoPageSnapHelper
+import java.util.*
+
 /**
  * @author zhongxinyu
  * @date 2020/5/10
@@ -44,6 +46,7 @@ class ImageDynamicFragment(
     private val adapter = PictureAdapter()
     private  val commentsDialog = CommentsDialog(_viewModel,dynamicId = mPersonDynamic.id)
     private  lateinit var commentsAdapter:CommentsAdapter
+    private var imagesPosition = 1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -172,7 +175,19 @@ class ImageDynamicFragment(
              imageMatrix.adapter = adapter
             personDynamic = mPersonDynamic
             commentsRecycle.adapter = commentsAdapter
-            VideoPageSnapHelper().attachToRecyclerView(imageMatrix)
+            VideoPageSnapHelper().attachToRecyclerView(imageMatrix).setScrollPlayListener {
+                imagesPosition = it+1
+            }
+
+            imageMatrix.setOnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
+                position = "${imagesPosition}/${imageMatrix.layoutManager?.itemCount}"
+                showDeley(imagePosition,3500)
+            }
+
+
+
+
+
 
 
         }
@@ -182,6 +197,17 @@ class ImageDynamicFragment(
     }
 
 
+     fun showDeley(textView: TextView,deley:Long){
+         val time = Timer()
+         textView.visibility = View.VISIBLE
+         time.schedule(object :TimerTask(){
+             override fun run() {
+                 TaskServer.ktxRunOnUi {
+                     textView.visibility = View.GONE
+                 }
+             }
+         },deley)
+     }
 
     override   fun subscribeObserver(){
        _viewModel.commentsMsgLocal.observe(viewLifecycleOwner){

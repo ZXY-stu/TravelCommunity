@@ -103,7 +103,9 @@
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="12344" />
+        android:textSize="@dimen/action_text"
+        android:gravity="center"
+        android:text="@{comments.likeCount}" />
 
   </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
