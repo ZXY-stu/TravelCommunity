@@ -1,0 +1,16 @@
+<toolSet name="External Tools">
+  <tool name="javah -jni" description="一键根据java文件生成.h头文件" showInMainMenu="false" showInEditor="false" showInProject="false" showInSearchPopup="false" disabled="false" useConsole="true" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
+    <exec>
+      <option name="COMMAND" value="$JDKPath$/bin/javah.exe" />
+      <option name="PARAMETERS" value="-v -jni -d $ModuleFileDir$/src/main/jni $FileClass$" />
+      <option name="WORKING_DIRECTORY" value="$SourcepathEntry$" />
+    </exec>
+  </tool>
+  <tool name="ndk-build" description="根据C/C++文件一键生成so库" showInMainMenu="false" showInEditor="false" showInProject="false" showInSearchPopup="false" disabled="true" useConsole="true" showConsoleOnStdOut="false" showConsoleOnStdErr="false" synchronizeAfterRun="true">
+    <exec>
+      <option name="COMMAND" value="C:\Users\G\AppData\Local\Android\Sdk\ndk-bundle\ndk-build.cmd" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$ModuleFileDir$/src/main/" />
+    </exec>
+  </tool>
+</toolSet>
