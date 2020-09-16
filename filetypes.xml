@@ -3,6 +3,7 @@
     <extensionMap>
       <mapping ext="webp" type="Image" />
       <mapping pattern="netease_data" type="JSON" />
+      <mapping pattern="common_data" type="JSON" />
       <mapping ext="main.kts" type="Kotlin" />
       <mapping ext="mk" type="PLAIN_TEXT" />
       <mapping ext="md" type="PLAIN_TEXT" />
