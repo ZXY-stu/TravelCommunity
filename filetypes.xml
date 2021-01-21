@@ -7,6 +7,7 @@
       <mapping ext="main.kts" type="Kotlin" />
       <mapping ext="mk" type="PLAIN_TEXT" />
       <mapping ext="md" type="PLAIN_TEXT" />
+      <mapping ext="moc" type="PLAIN_TEXT" />
       <mapping ext="luac" type="PLAIN_TEXT" />
       <mapping ext="keystore" type="PLAIN_TEXT" />
       <mapping ext="py" type="PLAIN_TEXT" />
