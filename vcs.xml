@@ -10,6 +10,10 @@
           <option name="url" value="http://192.168.8.213:8088" />
           <option name="userName" value="zhongxinyu@aojiaogame.com" />
         </UrlAndUserName>
+        <UrlAndUserName>
+          <option name="url" value="http://192.168.9.111:8088" />
+          <option name="userName" value="zhongxinyu@aojiaogame.com" />
+        </UrlAndUserName>
       </list>
     </option>
   </component>
